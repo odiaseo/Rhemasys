@@ -1,0 +1,11 @@
+<div id="fb-root"></div>
+<?php  $href = Rhema_SiteConfig::getConfig('settings.socialmedia.facebook.href') ; ?>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<fb:like-box href="<?php echo $href; ?>" width="300" show_faces="true" stream="false" header="true"></fb:like-box>

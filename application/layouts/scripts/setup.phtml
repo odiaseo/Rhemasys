@@ -1,0 +1,32 @@
+<?php
+echo $this->doctype (); ?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<base href="<?php echo $this->rhemaLink; ?>" />
+<?php
+	$this->headMeta()->appendName('google-site-verification', 'pumPUtZO1l008OF959xYrQ8_U3NG_XLFpA1RbGd678Q');
+
+
+ //$this->headMeta()->appendHttpEquiv('Page-Enter', 'progid:DXImageTransform.Microsoft.Fade(Duration=1)');
+// $this->headMeta()->appendHttpEquiv('Page-Exit', 'progid:DXImageTransform.Microsoft.Fade(Duration=1)');
+
+
+ echo $this->headMeta();
+ echo $this->headTitle();
+ echo $this->headStyle();
+ echo $this->headLink ();
+// echo $this->headScript ();
+?>
+
+</head>
+<?php flush(); ?>
+<body>
+ 	<div id="setup-container">
+
+        <div><?php echo $this->layout()->content;?></div>
+
+		<div id="setup-footer"> </div>
+
+    </div>
+</body>
+</html>

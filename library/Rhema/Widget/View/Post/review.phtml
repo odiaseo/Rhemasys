@@ -1,0 +1,17 @@
+
+<div id="reviews" class="sidebar clearfix hreview">
+	<h2>Reviews & Comments</h2>
+	<a href="#" title="Click for blog feed" target="_blank">
+		<?php echo $this->render('partials/block-icon.phtml'); ?>
+	</a>
+
+<?php
+		$this->reviews = $this->latest;
+		echo $this->render('Post/partials/review-item.phtml');
+
+?>
+	<div id="view-all-post" class="view-all clearfix">
+		<a href="<?php echo $this->url(array(Rhema_Constant::MENU_FRONTEND_KEY => 'reviews-and-comments'),
+										Rhema_Constant::FRONT_MENU_ROUTE)?>" title="view all comments">view all</a>
+	</div>
+</div>

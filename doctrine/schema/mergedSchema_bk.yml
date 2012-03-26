@@ -1,0 +1,1707 @@
+connection: admin
+actAs:
+  Timestampable:
+options:
+  type: INNODB
+detect_relations: true
+AdminAcl:
+  tableName: admin_acl
+  actAs:
+    Blameable:
+    Rhema_Model_Template_Subsite:
+  columns:
+    title:
+      type: string(45)
+    scope:
+      type: string(45)
+    resource:
+      type: string(45)
+    privilege:
+      type: string(45)
+    allow:
+      type: integer(1)
+    role:
+      type: string(45)
+    root_id:
+      type: integer(4)
+AdminControl:
+  tableName: admin_control
+  actAs:
+    Rhema_Model_Template_Subsite:
+  columns:
+    licence_key:
+      type: string(45)
+    num_site:
+      type: integer(4)
+      default: 1
+AdminCounty:
+  tableName: admin_county
+  columns:
+    title:
+      type: string(45)
+    code:
+      type: string(45)
+    admin_state_id:
+      type: integer(4)
+    ecom_tax_id:
+      type: integer(4)
+  relations:
+    AdminState:
+      foreignType: one
+    EcomTax:
+      foreignType: one
+AdminState:
+  tableName: admin_state
+  columns:
+    title:
+      type: string(45)
+    code:
+      type: string(45)
+    country:
+      type: string(100)
+      country: true
+    ecom_tax_id:
+      type: integer(4)
+  relations:
+    EcomTax:
+      foreignType: one
+AdminCurrency:
+  tableName: admin_currency
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+    description:
+      type: string(45)
+    code:
+      type: string(8)
+      notnull: true
+    rate:
+      type: decimal(18)
+    symbol:
+      type: string(8)
+    position:
+      type: integer(1)
+      notnull: true
+      default: 0
+AdminDatabase:
+  tableName: admin_database
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+    description:
+      type: string(255)
+AdminContentType:
+  tableName: admin_content_type
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+      unique: true
+    description:
+      type: string(255)
+    code:
+      type: string(45)
+      unique: true
+      notblank: true
+      notnull: true
+    admin_table_id:
+      type: integer(4)
+    is_table:
+      type: integer(1)
+    sequence:
+      type: integer(4)
+    note:
+      type: string(255)
+  relations:
+    AdminTable:
+      foreignType: one
+AdminDictionary:
+  tableName: admin_dictionary
+  actAs:
+    Searchable:
+      fields: [title, description, label]
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+    description:
+      type: string(45)
+    label:
+      type: string(45)
+      notnull: true
+    row:
+      type: integer(4)
+    col:
+      type: integer(4)
+      default: 1
+    sequence:
+      type: integer(4)
+      default: 1
+    note:
+      type: string(255)
+AdminElement:
+  tableName: admin_element
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+    description:
+      type: string(255)
+    widget:
+      type: string(45)
+      notnull: true
+    admin_category_id:
+      type: integer(4)
+      notnull: true
+      default: 1
+    admin_licence_id:
+      type: integer(4)
+      default: null
+  relations:
+    AdminCategory:
+      foreignType: one
+    AdminLicence:
+      foreignType: one
+AdminGroup:
+  tableName: admin_group
+  columns:
+    title:
+      type: string(50)
+      notnull: true
+      unique: true
+    description:
+      type: string(255)
+    is_active:
+      type: integer(1)
+      default: 1
+AdminLicence:
+  tableName: admin_licence
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+      unique: true
+    description:
+      type: string(150)
+    licence_key:
+      type: string(45)
+      notnull: true
+      unique: true
+      default: 'FREE'
+    price:
+      type: float
+      default: 0
+AdminMenu:
+  tableName: admin_menu
+  actAs:
+    Timestampable:
+    NestedSet:
+      hasManyRoots: true
+      rootColumnName: root_id
+  columns:
+    title:
+      type: string(45)
+    description:
+      type: string(150)
+    label:
+      type: string(45)
+    m_module:
+      type: string(45)
+      notnull: true
+      default: storefront
+    m_controller:
+      type: string(45)
+      notnull: true
+      default: index
+    sequence:
+      type: integer(4)
+      default: 1
+    m_action:
+      type: string(45)
+      default: 'index'
+    image_file:
+      type: string(45)
+    is_label:
+      type: integer(1)
+      default: 0
+    is_visible:
+      type: integer(1)
+      default: 1
+  indexes:
+    adminmenuindex:
+      fields: [slug]
+AdminSubsiteLicence:
+  tableName: admin_subsite_licence
+  actAs:
+    SoftDelete:
+    Rhema_Model_Template_Subsite:
+  columns:
+    admin_licence_id:
+      type: integer(4)
+    is_active:
+      type: integer(1)
+      default: 1
+  relations:
+    AdminLicence:
+      foreignAlias: SubsiteLicence
+AdminModule:
+  tableName: admin_module
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+    description:
+      type: string(150)
+    label:
+      type: string(45)
+    code:
+      type: string(45)
+      notnull: true
+    thumb:
+      type: string(45)
+      notnull: true
+    image_file:
+      type: string(45)
+      notnull: true
+    admin_menu_id:
+      type: integer(4)
+      notnull: true
+    admin_licence_id:
+      type: integer(4)
+      notnull: true
+    sequence:
+      type: integer(4)
+      default: 1
+    content:
+      type: string
+  relations:
+    AdminMenu:
+      foreignType: one
+    AdminLicence:
+      foreignType: one
+AdminSection:
+  tableName: admin_section
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+    description:
+      type: string(150)
+    cssid:
+      type: string(45)
+    cssclass:
+      type: string(45)
+    note:
+      type: string()
+    admin_category_id:
+      type: integer(4)
+  relations:
+    AdminCategory:
+      foreignType: one
+AdminSetting:
+  actAs:
+    SoftDelete:
+  tableName: admin_setting
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+    description:
+      type: string(255)
+    config_key:
+      type: string(145)
+    value:
+      type: string(45)
+    note:
+      type: string(255) 
+AdminTable:
+  tableName: admin_table
+  columns:
+    title:
+      type: string(45)
+      unique: true
+    description:
+      type: string(150)
+    name:
+      type: string(45)
+      notnull: true
+    is_admin:
+      type: integer(1)
+    is_hidden:
+      type: integer(1)
+    note:
+      type: string()
+    admin_category_id:
+      type: integer(4)
+      notnull: true
+      default: 1
+    admin_database_id:
+      type: integer(4)
+      notnull: true
+  relations:
+    AdminCategory:
+      foreignType: one
+    AdminDatabase:
+      foreignType: one
+AdminCategory:
+  tableName: admin_category
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+    description:
+      type: string(150)
+AdminSubsite:
+  connection: remote
+  tableName: admin_subsite
+  actAs:
+    Blameable:
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+    description:
+      type: string(150)
+    keyword:
+      type: string()
+    contact_email:
+      type: string(45)
+      notnull: true
+      email: true
+    sales_email:
+      type: string(45)
+      email: true
+    telephone:
+      type: string(45)
+      notnull: true
+    fax:
+      type: string(45)
+    domain:
+      type: string(45)
+      notnull: true
+    root_dir:
+      type: string(45)
+      notnull: true
+    user_id:
+      type: integer(4)
+      unsigned: true
+      notnull: true
+    template_id:
+      type: integer(4)
+      notnull: false
+    is_active:
+      type: integer(1)
+      default: 0
+    renewal_at:
+      type: timestamp(25)
+    colour_scheme:
+      type: string(45)
+      default: default
+    address_book_id:
+      type: integer(4)   
+      notnull: false
+  relations:
+    User:
+      foreignAlias: Subsites
+    AddressBook:
+      foreignType: one
+    Template:
+      foreignType: one
+    AdminLicence:
+      foreignAlias: LicencedModules
+      class: AdminLicence
+      refClass: AdminSubsiteLicence
+AddressBook:
+  actAs: 
+    Geographical:
+  tableName: address_book
+  columns: 
+    title:
+      type: string(45)
+    description:
+      type: string(45)
+      default: home
+    line1:
+      type: string(45)
+      notnull: true
+    line2:
+      type: string(45)
+    line3:
+      type: string(45)
+    city:
+      type: string(45)
+      notnull: true
+    state:
+      type: string(45)
+    post_code:
+      type: string(45)
+      notnull: true
+    region:
+      type: string(45)
+    country:
+      type: string(10)
+      country: true
+  relations:
+    User:
+      foreignAlias: Address
+      class: User
+      refClass: UserAddress
+Category:
+  tableName: category
+  actAs:
+    Rhema_Model_Template_Subsite:
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+    description:
+      type: string(45)
+Component:
+  tableName: component
+  actAs: 
+    Blameable:
+    Searchable:
+      fields: [title, content, description]
+    Rhema_Model_Template_Subsite:
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+    description:
+      type: string(45)
+    content:
+      type: string(2147483647)
+      notnull: true
+    category_id:
+      type: integer(4)
+      notnull: true
+  relations:
+    Category:
+      foreignType: one
+Menu:
+  tableName: menu
+  actAs:
+    Sluggable:
+      unique: true
+      fields: [label]
+      canUpdate: true
+      uniqueBy: [label, admin_subsite_id]
+    SoftDelete:
+    NestedSet:
+      hasManyRoots: true
+      rootColumnName: root_id
+    Rhema_Model_Template_Subsite:
+  inheritance:
+    extends: AdminMenu
+    type: concrete
+  columns:
+    sequence:
+      type: integer(3)
+      default: 1
+    page_id:
+      type: integer(4)
+  indexes:
+    menuindex:
+      fields: [page_id]
+  relations:
+    Page:
+      foreignAlias: PageMenu
+Role:
+  tableName: role
+  actAs:
+    Rhema_Model_Template_Subsite: 
+    Blameable:
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+    description:
+      type: string(255)
+    sequence:
+      type: integer(4)
+      default: 1
+    is_admin:
+      type: integer(1)
+      default: 0
+Salutation:
+  tableName: salutation
+  actAs:
+    Rhema_Model_Template_Subsite:
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+    description:
+      type: string(255)
+User:
+  tableName: user
+  actAs:
+    Rhema_Model_Template_Subsite:
+    SoftDelete:
+    Blameable:
+  columns:
+    firstname:
+      type: string(80)
+      notnull: true
+      minlength: 2
+    lastname:
+      type: string(100)
+      notnull: true
+      minlength: 2
+    username:
+      type: string(50)
+      notnull: true
+      unique: true
+      minlength: 5
+    dob_at:
+      type: date
+      past: true
+    nickname:
+      type: string(50)
+      unique: true
+    gender:
+      type: enum
+      notnull: true
+      values: [male, female]
+    password:
+      type: string(40)
+      notnull: true
+      minlength: 5
+    telephone:
+      type: string(20)
+    mobile:
+      type: string(11)
+      minlength: 11
+    fax:
+      type: string(20)
+    email:
+      type: string(80)
+      notnull: true
+      email: true
+      unique: true
+    company:
+      type: string(80)
+    image_file:
+      type: string(255)
+    website:
+      type: string(80)
+    start_at:
+      type: timestamp(25)
+    end_at:
+      type: timestamp(25)
+      future: true
+    is_blocked:
+      type: integer(1)
+      unsigned: true
+    is_active:
+      type: integer(1)
+      default: 1
+    is_admin:
+      type: integer(1)
+      default: 0
+    is_member:
+      type: integer(1)
+    is_online:
+      type: integer(1)
+      default: 0
+    visits:
+      type: integer(4)
+      default: 0
+      unsigned: true
+    salutation_id:
+      type: integer(4)
+      notnull: true
+    usergroup_id:
+      type: integer(4)
+      unsigned: true
+      notnull: false 
+    admin_group_id:
+      type: integer(4)
+      notnull: false 
+    admin_menu_id:
+      type: integer(4)
+      notnull: false 
+    is_mailing:
+      type: integer(1)
+      default: 1
+    role_id:
+      type: integer(4)
+      default: 1
+    note:
+      type: string(255)
+  indexes:
+    userindex:
+      fields: [email, lastname, dob_at]
+  relations:
+    Role:
+      foreignType: one
+    AdminGroup:
+      foreignType: one
+    AdminMenu:
+      foreignType: one
+    Salutation:
+      foreignType: one
+    Usergroup:
+      foreignType: one
+    AdminSubsite:
+      foreignAlias: Users
+      class: AdminSubsite
+      refClass: UserSubsite
+UserAddress:
+  tableName: user_address
+  columns:
+    user_id:
+      type: integer(4)
+    address_book_id:
+      type: integer(4)
+  relations:
+    User:
+      foreignAlias: UserAddresses
+    AddressBook:
+      foreignAlias: UserAddresses
+UserSubsite:
+  tableName: user_subsite
+  columns:
+    user_id:
+      type: integer(4)
+      unsigned: true
+    admin_subsite_id:
+      type: integer(4)
+  relations:
+    User:
+      foreignAlias: SubsiteUsers
+    AdminSubsite:
+      foreignAlias: SubsiteUsers
+Usergroup:
+  tableName: usergroup
+  actAs:
+    Rhema_Model_Template_Subsite:
+    SoftDelete:
+  columns:
+    title:
+      type: string(50)
+      notnull: true
+      unique: true
+    description:
+      type: string(255)
+    is_hidden:
+      type: integer(1)
+      unsigned: true
+Featured:
+  tableName: featured
+  actAs:
+    Rhema_Model_Template_Subsite:
+    SoftDelete:
+    Blameable:
+  columns:
+    title:
+      type: string(50)
+    menu_id:
+      type: integer(4)
+    label:
+      type: string(50)
+    caption:
+      type: string(50)
+    description:
+      type: string(255)
+    image_file:
+      type: string(255)
+    thumb:
+      type: string(255)
+    note:
+      type: string(255)
+    information:
+      type: string(255)
+    css:
+      type: string(45)
+    is_active:
+      type: integer(1)
+    sequence:
+      type: integer(4)
+      default: 1
+  relations:
+    Menu:
+      foreignType: one
+PageFooter:
+  tableName: page_footer
+  actAs:
+    Blameable:
+    SoftDelete:
+    Rhema_Model_Template_Subsite:
+  columns:
+    title:
+      type: string(50)
+      notnull: true
+      unique: true
+    template_id:
+      type: integer(4)
+      notnull: true
+    description:
+      type: string(255)
+    category_id:
+      type: integer(4)
+      notnull: true
+    is_active:
+      type: integer(1)
+      default: 1
+  relations:
+    Category:
+      foreignType: one
+    Template:
+      foreignType: one
+PageHeader:
+  tableName: page_header
+  inheritance:
+    extends: PageFooter
+    type: concrete
+Page:
+  tableName: page
+  actAs:
+    Blameable:
+    SoftDelete:
+    Rhema_Model_Template_Subsite:
+    Sluggable:
+      unique: true
+      fields: [title]
+      uniqueBy: [title, admin_subsite_id]
+      canUpdate: true
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+    description:
+      type: string(255)
+    category_id:
+      type: integer(4)
+      notnull: true
+    is_active:
+      type: integer(1)
+      default: 1
+    keyword:
+      type: string(255)
+    start_at:
+      type: timestamp(25)
+    end_at:
+      type: timestamp(25)
+    is_hidden:
+      type: integer(1)
+      default: 0
+    is_cached:
+      type: integer(1)
+      default: 0
+    is_secure:
+      type: integer(1)
+      default: 0
+    template_id:
+      type: integer(4)
+      notnull: true
+    page_header_id:
+      type: integer(4)
+      notnull: true
+    page_footer_id:
+      type: integer(4)
+      notnull: true
+    note:
+      type: string(255)
+  relations:
+    Category:
+      foreignType: one
+    PageHeader:
+      foreignType: one
+    Template:
+      foreignType: one
+    PageFooter:
+      foreignType: one
+Inquiry:
+  tableName: inquiry
+  actAs:
+    Rhema_Model_Template_Subsite:
+    SoftDelete:
+    Blameable:
+  columns:
+    user_id:
+      type: string(45)
+    salutation_id:
+      type: string(45)
+    subject_id:
+      type: integer(4)
+    url:
+      type: string(150)
+    messsage:
+      type: string(255)
+      notnull: true
+      notblank: true
+    is_resolved:
+      type: integer(1)
+    ip_address:
+      type: string(15)
+      ip: true
+  relations:
+    User:
+      foreignType: one
+    Subject:
+      foreignType: one
+    Salutation:
+      foreignType: one
+Subject:
+  tableName: subject
+  actAs:
+    Rhema_Model_Template_Subsite:
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+    description:
+      type: string(45)
+EventType:
+  tableName: event_type
+  actAs:
+    Rhema_Model_Template_Subsite:
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+    description:
+      type: string(45)
+DisplayGroup:
+  tableName: display_group
+  actAs:
+    Rhema_Model_Template_Subsite:
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+    description:
+      type: string(45)
+Event:
+  tableName: event
+  actAs:
+    Rhema_Model_Template_Subsite:
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+    description:
+      type: string(255)
+    keyword:
+      type: string(255)
+    content:
+      type: string(255)
+    start_at:
+      type: timestamp(25)
+    end_at:
+      type: timestamp(25)
+    event_type_id:
+      type: integer(4)
+    address_book_id:
+      type: integer(4)
+    user_id:
+      type: integer(4)
+      notnull: true
+    is_active:
+      type: integer(1)
+    image_file:
+      type: string(255)  
+  relations:
+    AddressBook:
+      foreignType: one
+    EventType:
+      foreignType: one
+    User:
+      foreignType: one
+Portfolio:
+  tableName: portfolio_photobook
+  actAs:
+    Rhema_Model_Template_Subsite:
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+    description:
+      type: string(255)
+    keyword:
+      type: string(255)
+    page_count:
+      type: integer(4)
+    photo_count:
+      type: integer(4)
+    role_id:
+      type: integer(4)
+    note:
+      type: string(255)
+    event_id:
+      type: integer(4)
+    is_active:
+      type: integer(1)
+      default: 1
+    is_feature:
+      type: integer(1)
+      default: 1
+    is_complete:
+      type: integer(1)
+      default: 0
+    image_file:
+      type: string(255)  
+    url:
+      type: string(150) 
+  relations:
+    Event:
+      foreignType: one
+    Role:
+      foreignType: one 
+News:
+  tableName: news
+  actAs:
+    Rhema_Model_Template_Subsite:
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+    description:
+      type: string(45)
+    start_at:
+      type: timestamp(25)
+    end_at:
+      type: timestamp(25)
+    is_active:
+      type: integer(1)
+      default: 1
+    url:
+      type: string(150
+    news_category_id:
+      type: integer(4)
+      notnull: true  
+    content:
+      type: string
+      notnull: true
+  relations:
+    NewsCategory:
+      foreignType: one
+NewsCategory:
+  tableName: news_category
+  actAs:
+    Rhema_Model_Template_Subsite:
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+    description:
+      type: string(45)
+    image_file:
+      type: string(255) 
+Template:
+  tableName: template
+  actAs:
+    Rhema_Model_Template_Subsite:
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+    description:
+      type: string(45)
+    is_header:
+      type: integer(1)
+      default: 0
+    is_footer:
+      type: integer(1)
+      default: 0
+    image_file:
+      type: string(45)
+    thumb:
+      type: string(45)
+    category_id:
+      type: integer(4)
+      notnull: true
+  relations:
+    AdminSection:
+      foreignAlias: Template
+      class: AdminSection
+      refClass: TemplateSection
+    Category:
+      foreignType: one
+TemplateSection:
+  tableName: template_section
+  actAs: 
+    SoftDelete:
+  columns:
+    admin_section_id:
+      type: integer(4)
+      notnull: true
+    template_id:
+      type: integer(4)
+      notnull: true
+    sequence:
+      type: integer(4)
+      default: 1
+  indexes:
+    templateindex:
+      fields: [template_id]
+  relations:
+    AdminSection:
+      foreignAlias: TemplateSections
+    Template:
+      foreignAlias: TemplateSections
+PageLayout:
+  tableName: page_layout
+  actAs:
+    Timestampable:
+    SoftDelete:
+  columns:
+    item:
+      type: integer(4)
+      notnull: true
+    admin_content_type_id:
+      type: string(45)
+      notnull: true
+    page_id:
+      type: integer(4)
+      notnull: true
+    admin_table_id:
+      type: integer(4)
+      notnull: true
+    admin_section_id:
+      type: integer(4)
+      notnull: true
+    template_id:
+      type: integer(4)
+      notnull: true
+    section_seq:
+      type: integer(4)
+      default: 1
+    item_seq:
+      type: integer(4)
+      default: 1
+  indexes:
+    layoutindex:
+      fields: [page_id, admin_table_id, template_id]
+  relations:
+    Template:
+       foreignAlias: Templates
+    Page:
+      foreignAlias: PageLayout
+    AdminContentType:
+      foreignAlias: ContentType
+    AdminSection:
+      foreignAlias: LayoutSections
+    AdminTable:
+      foreignAlias: SourceTable
+BlogCategory:
+  tableName: blog_category
+  actAs:
+    Rhema_Model_Template_Subsite:
+  columns:
+    title:
+      type: string(45)
+    description:
+      type: string(255)  
+BlogPost:
+  tableName: blog_post
+  actAs:
+    Rhema_Model_Template_Subsite:
+    Blameable:
+    Sluggable:
+      unique: true
+      fields: [title]
+      canUpdate: true
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+    description:
+      type: string(255)
+    keyword:
+      type: string(255)
+    excerpt:
+      type: string()
+    is_active:
+      type: integer(1)
+      default: 1
+    blog_category_id:
+      type: integer(4)
+      notnull: true
+    content:
+      type: string
+      notnull: true
+    role_id:
+      type: integer(4)
+      notnull: false
+    image_file:
+      type: string(45)
+    user_id:
+      type: string(45)
+      name: user_id as author
+  relations:
+    BlogCategory:
+      foreignAlias: BlogCategory
+    User:
+      foreignType: one
+    Role:
+      foreignType: one
+BlogComment:
+  tableName: blog_comment
+  actAs:
+    Rhema_Model_Template_Subsite:
+  columns:
+    title:
+      type: string(55)
+    name:
+      type: string(150)
+    url:
+      type: string(100)
+    comment:
+      type: string(1280)
+      notnull: true
+    blog_post_id:
+      type: integer(4)
+    is_active:
+      type: integer(1)
+      default: 1
+  relations:
+    BlogPost:
+      foreignAlias: PostComment
+      class: BlogPost
+      refClass: BlogPostComment
+BlogPostComment:
+  tableName: blog_post_comment
+  actAs: 
+    Rhema_Model_Template_Subsite:
+  columns:
+    blog_post_id:
+      type: integer(4)
+    blog_comment_id:
+      type: integer(4)
+  relations:
+    BlogPost:
+      foreignAlias: PostComments
+    BlogComment:
+      foreignAlias: PostComments
+EcomBrand:
+  tableName: ecom_brand
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+    description:
+      type: string(255)
+    image_file:
+      type: string(45)
+EcomTax:
+  tableName: ecom_tax
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+    description:
+      type: string(255)
+    rate:
+      type: decimal(18)
+      default: 0
+EcomCategory:
+  actAs:
+    Sluggable:
+      unique: true
+      fields: [title]
+  tableName: ecom_category
+  columns:
+    title:
+      type: string(45)
+    code:
+      type: string(45)
+      unique: true
+    description:
+      type: string(255)
+    image_file:
+      type: string(45)
+    ecom_tax_id:
+      type: integer(4)
+  relations:
+    EcomTax:
+      foreignType: one
+EcomNavigationMenu:
+  tableName: ecom_navigation_menu
+  actAs:
+    NestedSet:
+      hasManyRoots: true
+      rootColumnName: root_id
+    Rhema_Model_Template_Subsite:
+  inheritance:
+    extends: AdminMenu
+    type: concrete
+  columns:
+    ecom_category_id:
+      type: integer(4)
+  relations:
+    EcomCategory:
+      foreignType: one
+EcomProduct:
+  tableName: ecom_product
+  actAs:
+    Rhema_Model_Template_Subsite:
+    Sluggable:
+      unique: true
+      fields: [title]
+      canUpdate: true
+  checks:
+    price_check: price < rrp
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+    description:
+      type: string(255)
+    code:
+      type: string(45)
+      unique: true
+    ecom_brand_id:
+      type: string(45)
+      default: null
+    image_file:
+      type: string(255)
+    price:
+      type: float
+      default: '0.00'
+    discount_percent:
+      type: float
+      default: '0.00'
+    rrp:
+      type: float
+    quantity:
+      type: integer(8)
+    is_enabled:
+      type: integer(1)
+      default: 1
+    is_taxable:
+      type: integer(1)
+      default: 1
+    ecom_tax_id:
+      type: integer(4)
+  relations:
+    EcomBrand:
+      foreignType: one
+    EcomTax:
+      foreignType: one
+    EcomCategory:
+      foreignAlias: Products
+      class: EcomCategory
+      refClass: EcomProductCategory
+EcomProductCategory:
+  tableName: ecom_product_category
+  columns: 
+    ecom_product_id:
+      type: integer(4)
+    ecom_category_id:
+      type: integer(4)
+  relations:
+    EcomProduct:
+      foreignAlias: ProductCategory
+    EcomCategory:
+      foreignAlias: ProductCategory
+EcomDeliveryMethod:
+  tableName: ecom_delivery_method
+  columns:
+    title:
+      type: string(45)
+    description:
+      type: string(255)
+    cost:
+      type: decimal(18)
+    image_file:
+      type: string(45)
+EcomPaymentMethod:
+  tableName: ecom_payment_method
+  columns:
+    title:
+      type: string(45)
+    description:
+      type: string(255)
+    image_file:
+      type: string(45) 
+    sequence:
+      type: integer(4)
+EcomAttribute:
+  tableName: ecom_attribute
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+      unique: true
+    description:
+      type: string(255)
+    label:
+      type: string(45)
+    template:
+      type: string(255)
+    placeholder:
+      type: string(45)
+      notnull: true
+      unique: true
+    is_labeled:
+      type: integer(1)
+      default: 1
+    is_product:
+      type: integer(1)
+      default: 1 
+    is_tab:
+      type: integer(1)
+      default: 0
+EcomDisplayType:
+  tableName: ecom_display_type
+  actAs:
+    Rhema_Model_Template_Subsite:
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+      unique: true
+    description:
+      type: string(255)
+EcomDisplayTemplate:
+  tableName: ecom_display_template
+  actAs:
+    Rhema_Model_Template_Subsite:
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+      unique: true
+    description:
+      type: string(255)
+    is_default:
+      type: integer(1)
+      default: 0	  
+    ecom_display_type_id:
+      type: integer(4)
+      notnull: true	  
+    note:
+      type: string(255)
+  relations:
+    EcomDisplayType:
+      foreignType: one
+    EcomAttribute:
+      foreignAlias: DisplayTemplate
+      class: EcomAttribute
+      refClass: EcomTemplateAttribute
+EcomTemplateAttribute:
+  tableName: ecom_template_attribute
+  actAs:
+    Rhema_Model_Template_Subsite:
+    SoftDelete:
+  columns:
+    ecom_attribute_id:
+      type: integer(4)
+    ecom_display_template_id:
+      type: integer(4)
+    label:
+      type: string(45)   	  
+    sequence:
+      type: integer(4)
+  relations:
+    EcomAttribute:
+      foreignAlias: TemplateAttributes
+    EcomDisplayTemplate:
+      foreignAlias: TemplateAttributes  
+EcomPersLayout:
+  tableName: ecom_pers_layout
+  actAs:
+    Rhema_Model_Template_Subsite:
+    SoftDelete:
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+      unique: true
+    description:
+      type: string(255)
+    ecom_category_id:
+      type: integer(4)
+      default: 0	  
+    ecom_pers_item_id:
+      type: integer(4)  
+    cols:
+      type: integer(4)
+    rows:
+      type: integer(4)
+    dpi:
+      type: integer(4)
+    overlays:
+      type: integer(4)
+    height:
+      type: decimal(18)
+    width:
+      type: decimal(18)
+    margintop:
+      type: decimal(18)
+    marginright:
+      type: decimal(18) 
+    marginbottom: 
+      type: decimal(18)
+    marginleft:
+      type: decimal(18)
+  relations:
+    EcomCategory:
+      foreignType: one
+    EcomPersItem:
+      foreignType: one
+EcomOrder: 
+  tableName: ecom_order
+  actAs:
+    Rhema_Model_Template_Subsite:
+    SoftDelete:
+    Blameable:
+  columns:    
+    title:
+      type: string(45)
+    description:
+      type: string(255)
+    delivery_address:
+      type: string(255)
+    billing_address:
+      type: string(255)
+    payment_method:
+      type: string(55)
+    gift_message:
+      type: string(255)
+    delivery_charge:
+      type: decimal()
+    tax:
+      type: decimal()
+    total:
+      type: decimal()
+    is_paid:
+      type: integer(1)
+      default: 0
+  relations:
+    EcomOrderDetails:
+      foreignAlias: Orders
+      class: EcomProduct
+      refClass: EcomOrderDetail
+EcomOrderDetail:
+  tableName: ecom_order_details
+  actAs:
+    Rhema_Model_Template_Subsite:  
+  columns:    
+    ecom_order_id:
+      type: integer(4)
+    ecom_product_id:
+      type: integer(4)
+    price:
+      type: decimal()
+    quantity:
+      type: integer(4)
+  relations:
+    EcomOrder:
+      foreignAlias: EcomOrder
+    EcomProduct:
+      foreignAlias: OrderProduct
+HelpBoilerPlate:
+  tableName: help_boiler_plate
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+    description:
+      type: string(255)
+    content:
+      type: string(255)
+      notnull: true
+    is_active:
+      type: integer(1)
+      default: 1
+HelpCategory:
+  tableName: help_category
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+    description:
+      type: string(255)
+HelpTemplateBoilerPlate:
+  tableName: help_template_boiler_plate
+  actAs:
+    SoftDelete:
+  columns:
+    help_template_id:
+      type: integer(4)
+      notnull: true
+    help_boiler_plate_id:
+      type: integer(4)
+      notnull: true
+    position:
+      type: enum
+      length: 4
+      values: ['top', 'bottom']
+    sequence:
+      type: integer(4)
+  relations:
+    HelpTemplate:
+      foreignAlias: Plates
+    HelpBoilerPlate:
+      foreignAlias: Plates
+HelpDocument:
+  tableName: help_document
+  actAs:
+    Blameable:
+    Searchable:
+      fields: [content, title, description, keyword]
+    Sluggable:
+      fields: [title]
+    SoftDelete:	  
+  columns:
+    title:
+      type: string(145)
+    description:
+      type: string(255)
+    keyword:
+      type: string(255)
+    content:
+      type: string(255)      
+    answer:
+      type: string(255)
+    related_item:
+      type: string(255)
+    question:
+      type: string(255)
+    module:
+      type: integer(4)
+    help_type_id:
+      type: integer(4)
+      notnull: true
+    help_category_id:
+      type: integer(4)
+      notnull: true
+    role_id:
+      type: integer(4)
+      notnull: true
+    admin_group_id:
+      type: integer(4)
+      notnull: true	  
+  relations:
+    HelpCategory:
+      foreignAlias: Documents
+    HelpType:
+      foreignAlias: Documents
+    Role:
+      foreignType: one
+    AdminGroup:
+      foreignType: one
+HelpField:
+  tableName: help_field
+  columns:
+    title:
+      type: string(145)
+      notnull: true
+    label:
+      type: string(145)
+      notnull: true
+    description:
+      type: string(255)
+    is_mandatory:
+      type: integer(1)
+      default: 1
+    is_searchable:
+      type: integer(1)
+      default: 0
+HelpSection:
+  tableName: help_section
+  columns:
+    title:
+      type: string(45)
+    description:
+      type: string(255)
+    sequence:
+      type: integer(4)
+      default: 0
+      unique: true
+HelpTemplateLayout:
+  tableName: help_template_layout
+  actAs:
+    SoftDelete:
+  columns:
+    help_template_id:
+      type: integer(4)
+      notnull: true
+    help_section_id:
+      type: integer(4)
+      notnull: true
+    help_field_id:
+      type: integer(4)
+    section_seq:
+      type: integer(4)
+      default: 0
+    item_seq:
+      type: integer(4)
+      default: 0
+    content_type:
+      type: string(4)
+  relations:
+    HelpField:
+      foreignAlias: Layout
+    HelpTemplate:
+      foreignAlias: Layout
+    HelpSection:
+      foreignAlias: Layout
+HelpTemplate:
+  tableName: help_template
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+    description:
+      type: string(255)
+    note:
+      type: string(255)
+  relations:
+    HelpField:
+      foreignAlias: Templates
+      class: HelpField
+      refClass: HelpTemplateField
+    HelpBoilerPlate:
+      foreignAlias: Templates
+      class: HelpBoilerPlate
+      refClass: HelpTemplateBoilerPlate
+HelpTemplateField:
+  tableName: help_template_field
+  actAs:
+    SoftDelete:
+  columns:
+    help_template_id:
+      type: integer(4)
+      notnull: true
+    help_field_id:
+      type: integer(4)
+      notnull: true
+    is_readonly:
+      type: integer(1)
+      default: 0
+    sequence:
+      type: integer(4)
+      default: 0
+  relations:
+    HelpTemplate:
+      foreignAlias: TemplateFields
+    HelpField:
+      foreignAlias: TemplateFields
+HelpType:
+  tableName: help_type
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+    description:
+      type: string(150)
+    prefix:
+      type: string(45)
+      notnull: true
+    level:
+      type: integer(4)
+      default: 1
+    help_template_id:
+      type: integer(4)
+      notnull: true
+    note:
+      type: string(255)
+  relations:
+    HelpTemplate:
+      foreignAlias: Documents

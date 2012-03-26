@@ -1,0 +1,129 @@
+<?php 
+/*  $str = 'http://pdt.tradedoubler.com/click?a(2045929)p(36412)prod(849281593)ttid(5)url(http%3A%2F%2Fwww.traffictrack.de%2Ftracking%2Fsetc.php%3Fkunde%3Dbonprix_uk%26from%3Dtd3%26keyword%3Dproduktdaten%26to%3Dhttp%253A%252F%252Fwww.bonprix.co.uk%252Fproduct%252Flace-detail-knit-dress-brown-971009%252F%253Flandmark%253DEntry%2526wkz%253D92%2526iwl%253D962%2526typ%253DAFF%2526anbieter%253DTradedoubler%2526aktion%253DUpload%2526version%253Dohne%2526promo%253DKeyword%2526awf%253D1%2526pd%253D97100995)';
+	$u = urldecode($str);
+	pd($u);*/
+    $product       = (array) $this->product; 
+ 
+	$titleSuffix   = '';
+	$retailerClass = 'similar-retailer' ;
+ 	$rel           = '' ;
+ 	$extra         =  '';
+ 	$promoTitle    = false ;
+ 	 
+	$title         = Rhema_Util_String::correctEncoding($product['title']) ; 
+	$description   = Rhema_Util_String::correctEncoding(html_entity_decode($product['description']));	
+   //pd($product['deeplink'] );
+ 	
+ 	if(isset($product['currency'])){
+ 		$localeStr = ($product['currency'] == 'USD') ? 'en_US' : 'en_GB';
+ 		$this->cur = new Zend_Currency($localeStr); 
+ 	} 
+	$retailerType = isset($product['AffiliateRetailer']['affiliate_retailer_type_id']) 
+					?  $product['AffiliateRetailer']['affiliate_retailer_type_id'] 
+					: false;
+	if($retailerType == 2){
+		$this->text  = 'Recycle';
+		$this->class = 'recycle';
+	}else{
+		$this->text  = 'Buy Now';
+		$this->class = 'buy-now';
+	}
+ 
+	$product['price']     = preg_replace('/[^\d\.]+/i','',$product['price']);
+	$product['rrp_price'] = isset($product['rrp_price']) ? preg_replace('/[^\d\.]+/i','',$product['rrp_price']) : 0;
+	
+	$price = floatval($product['price']) ? $product['price'] : 0;
+	$price = $price > 0.00 ? $price : false;
+	
+	if($price){ 
+		$this->cur->setValue($price);
+		$this->displayPrice = (string) $this->cur;
+	}else{
+		$this->displayPrice = '';
+	}
+			
+	if(isset($product['rrp_price']) and $product['rrp_price'] and $product['rrp_price'] != $product['rrp_price']){
+		$rrp = (string) $this->cur->setValue($product['rrp_price']);
+	}else{
+		$rrp = '';
+	}
+ 
+	$basketUrl   = isset($product['basket_url']) ? $product['basket_url'] : null;
+	$urlTitle    = Doctrine_Inflector::urlize(html_entity_decode($product['title'])) ;
+	if(isset($product['countid']) and $product['countid'] > 1){
+		$titleUrl    = $this->url(array('id' => $product['id'], 'title' => $urlTitle), 'affiliate-product-title', true, false);
+		$titleSuffix = sprintf("<div class='similar-offer-title'><a href='%s' title='Click to view all %s offers'>%s offers available</a></div>"
+						, $titleUrl, $title, number_format($product['countid']));
+	}
+ 
+	$outLink       = $this->url(array('id' => $product['id'], 'title' => $urlTitle), 'product-outlink', true, false);
+	$deepLink      = $this->affiliateLink()->getDeeplink($product, '', "p{$product['id']}");    
+	$productImage  = $this->getImagePath()->product($product);
+	  ?>	
+	
+	<div class="mobile-prod-long clearfix">
+		<div class="left-section">  <?php 
+ 			printf("<a id='prod_%d' href='%s'  %s='%s' class='outlink' target='_blank' title='%s'><img src='%s'  alt='%s' title='%s' class='thumb'/></a>"
+ 			,$product['id'], $outLink, $this->linkAttribute, $deepLink, $title, $productImage, $title, $title);
+ 			
+ 			if($rrp and $rrp != $price){
+ 				printf("<span class='prod-span rrp-price'><strong>RRP: </strong><span class='strike'>%s</span></span>", $rrp);
+ 		    } 
+ 			 if($price){ 
+ 				printf("<span class='prod-span product-price'>%s</span>",$this->displayPrice);
+ 			  }  
+			
+			printf("<a id='%s' href='%s'  %s='%s' class='outlink' title='%s - %s'><button class='%s prod-span rounded prod-btn'>%s</button></a>"
+			, $product['id'], $outLink, $this->linkAttribute, $deepLink, $this->text, $title, $this->class, $this->text);
+			
+			if($basketUrl){?>
+				<a id="bask_<?php echo $product['id'] ;?>" href="<?php  echo $basketUrl ; ?>" class="outlink basket" title="view shopping card">view basket</a>
+			<?php } ?>			
+		</div>
+		
+		<div class="right-section">		   	
+			<div id="m-summary">		
+				<h2><a id="prod_<?php echo $product['id'] ;?>" <?php echo "{$this->linkAttribute}='$deepLink'" ;?> href="<?php  echo $outLink; ?>" 
+				class="outlink" rel="nofollow" target="_blank" title="<?php echo $title; ?>"><?php echo $title; ?></a>
+				<?php echo $titleSuffix; ?>
+				</h2>
+				
+				<?php 
+				
+				if($product['network_promotion'] and $product['network_promotion'] != $promoTitle and strlen($product['network_promotion']) < 100){  ?>			 
+		   			<h3 class="promotion-heading"><?php  echo Rhema_Util_String::correctEncoding($product['network_promotion']); ?></h3>
+		    <?php } else{
+		    		$extra = "<br /><br />{$product['network_promotion']}";  
+		    	  }
+				if($product['AffiliatePromotion']  and $product['AffiliatePromotion']['id'] != 1 
+					and !preg_match(Admin_Model_AffiliatePromotion::PROMO_REGEX, $product['AffiliatePromotion']['title'])){ 
+				$promo = $product['AffiliatePromotion'];
+				$promoLink   = $this->url(array('id' => $promo['id'], 'promotion' => $promo['slug']), 'affiliate-promotion', true);
+				$promoTitle  = $promo['title'] ;
+			?>
+			<h4 class="promo" target="_blank"><a href="<?php echo $outLink; ?>" class="outlink" rel="nofollow" title="Get offer now" <?php echo "{$this->linkAttribute}='$deepLink'" ;?>><?php echo $promo['title']; ?></a></h4>
+			| <h4 class="similar-promo"><a href="<?php echo $promoLink ; ?>" title="Products with similar promotion">View products with similar promotion</a></h4>
+		<?php } 
+							
+			 if($this->route != 'affiliate-retailer' and isset($product['AffiliateRetailer']['logo']) and $product['AffiliateRetailer']['logo']){
+				$src  = $this->getRetailerLogo($product['AffiliateRetailer']);
+				$logo = "<img src='{$src}' height='30' alt='{$product['AffiliateRetailer']['title']}' 
+					title='{$product['AffiliateRetailer']['title']}' align='right' style='margin-left:5px' class='retailer-logo'/>";
+			}else{
+				$logo = ''; ;
+			}
+		
+			?>		         
+			<p><?php echo $logo, $this->limitTextDisplayed($description, 400, $extra); ?></p>									
+			<?php echo $this->displayProductInfoList($product, 'm-contract'); ?>					
+			<?php  // echo $this->displayBrandLogo($product);?>
+			<p class='tag-list'><?php echo $this->buildTagLinks($title); ?></p>
+			</div>	
+		</div>
+		<?php $this->title = $urlTitle ;
+			  echo $this->render('Search/partials/product-links.phtml') ;
+			  if($product['image_large_url']){
+				printf("<img src='%s' class='large' style='display:none;z-index:99999'/>", $product['image_large_url']);
+			  }			
+		?>	
+	</div>

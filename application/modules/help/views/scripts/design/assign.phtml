@@ -1,0 +1,55 @@
+ <div id="field-edit-div" title="<?php echo $this->title; ?> - Fields">
+ 
+	<form id="field-form" name="field-form" method="post" action="<?php echo $this->formAction; ?>"> 
+	      
+		 <table width="100%"  border="0" cellpadding="0" cellspacing="0" class="layout-table ui-jqgrid-btable ui-jqgrid ui-corner-all">
+			<tbody>
+
+			<tr valign="top" class="ui-widget-content ui-row-ltr"><td>
+			<input type="hidden" name="mt" value="<?php echo time(); ?>" />
+		<?php       
+	
+		        echo new Zend_Form_Element_MultiCheckbox('help_field_id', array(
+		            'label'      	=> 'Add Fields - Mandatory fields appear disabled',
+		            'required'   	=> true,
+		            'order'		 	=> 7,
+		            'class'			=> 'field_select',
+		            'multiOptions'  => Rhema_Util::getEditOptions($this->table,'help_field_id','id','label'), // TODO format has changed
+		            'decorators'    => array(
+									        'ViewHelper',
+									        'Errors',
+									        array(array('data' => 'HtmlTag'), array('tag' => 'div', 'class' => 'elm-multicheck')),
+									        array('Label', array('tag' => 'label', 'class' => 'elm-label') 
+									    )),
+					 'value'		=> $this->selectedFields
+		        ));	
+		
+				 echo new Zend_Form_Element_Hidden('help_template_id', array(
+		            'value'         => $this->templateId,	
+		            'decorators'    => array() ,  
+		            'order'		 	=> 10        
+		        ));	
+		        	 	        
+		         echo new Zend_Form_Element_Hidden('oper', array(
+		            'value'         => 'addFields',
+		            'decorators'    => array(),
+		        ));		
+		
+		?>
+			</td></tr>
+			<tr valign="top" class="ui-widget-content ui-row-ltr"><td>
+		<?php  	
+		         echo new Zend_Form_Element_Multiselect('help_boiler_plate_id', array(
+		            'label'      	=> 'Boiler Plates',	            
+		            'order'		 	=> 15,
+		            'decorators'    => $this->divLabelSpan,
+		            'class'			=> 'multiselect',
+		            'value'			=> $this->usedPlates,
+		            'style'			=> 'width:470px; height:200px; margin:5px auto',
+		            'multiOptions'  => Rhema_Util::getEditOptions($this->table,'help_boiler_plate_id')
+		        ));		        	        
+		?>
+			</td></tr>			
+		    </table>
+		</form>		
+   </div>

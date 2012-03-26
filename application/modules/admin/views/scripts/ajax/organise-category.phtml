@@ -1,0 +1,85 @@
+<style>
+<!--
+.drag-active{
+background-color:#ffffea !important;
+cursor: pointer;
+border-width:4px !important;
+}
+-->
+</style>
+<div id="organise-menu"> 
+ <?php
+    $minDepth  = $this->minimumDepth ? $this->minimumDepth : 0 ; 	
+    $filter    = new Rhema_Filter_FormatCssClassName();
+    $cacheData = Admin_Model_AffiliateProduct::getProductStatList();
+    $category  = $cacheData['categoryTree'];
+  //pd($category);      
+	foreach($this->roots as $rootData){ 
+		$options   = array('root_id' => $rootData['id']) ;
+		$dto       = $this->menuObj->getMenuTree($options, $this->menuObj->getModel());
+		$container = $dto->getContainer();
+		$children  = $container->hasChildren() ? $container->getChildren() : array();
+		$cont      = new Zend_Navigation();
+		
+		foreach($children as $child){ 
+			if(count($child)){ 								
+				$data  = $child->toArray(); 
+				$id    = $data['id'];
+				$count = isset($category[$id]['parent']['count'])? number_format($category[$id]['parent']['count']) : 0 ;
+				$show  = $count ? true : false ;  
+				$child->setVisible($show); ?> 			 
+				<div id="organise_<?php echo $filter->filter($data['title']); ?>" class="menu-tree ui-corner-all"> 
+				<ul><li><?php echo $data['title'] . " ({$count})";?>
+				  <?php 
+					echo $this->navigation()->menu() 
+							  ->renderMenu($child); ?>			       		  	 
+	   			</li></ul></div>  <?php 
+			}else{
+				$obj = clone $child;
+				$cont->addPage($obj);
+			}
+		}
+		
+		if(count($cont)){?>
+			<div id="organise_childless" class="menu-tree ui-corner-all"> 
+			<ul><li> *** Childless ***
+				<?php echo $this->navigation()->menu()->renderMenu($cont);?>
+			</li></ul></div><?php
+		}
+ 	}
+	 
+	if($this->rogueMenus){ ?> 		
+		<div id="organise_orphan" class="menu-tree ui-corner-all"><?php 
+		echo $this->navigation()->menu()->renderMenu($this->rogueMenus); ?>			       		  	 
+	  	</div>
+<?php
+	}
+	$this->inlineScript()->setScript('
+ 		jQuery(function () { 
+ 			rms.setupMenuTree(\'div[id^="organise_"]\'); 
+ 			jQuery("#organise-menu").sortable({ 
+ 				items     : ".menu-tree",
+ 				disabled  : true,
+ 			}); 
+ 			
+ 			jQuery(".menu-tree", "#organise-menu").bind("dblclick", function(){
+ 				var elm = jQuery(this);
+ 				var obj = jQuery("#organise-menu");
+ 				var dis = obj.sortable("option", "disabled");
+ 				if(dis == true){
+ 					elm.addClass("drag-active");
+ 					obj.sortable("option", "disabled", false);
+ 				}else{
+ 					elm.removeClass("drag-active");
+ 					obj.sortable("option", "disabled", true);
+ 				}
+ 			});
+ 		}); 
+ 	');
+	echo $this->inlineScript();
+	?>
+ 
+ </div>
+
+
+

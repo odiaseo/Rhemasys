@@ -1,0 +1,43 @@
+<?php
+	$this->includeJs('jquery-raty/js/jquery.raty.min.js', Rhema_Constant::APPEND, false);
+?>
+<h1>Reviews & Comments</h1>
+<div id="comments" class="hreview">
+<?php
+		$pageCount = count($this->paginator);
+		foreach($this->paginator as $items){
+			$author    = $items['User'];
+			$timeStamp = strtotime($items['created_at']);
+			$date      = new Zend_Date($timeStamp, Zend_Date::TIMESTAMP);
+			$display   = ' - ' . $date->toString("dSS  MMM Y");
+			$user      =  ucwords(substr($author['firstname'],0,1)  . '. ' . $author['lastname']);
+		?>
+			<div class="comment">
+		    	<blockquote class="description"><p class="list-view"><?php echo ucfirst($items['comment']); ?> </p>
+			    	<div class="rating"><?php echo $items['rating']; ?></div>
+			    	<span class="author reviewer fn"><?php echo $user; ?>  
+			    	<abbr class="dtreviewed" title="<?php echo date('c',$timeStamp); ?>"><?php echo $display ; ?></abbr></span>
+		    	</blockquote>
+			</div>
+<?php	}
+		$imgPath = Rhema_SiteConfig::getBackendScriptsPath() . '/jquery-raty/img';
+		$this->collateScripts("jQuery('.rating','#comments').each(function(){
+				var r = jQuery(this);
+				var v = r.text()*1;
+				r.html('');
+				r.raty({
+					readOnly : true,
+					start    : v,
+					hintList : ['bad', 'poor', 'regular', 'good', 'excellent'],
+					path     : '{$imgPath}'
+				});
+			});");
+
+?>
+
+</div>
+<?php
+	if($pageCount >1){
+		echo $this->paginator ;
+	}
+?>

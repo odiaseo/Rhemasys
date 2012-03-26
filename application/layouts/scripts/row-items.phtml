@@ -1,0 +1,70 @@
+<?php
+	$this->cur = new Zend_Currency();
+	if($this->paginator instanceof Zend_Paginator){
+		$count     = $this->paginator->getCurrentItemCount();
+	}else{
+		$count    = count($this->paginator);
+	}
+	$perPage   = Rhema_SiteConfig::getConfig('settings.items_per_page');
+	$done      = false;
+	$this->showShareButtons = false;
+	$rowcount  = 0 ;
+	foreach($this->paginator as $product){ 
+		$this->usePromotionText = false ;
+		if(isset($product['doc']) and $product['doc']){				 
+			$prod = $product['doc'];  
+		}else{
+		 	$prod = $product;
+		}
+		
+		if(preg_match('/\b(code)\b\s?([a-z0-9]+)\b/i',$prod['network_promotion'], $matches)){
+			$repl = str_repeat('*', strlen($matches[2]));
+			$prod['network_promotion'] = trim(str_replace($matches[2], $repl, $prod['network_promotion']));
+			$prod['code']  = trim($matches[2]);
+			$this->usePromotionText = true;
+			$prod['affiliate_product_type_id'] = 1 ;
+		}
+		
+		$this->product = $this->populateAffiliateProduct($prod);		
+		$price         = floatval($this->product['price']) ? $this->product['price'] : '';
+		if($price){
+			$this->cur->setValue($price);
+			$this->displayPrice = $this->cur;
+		}else{
+			$this->displayPrice = '&nbsp;';
+		}
+		 
+		if(isset($this->product['code']) and $this->product['code']){
+			echo $this->render('Search/partials/voucher-code.phtml');
+		} else{		 
+			echo $this->render('Search/partials/mobile-row-item.phtml');
+		}
+
+		if(!$done){			 
+			echo $this->render('Google/partials/medium-banner.phtml'); 
+			$done = true;
+		}
+		
+		if($rowcount == 5 and isset($this->subList) and count($this->subList)){
+			echo '<ul class="sub-category">';
+			foreach($this->subList as $subCat){
+				$href      = $this->url(array('category' => $subCat['slug']), 'mobile-category', true);
+				printf("<li><a href='%s' title='%s'>%s (%s)</a></li>", $href, $subCat['title'], $subCat['title'], number_format($subCat['countid']));
+			}
+			echo '</ul>';			
+		}
+		$rowcount++ ;
+	}
+	
+	if($count < $perPage){
+		$remainder = $perPage - $count ;
+		$this->paginator = Rhema_Model_Service::factory('affiliate_product')->getTopProducts($remainder);
+		foreach($this->paginator as $product){ 
+			$this->product = $this->populateAffiliateProduct($product); 
+			if(isset($this->product['code']) and $this->product['code']){
+				echo $this->render('Search/partials/voucher-code.phtml');
+			}else{
+				echo $this->render('Search/partials/mobile-row-item.phtml');
+			}			
+		}
+	}

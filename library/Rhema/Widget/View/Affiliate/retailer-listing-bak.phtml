@@ -1,0 +1,25 @@
+<h1>Retailers with products, deals and discounts beginning with <strong><?php echo strtoupper($this->currentLetter); ?></strong></h1>
+<p>Find your  favourite retailer and grab a bargain!</p> 
+<?php echo $this->displayAlphaList('retailer',  $this->currentLetter); ?>
+<div id="retailer-list">
+	<?php 
+		foreach($this->byLetter as $item){
+			$id        = $item['id'];
+			if(isset($this->retailers[$id]) and $this->retailers[$id]['countid']){
+				$retailer  = $this->retailers[$id];
+				//pd($item, $retailer);
+				$href  = $this->url(array('retailer' => $retailer['slug']), 'affiliate-retailer', true);
+				$count = isset($retailer['countid']) and $retailer['countid'] 
+						 ? '('. number_format($retailer['countid']). ')' : '';
+				$logo  = $retailer['logo'] 
+						? "<a href='{$href}' title='{$retailer['title']}'><img src='{$retailer['logo']}' height='30' alt='{$retailer['title']}' 
+							 align='left' class='retailer-logo'/></a>"
+						: '';
+				$desc  = Rhema_Util_String::correctEncoding($retailer['description']);
+				$tags  = $this->buildTagLinks($retailer['keywords']);
+				printf("<div class='retailer-block'><h2><a href='%s' title='%s'>%s</a></h2><p>%s %s</p><p>%s</p></div>", 
+						$href, $retailer['title'], $retailer['title'], $logo, $desc, $tags);
+			}				
+		}
+	?>
+</div>

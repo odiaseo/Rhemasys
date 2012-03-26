@@ -1,0 +1,59 @@
+ 	<div id="shopping-cart">
+		<table width="100%" border="0" class="rounded">
+			<thead>
+				<th width="5%">&nbsp;</th>
+				<th width="5%">&nbsp;</th>
+				<th width="10%">Code</th>
+				<th>Title</th>
+				<th width="10%">Qty</th>
+				<th width="10%">&nbsp;</th>
+				<th width="10%">Delete</th>
+			</thead>
+			<tbody>
+				<?php
+					$i = 0;
+					foreach($this->element->getModel() as $item):
+					    $cls  = ($i%2) ? 'odd' : 'even';
+						$href = (isset($item->href) and $item->href)
+								? $item->href
+								: $this->url(array('slug' => $item->slug,'productId' => $item->productId), PRODUCT_ROUTE);
+						?>
+						<tr class="<?php echo $cls; ?>">
+							 <td><?php echo ++$i; ?></td>
+							 <td><a href="<?php echo $href; ?>" title="View product detail"><img src="<?php echo $item->thumb; ?>" border="0" alt="<?php echo $item->name; ?>" /></a></td>
+							 <td><?php echo $this->escape($item->code); ?></td>
+							 <td><a href="<?php echo $href; ?>" title="View product detail"><?php echo $this->escape($item->name); ?></a></td>
+							 <td align="right"><?php echo $this->element->qtys->getElement($item->productId)->getValue(); ?></td>
+							 <td align="right"><?php echo $this->cart()->formatAmount($item->getLineCost()); ?></td>
+							 <td align="right"><input type="checkbox" name="toDelete[<?php echo $item->productId?>]" value="1" /></td>
+						</tr>
+				<?php endforeach; ?>
+				</body>
+				<tfoot>
+				<tr>
+					<td colspan="5" align="right">SubTotal:</td>
+					<td align="right"><?php echo $this->cart()->formatAmount($this->element->getModel()->getSubTotal()); ?></td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td colspan="5" align="right">Shipping: <?php echo $this->element->getElement('shipping'); ?></td>
+					<td align="right"><?php echo $this->cart()->formatAmount($this->element->getModel()->getShippingCost()); ?></td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td colspan="5" align="right">Total:</td>
+					<td align="right"><?php echo $this->cart()->formatAmount($this->element->getModel()->getTotal()); ?></td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr class="last-row">
+					<td align="center" colspan="7">
+						<a class="curved-btn blue" onclick="javascript: history.back(1); return false;">back</a>
+						<a class="curved-btn blue" href="/" >continue shopping</a>
+						<?php echo $this->element->getElement('returnto'); ?>
+						<?php echo $this->element->getElement('update-cart');?>
+					</td>
+				</tr>
+			</tfoot>
+		</table>
+
+	</div>

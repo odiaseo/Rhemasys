@@ -1,0 +1,7 @@
+<?php
+echo new Zend_Form_Element_Checkbox(array(
+			'name'	=> 'disable-tab-cache',
+			'value'	=> 1,
+			'label'	=> 'Click here to (disable | enable) caching tab contents. Select to enable caching. De-select  to reload tab contents from the server' ,
+            'decorators' => Rhema_Form_Abstract::getElemDecor('tab-cache')
+		));

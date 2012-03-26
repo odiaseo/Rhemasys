@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tmx PUBLIC "-//LISA OSCAR:1998//DTD for Translation Memory eXchange//EN" "tmx14.dtd">
+<tmx version="1.4">
+  <header creationtool="self-generated" creationtoolversion="1.0.0" datatype="winres" o-tmf="abc" segtype="sentence"/>
+  <body>
+    <tu tuid="top">
+      <tuv xml:lang="en_GB">
+        <seg>Top</seg>
+      </tuv>
+    </tu>
+    <tu tuid="rhema-studio-photography">
+      <tuv xml:lang="en_GB">
+        <seg>Rhema Studio Photography</seg>
+      </tuv>
+    </tu>
+    <tu tuid="bottom">
+      <tuv xml:lang="en_GB">
+        <seg>Bottom</seg>
+      </tuv>
+    </tu>
+    <tu tuid="rhema-studio">
+      <tuv xml:lang="en_GB">
+        <seg>Rhema Studio</seg>
+      </tuv>
+    </tu>
+    <tu tuid="main">
+      <tuv xml:lang="en_GB">
+        <seg>Main</seg>
+      </tuv>
+    </tu>
+    <tu tuid="home">
+      <tuv xml:lang="en_GB">
+        <seg>Home</seg>
+      </tuv>
+    </tu>
+    <tu tuid="about-us">
+      <tuv xml:lang="en_GB">
+        <seg>About Us</seg>
+      </tuv>
+    </tu>
+    <tu tuid="contact-us">
+      <tuv xml:lang="en_GB">
+        <seg>Contact Us</seg>
+      </tuv>
+    </tu>
+    <tu tuid="login">
+      <tuv xml:lang="en_GB">
+        <seg>Login</seg>
+      </tuv>
+    </tu>
+    <tu tuid="logout">
+      <tuv xml:lang="en_GB">
+        <seg>Logout</seg>
+      </tuv>
+    </tu>
+    <tu tuid="portfolio">
+      <tuv xml:lang="en_GB">
+        <seg>Portfolio</seg>
+      </tuv>
+    </tu>
+    <tu tuid="access-denied">
+      <tuv xml:lang="en_GB">
+        <seg>Access Denied</seg>
+      </tuv>
+    </tu>
+    <tu tuid="event-photography">
+      <tuv xml:lang="en_GB">
+        <seg>Event Photography</seg>
+      </tuv>
+    </tu>
+    <tu tuid="photobook-design">
+      <tuv xml:lang="en_GB">
+        <seg>Photobook Design</seg>
+      </tuv>
+    </tu>
+    <tu tuid="content-management">
+      <tuv xml:lang="en_GB">
+        <seg>Content Management</seg>
+      </tuv>
+    </tu>
+    <tu tuid="our-services">
+      <tuv xml:lang="en_GB">
+        <seg>Our Services</seg>
+      </tuv>
+    </tu>
+    <tu tuid="web-support">
+      <tuv xml:lang="en_GB">
+        <seg>Web Support</seg>
+      </tuv>
+    </tu>
+    <tu tuid="web-hosting">
+      <tuv xml:lang="en_GB">
+        <seg>Web Hosting</seg>
+      </tuv>
+    </tu>
+    <tu tuid="blog">
+      <tuv xml:lang="en_GB">
+        <seg>Blog</seg>
+      </tuv>
+    </tu>
+    <tu tuid="privacy-policy">
+      <tuv xml:lang="en_GB">
+        <seg>Privacy Policy</seg>
+      </tuv>
+    </tu>
+    <tu tuid="services">
+      <tuv xml:lang="en_GB">
+        <seg>Services</seg>
+      </tuv>
+    </tu>
+    <tu tuid="wedding-photography">
+      <tuv xml:lang="en_GB">
+        <seg>Wedding Photography</seg>
+      </tuv>
+    </tu>
+    <tu tuid="gifts-and-keepsakes">
+      <tuv xml:lang="en_GB">
+        <seg>Gifts and Keepsakes</seg>
+      </tuv>
+    </tu>
+    <tu tuid="photobook-preview">
+      <tuv xml:lang="en_GB">
+        <seg>Photobook Preview</seg>
+      </tuv>
+    </tu>
+    <tu tuid="reviews">
+      <tuv xml:lang="en_GB">
+        <seg>Reviews</seg>
+      </tuv>
+    </tu>
+    <tu tuid="shopping-cart">
+      <tuv xml:lang="en_GB">
+        <seg>Shopping Cart</seg>
+      </tuv>
+    </tu>
+    <tu tuid="order-confirmation">
+      <tuv xml:lang="en_GB">
+        <seg>Order Confirmation</seg>
+      </tuv>
+    </tu>
+    <tu tuid="search">
+      <tuv xml:lang="en_GB">
+        <seg>Search</seg>
+      </tuv>
+    </tu>
+    <tu tuid="gift-ideas">
+      <tuv xml:lang="en_GB">
+        <seg>Gift Ideas</seg>
+      </tuv>
+    </tu>
+    <tu tuid="offer-detail">
+      <tuv xml:lang="en_GB">
+        <seg>Offer Detail</seg>
+      </tuv>
+    </tu>
+    <tu tuid="decorations">
+      <tuv xml:lang="en_GB">
+        <seg>Decorations</seg>
+      </tuv>
+    </tu>
+    <tu tuid="flowers">
+      <tuv xml:lang="en_GB">
+        <seg>Flowers</seg>
+      </tuv>
+    </tu>
+    <tu tuid="cameras">
+      <tuv xml:lang="en_GB">
+        <seg>Cameras</seg>
+      </tuv>
+    </tu>
+    <tu tuid="clothing">
+      <tuv xml:lang="en_GB">
+        <seg>Clothing</seg>
+      </tuv>
+    </tu>
+    <tu tuid="affiliate-category">
+      <tuv xml:lang="en_GB">
+        <seg>Affiliate Category</seg>
+      </tuv>
+    </tu>
+    <tu tuid="affiliate-brand">
+      <tuv xml:lang="en_GB">
+        <seg>Affiliate Brand</seg>
+      </tuv>
+    </tu>
+  </body>
+</tmx>

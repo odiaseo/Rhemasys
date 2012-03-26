@@ -1,0 +1,33 @@
+ 
+	<div id="affilate-setup" class="full-width"> 
+		 	<div id="page-tabs"> 
+				<ul>
+						<li><a href="#tabs-1">Product Feeds</a></li> 
+						<li><a href="<?php $param['table']    = 'affiliate_network';  
+											echo $this->url($param, 'grid-index'); 
+								     ?>">Affiliate Networks</a></li>						
+						<li><a href="<?php $param['table']    = 'affiliate_feed_type';  
+											echo $this->url($param, 'grid-index'); 
+								     ?>">Feed Type</a></li>	 
+						<li><a href="<?php $param['table'] = 'affiliate_featured_category'; 
+										echo $this->url($param, 'grid-index');  
+								?>">Featured Categories</a></li> 
+						<li><a href="<?php $param['table']    = 'affiliate_banner';  
+										echo $this->url($param, 'grid-index'); 
+							     ?>">Banners</a></li>	
+						<li><a href="<?php $param['table']    = 'slide';  
+										echo $this->url($param, 'grid-index'); 
+							     ?>">Slides</a></li>	
+						<li><a href="<?php $param['table']    = 'slide_retailer';  
+										echo $this->url($param, 'grid-index'); 
+							     ?>">Slide Retailers</a></li>
+						<li><a href="<?php $param['table']    = 'slide_category';  
+										echo $this->url($param, 'grid-index'); 
+							     ?>">Slide Category</a></li>								     							     						     
+					    <li><a href="#field-mapping">Help</a></li>						 
+				</ul>
+				<div id="tabs-1">
+		 			<?php echo $this->gridData; ?>
+		 		</div> 
+		 	</div>
+	</div>

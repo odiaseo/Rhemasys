@@ -1,0 +1,8 @@
+ 
+<form method="post" id="form_<?php echo $this->gridId; ?>" action="<?php echo $this->url(); ?>" class="access-form">
+	<input type="hidden" name="root_id" value="<?php echo $this->rootId; ?>" id="rootId" />
+	<?php echo $this->gridData; 
+		  echo $this->jQuery()->setRenderMode(ZendX_jQuery::RENDER_JQUERY_ON_LOAD); 
+	?>
+</form>
+ 

@@ -1,0 +1,23 @@
+ <?php
+      $param	 = array('module'=>'admin','controller'=>'grid','action'=>'index','width'=>870); ?>
+
+			 <div id="page-tabs"  class="full-width">
+				<ul>
+						<li><a href="#tabs-1">Templates</a></li>
+						<li><a href="<?php $table = ADMIN_PREFIX . 'AdminSection' ;
+											echo $this->url(array('table' => $table), 'grid-index');
+								?>" title="Template Sections">Sections</a>
+						</li>
+						<li><a href="<?php $param['table'] = ADMIN_PREFIX . 'AdminElement' ;
+											echo $this->url($param, ADMIN_ROUTE);
+								?>" title="Elements">Elements</a>
+						</li>
+						<li><a href="<?php echo $this->url(array('id' => 1), HELP_ROUTE); ?>">Help</a></li>
+				</ul>
+
+				<div id="tabs-1" class="div-content">
+	 				<?php echo $this->gridData; ?>
+	  			</div>
+		     </div>
+
+

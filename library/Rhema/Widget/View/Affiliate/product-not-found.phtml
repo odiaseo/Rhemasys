@@ -1,0 +1,34 @@
+
+<h2>Product Search</h2>
+<p>The product you searched for is no longer available. However we have listed similar deals, discounts
+and sale products having the following keywords: <strong><?php echo $this->title;?></strong>.</p>
+<?php 
+	if($this->paginator instanceof Zend_Paginator) {
+		$pager = (string) 	$this->paginator ; 
+	}else{
+		$pager = '';
+	}
+	
+	echo $pager ;
+?>
+
+<div>
+<?php 
+	foreach($this->paginator as $item){ 	
+		$item = isset($item['doc']) ? $item['doc'] : $item;		
+		$price = floatval($item['price']) ? $item['price'] : $item['handset_price'];	 
+		if($price){
+			$this->cur->setValue($price);
+			$this->displayPrice = $this->cur;
+		}else{
+			$this->displayPrice = '&nbsp;';
+		}
+	 
+		$this->product = $this->populateAffiliateProduct($item);
+		 echo $this->render('Search/partials/mobile-row-item.phtml'); 
+	}
+	?>
+</div>
+
+<?php echo $pager ; ?>
+ 

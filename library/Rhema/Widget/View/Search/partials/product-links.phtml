@@ -1,0 +1,53 @@
+<?php 		
+	if('all-promotions' == $this->route  or 'affiliate-promotion' == $this->route){
+		$detailLink    = $this->url(array( 'title'	=> $this->title, 'id'	=> $this->product['id'] ),'affiliate-promotion', true,  false);
+	}else{
+		$detailLink    = $this->url(array( 'title'	=> $this->title, 'id'	=> $this->product['id'] ),'affiliate-product-detail', true,  false);
+	} 
+	if($this->product['AffiliateProductCategory']){
+		$this->categoryLink  =  $this->url(array('category' =>$this->product['AffiliateProductCategory']['slug']),'mobile-category', true);   	
+	}else{
+		$this->categoryLink = '' ;
+	}
+ 
+	if(isset($this->product['AffiliateRetailer']['title'])){
+		$href = $this->url(array('retailer' => $this->product['AffiliateRetailer']['slug']), 'affiliate-retailer', true) ;		  
+	}else{
+		$href = $detailLink  ;
+	} ?>
+			
+	<div class="row-links">			  
+			<a href="<?php  echo $detailLink; ?>" class="view-more" title="<?php echo $this->product['title']; ?>"><?php echo $this->translate('More info'); ?></a> |
+		<?php if($this->categoryLink){  ?>
+			<a href="<?php echo $this->categoryLink ; ?>" class='similar-retailer' title="<?php echo $this->product['AffiliateProductCategory']['title']; ?>"> 
+			 <?php echo $this->product['AffiliateProductCategory']['title']; ?></a> |
+		<?php } 
+		
+		   if(isset($this->product['AffiliateRetailer']['title'])){?>			 
+			 <a href="<?php echo $href; ?>" class='similar-retailer' title="<?php echo $this->translate('Other  products and offers by') ,' ' , $this->product['AffiliateRetailer']['title']; ?>">
+				 <?php echo $this->product['AffiliateRetailer']['title'], ' ' , $this->translate('offers'); ?></a> 	 
+		<?php }
+			if($this->showShareButtons){?>		    
+				<div class="prod-share addthis_toolbox addthis_default" addthis:url="<?php echo $detailLink; ?>">
+			        <a class="addthis_button_email"></a>
+			        <a class="addthis_button_markme"></a>
+			        <a class="addthis_button_delicious"></a>
+			        <a class="addthis_button_facebook_like" fb:like:layout="button_count" fb:like:action="recommend"></a>
+			    </div> 
+<?php 	   }	
+
+		if(!$this->viewAdult and $this->product['AffiliateProductCategory']['is_adult']){	
+			printf(" | <a href='%s' title='Disable adult filter' class='adult-filter'>Disable Adult Filter</a>", '#');
+		}
+		$discountDealsTrans = $this->translate('Discounts & Deals');
+		if(isset($this->product['AffiliateRetailer']['title']) and isset($this->product['AffiliateRetailer']['slug'])){	 ?>	
+			<div class="retailer-discounts" title="<?php echo $this->product['AffiliateRetailer']['title'], ' ', $discountDealsTrans; ?>" style="display:none; float:right; padding:0px">
+				<a class="<?php echo $this->product['AffiliateRetailer']['slug']; ?>" href="<?php echo $this->url(array('slug' => $this->product['AffiliateRetailer']['slug']), 'retailer-discounts'); ?>" 
+				  retailerid="<?php echo $this->product['AffiliateRetailer']['id']; ?>"  title="<?php echo $this->product['AffiliateRetailer']['title'], ' - ', 
+						$this->translate('Get exclusive discounts and deals - Opens in a pop-up window'); ?>"><?php echo $discountDealsTrans; ?></a>
+			</div>
+  <?php }else{
+  		   $url = $this->url();
+  		   $this->logger->debug("\nURL = $url \nNo retailer title and/or slug found for retailer Id : \n" . $this->product['affiliate_retailer_id']);
+        } ?>
+</div>

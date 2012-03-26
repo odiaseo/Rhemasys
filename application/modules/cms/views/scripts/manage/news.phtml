@@ -1,0 +1,18 @@
+  
+	<?php $param = array('module' => 'admin', 'controller' => 'grid', 'action' => 'index' ); ?> 
+	
+	<div id="manage-events" class="full-width"> 
+		 	<div id="page-tabs"> 
+				<ul>
+						<li><a href="#news">News</a>
+						</li> 
+						<li><a href="<?php $param['table']    =  MODEL_PREFIX . 'NewsCategory';  
+											echo $this->url($param, ADMIN_ROUTE); 
+								     ?>">News Category</a>
+						</li> 
+				       <li><a href="<?php echo $this->url(array('id' => 1), HELP_ROUTE); ?>">Help</a></li>
+				</ul>
+				<div id="news"> <?php echo $this->gridData; ?> </div> 
+		 	</div>
+	</div>
+

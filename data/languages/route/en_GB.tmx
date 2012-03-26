@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tmx PUBLIC "-//LISA OSCAR:1998//DTD for Translation Memory eXchange//EN" "tmx14.dtd">
+<tmx version="1.4">
+  <header creationtool="self-generated" creationtoolversion="1.0.0" datatype="winres" o-tmf="abc" segtype="sentence"/>
+  <body>
+    <tu tuid="product-feed">
+      <tuv xml:lang="en_GB">
+        <seg>product-feed</seg>
+      </tuv>
+    </tu>
+    <tu tuid="deal-offer-category">
+      <tuv xml:lang="en_GB">
+        <seg>deal-offer-category</seg>
+      </tuv>
+    </tu>
+    <tu tuid="deal-offer-retailer">
+      <tuv xml:lang="en_GB">
+        <seg>deal-offer-retailer</seg>
+      </tuv>
+    </tu>
+    <tu tuid="category">
+      <tuv xml:lang="en_GB">
+        <seg>category</seg>
+      </tuv>
+    </tu>
+    <tu tuid="brand">
+      <tuv xml:lang="en_GB">
+        <seg>brand</seg>
+      </tuv>
+    </tu>
+    <tu tuid="deal-offer-brand">
+      <tuv xml:lang="en_GB">
+        <seg>deal-offer-brand</seg>
+      </tuv>
+    </tu>
+    <tu tuid="all-discount-deals-offers">
+      <tuv xml:lang="en_GB">
+        <seg>all-discount-deals-offers</seg>
+      </tuv>
+    </tu>
+    <tu tuid="retailer">
+      <tuv xml:lang="en_GB">
+        <seg>retailer</seg>
+      </tuv>
+    </tu>
+    <tu tuid="manufacturer">
+      <tuv xml:lang="en_GB">
+        <seg>manufacturer</seg>
+      </tuv>
+    </tu>
+    <tu tuid="deal-search">
+      <tuv xml:lang="en_GB">
+        <seg>deal-search</seg>
+      </tuv>
+    </tu>
+    <tu tuid="offer-outlink">
+      <tuv xml:lang="en_GB">
+        <seg>offer-outlink</seg>
+      </tuv>
+    </tu>
+    <tu tuid="discounts">
+      <tuv xml:lang="en_GB">
+        <seg>discounts</seg>
+      </tuv>
+    </tu>
+    <tu tuid="offer-detail">
+      <tuv xml:lang="en_GB">
+        <seg>offer-detail</seg>
+      </tuv>
+    </tu>
+    <tu tuid="portfolio">
+      <tuv xml:lang="en_GB">
+        <seg>portfolio</seg>
+      </tuv>
+    </tu>
+    <tu tuid="photobook-album">
+      <tuv xml:lang="en_GB">
+        <seg>photobook-album</seg>
+      </tuv>
+    </tu>
+    <tu tuid="preview">
+      <tuv xml:lang="en_GB">
+        <seg>preview</seg>
+      </tuv>
+    </tu>
+    <tu tuid="logout">
+      <tuv xml:lang="en_GB">
+        <seg>logout</seg>
+      </tuv>
+    </tu>
+  </body>
+</tmx>

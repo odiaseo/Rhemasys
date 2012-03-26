@@ -1,0 +1,25 @@
+<?php 
+	$product = (array) $this->product;
+ 
+?>	
+	<div class="mobile-prod-listing rounded">
+	<a id="prod_<?php echo $product['id'] ;?>" href="<?php  echo $product['deeplink'] ?>" class="outlink" rel="nofollow" target="_blank" title="<?php echo $product['title']; ?>"><h2><?php echo $product['title']; ?></h2>
+		<img src="<?php echo $product['image_url']; ?>" height="120" alt="<?php echo $product['title']; ?>" />
+		<span class="product-price"><?php echo $this->displayPrice; ?></span>
+		<span class="<?php echo $this->class?> rounded prod-btn"><?php echo $this->text; ?></span>
+	</a>
+	<a href="<?php  echo $product['deeplink'] ?>" class="view-more" title="View more details - <?php echo $product['title']; ?>">View Details</a>
+	 
+	<p><ul>
+		<?php foreach($product as $field => $v){
+			if($v){
+				echo "<li>$field : $v </li>";
+			}
+		}?>
+	 </ul></p>
+<?php if($this->retailer){?>
+		<a href="<?php echo $this->retailerLink ; ?>" class="similar-retailer" title="View other products from <?php echo $product['AffiliateProductCategory']['title']; ?>"><?php echo $product['AffiliateProductCategory']['title']; ?></a>
+<?php }else{ ?>
+		<a target="_blank" href="<?php echo $this->retailerLink; ?>" class="similar-retailer" title="View other products from <?php echo $product['AffiliateRetailer']['title']; ?>"><?php echo $product['AffiliateRetailer']['title']; ?></a>
+<?php }?>
+	</div>

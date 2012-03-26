@@ -1,0 +1,11 @@
+
+	<div id="prod-tabs" class="full-width"> 
+		<ul>
+				<li><a href="#template"><?php echo $this->caption; ?></a></li> 		
+				<li><a href="<?php $param['table'] = 'ecom_display_type'; 
+										echo $this->url($param, 'grid-index');  
+								?>">Display Type</a></li> 		
+				<li><a href="<?php echo $this->url(array('id' => 2), HELP_ROUTE); ?>">Help</a></li>	
+		</ul>
+		<div id="template"><?php echo $this->gridData; ?></div>
+	</div>

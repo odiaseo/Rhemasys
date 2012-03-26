@@ -1,0 +1,379 @@
+EcomBrand:
+  tableName: ecom_brand
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+    description:
+      type: string(255)
+    image_file:
+      type: string(45)
+EcomTax:
+  tableName: ecom_tax
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+    description:
+      type: string(255)
+    rate:
+      type: decimal(18)
+      default: 0
+EcomCategory:
+  actAs:
+    Sluggable:
+      unique: true
+      fields: title
+  tableName: ecom_category
+  columns:
+    title:
+      type: string(45)
+    code:
+      type: string(45)
+      unique: true
+    description:
+      type: string(255)
+    image_file:
+      type: string(45)
+    ecom_tax_id:
+      type: integer(4)
+  relations:
+    EcomTax:
+      foreignType: one
+EcomNavigationMenu:
+  tableName: ecom_navigation_menu
+  actAs:
+    NestedSet:
+      hasManyRoots: true
+      rootColumnName: root_id
+    Rhema_Model_Template_Subsite:
+  inheritance:
+    extends: AdminMenu
+    type: concrete
+  columns:
+    ecom_category_id:
+      type: integer(4)
+  relations:
+    EcomCategory:
+      foreignType: one
+EcomProduct:
+  tableName: ecom_product
+  actAs:
+    Rhema_Model_Template_Subsite:
+    Sluggable:
+      unique: true
+      fields: title
+      canUpdate: true
+  checks:
+    price_check: price < rrp
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+    description:
+      type: string(255)
+    code:
+      type: string(45)
+      unique: true
+    ecom_brand_id:
+      type: string(45)
+      default: null
+    image_file:
+      type: string(255)
+    price:
+      type: float
+      default: '0.00'
+    discount_percent:
+      type: float
+      default: '0.00'
+    rrp:
+      type: float
+      default: '0.00'
+    quantity:
+      type: integer(8)
+      default: 1
+    is_enabled:
+      type: integer(1)
+      default: 1
+    is_taxable:
+      type: integer(1)
+      default: 1
+    is_virtual:
+      type: integer(1)
+      default: 0
+    ecom_tax_id:
+      type: integer(4)
+  relations:
+    EcomBrand:
+      foreignType: one
+    EcomTax:
+      foreignType: one
+    EcomCategory:
+      foreignAlias: Products
+      class: EcomCategory
+      refClass: EcomProductCategory
+EcomProductCategory:
+  tableName: ecom_product_category
+  columns: 
+    ecom_product_id:
+      type: integer(4)
+    ecom_category_id:
+      type: integer(4)
+  relations:
+    EcomProduct:
+      foreignAlias: ProductCategory
+    EcomCategory:
+      foreignAlias: ProductCategory
+EcomDeliveryMethod:
+  tableName: ecom_delivery_method
+  columns:
+    title:
+      type: string(45)
+    description:
+      type: string(255)
+    cost:
+      type: decimal(18)
+    image_file:
+      type: string(45)
+EcomPaymentMethod:
+  tableName: ecom_payment_method
+  columns:
+    title:
+      type: string(45)
+    description:
+      type: string(255)
+    image_file:
+      type: string(45) 
+    sequence:
+      type: integer(4)
+EcomAttribute:
+  tableName: ecom_attribute
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+      unique: true
+    description:
+      type: string(255)
+    label:
+      type: string(45)
+    template:
+      type: string(255)
+    placeholder:
+      type: string(45)
+      notnull: true
+      unique: true
+    is_labeled:
+      type: integer(1)
+      default: 1
+    is_product:
+      type: integer(1)
+      default: 1 
+    is_tab:
+      type: integer(1)
+      default: 0
+EcomDisplayType:
+  tableName: ecom_display_type
+  actAs:
+    Rhema_Model_Template_Subsite:
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+      unique: true
+    description:
+      type: string(255)
+EcomDisplayTemplate:
+  tableName: ecom_display_template
+  actAs:
+    Rhema_Model_Template_Subsite:
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+      unique: true
+    description:
+      type: string(255)
+    is_default:
+      type: integer(1)
+      default: 0	  
+    ecom_display_type_id:
+      type: integer(4)
+      notnull: true	  
+    note:
+      type: string(255)
+  relations:
+    EcomDisplayType:
+      foreignType: one
+    EcomAttribute:
+      foreignAlias: DisplayTemplate
+      class: EcomAttribute
+      refClass: EcomTemplateAttribute
+EcomTemplateAttribute:
+  tableName: ecom_template_attribute
+  actAs:
+    Rhema_Model_Template_Subsite:
+    SoftDelete:
+  columns:
+    ecom_attribute_id:
+      type: integer(4)
+    ecom_display_template_id:
+      type: integer(4)
+    label:
+      type: string(45)   	  
+    sequence:
+      type: integer(4)
+  relations:
+    EcomAttribute:
+      foreignAlias: TemplateAttributes
+    EcomDisplayTemplate:
+      foreignAlias: TemplateAttributes  
+EcomPersLayout:
+  tableName: ecom_pers_layout
+  actAs:
+    Rhema_Model_Template_Subsite:
+    SoftDelete:
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+      unique: true
+    description:
+      type: string(255)
+    ecom_category_id:
+      type: integer(4)
+      default: 0	  
+    ecom_pers_item_id:
+      type: integer(4)  
+    cols:
+      type: integer(4)
+    rows:
+      type: integer(4)
+    dpi:
+      type: integer(4)
+    overlays:
+      type: integer(4)
+    height:
+      type: decimal(18)
+    width:
+      type: decimal(18)
+    margintop:
+      type: decimal(18)
+    marginright:
+      type: decimal(18) 
+    marginbottom: 
+      type: decimal(18)
+    marginleft:
+      type: decimal(18)
+  relations:
+    EcomCategory:
+      foreignType: one
+    EcomPersItem:
+      foreignType: one
+EcomOrderDetail:
+  tableName: ecom_order_detail
+  actAs:
+    Rhema_Model_Template_Subsite:  
+  columns:    
+    title:
+      type: string(45)
+    description:
+      type: string(255)
+    code: string(45)
+    image_file: string(150)
+    image_download: string(150)
+    is_virtual:
+      type : integer(1)
+      default: 0
+    payment_method:
+      type: string(55)
+    gift_message:
+      type: string(255)
+    ecom_order_id:
+      type: integer(4)
+    ecom_product_id:
+      type: integer(4)
+      default: 0
+    price:
+      type: decimal()
+      default: 0
+    discount:
+      type: decimal()
+      default: 0
+    tax:
+      type: decimal()
+      default: 0
+    quantity:
+      type: integer(4)
+      default: 1
+  relations:
+    EcomOrder:
+      foreignAlias: EcomOrder
+    EcomProduct:
+      foreignAlias: OrderProduct
+EcomOrder: 
+  tableName: ecom_order
+  actAs:
+    Rhema_Model_Template_Subsite:
+    SoftDelete:
+    Blameable:
+  columns:   
+    title:
+      type: string(45)
+    first_name: string(45)
+    last_name: string(45)
+    payer_email: 
+      type: string(150)
+      email: true
+      default: ''
+    mc_gross: string(45)
+    invoice: string(45)
+    protection_eligibility: string(45)
+    address_name: string(45)
+    address_street: string(150)
+    address_city: string(45)
+    address_status: string(45)
+    address_state: string(45)
+    address_zip: string(45)
+    address_country: string(45)
+    residence_country: string(10)
+    address_country_code: string(45)
+    payer: string(45) 
+    tax: string(45)
+    payment_date: string(45)
+    payment_status: string(45) 
+    notify_version: string(45)
+    custom: string(45) 
+    payer_status: string(45)
+    business: string(150)
+    quantity: integer(8)
+    verify_sign: string(255)
+    txn: string(45)
+    payment_type: string(45)
+    receiver_email: 
+      type: string(150)
+      email: true
+      default: ''
+    receiver: string(45)
+    pending_reason: string(45)
+    txn_type: string(45)
+    item_name: string(150)
+    mc_currency: string(10)
+    item_number: string(45) 
+    test_ipn: string(45)
+    transaction_subject: string(150)
+    handling_amount: string(45)
+    payment_gross: string(45) 
+    shipping: string(45) 
+    user_id: integer(8)
+    is_virtual: 
+      type: integer(1)
+      default : 0
+    download : string(150)
+  relations:
+    User:
+      foreignAlias: User
+    EcomOrderDetail:
+      foreignAlias: EcomOrder
+      class: EcomProduct
+      refClass: EcomOrderDetail

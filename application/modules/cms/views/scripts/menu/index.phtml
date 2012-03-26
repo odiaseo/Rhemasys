@@ -1,0 +1,20 @@
+  		<div class="full-width"> 
+			<input type="hidden" id="root_type" value="<?php echo $this->rootType ; ?>" />
+			<input type="hidden" id="root_id" value="<?php echo $this->root_id ; ?>" />
+			<input type="hidden" id="menu-url" value="<?php echo $this->menuUrl; ?>" />
+			 <div id="menu-tabs"> 
+				<ul>
+				<?php 
+					$param = array('module'=>'cms','controller'=>'menu','action'=>'index',
+							'rootType'=>$this->rootType,'table'=>$this->currentTable); 
+					 	
+					foreach($this->dto->getRoots() as $index => $rootData){ ?>
+						<li><a href="<?php $param['root_id'] =  $rootData['id'];
+										echo $this->url($param,ADMIN_ROUTE);  
+								?>"><?php echo $rootData['label']; ?></a></li>
+					<?php } ?>
+					
+				</ul>
+				
+			  </div>
+	   </div>

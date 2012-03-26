@@ -1,0 +1,50 @@
+
+	<div style="padding: 8px">
+		<table width="100%" border="1">
+			<thead>
+				<th width="5%">&nbsp;</th>
+				<th width="5%">&nbsp;</th>
+				<th width="10%">Code</th>
+				<th>Title</th>
+				<th width="15%">Qty</th>
+				<th width="15%">&nbsp;</th>
+			</thead>
+			<tbody>
+				<?php
+					$i = 0;
+					foreach($this->element->getModel() as $item): 
+						$href = $this->url(array('slug' => $item->slug,'product_id' => $item->productId), PRODUCT_ROUTE); 
+						?>
+						<tr>
+							 <td><?php echo ++$i; ?></td>
+							 <td><a href="<?php echo $href; ?>" title="View product detail"><img src="<?php echo $item->thumb; ?>" border="0" alt="<?php echo $item->name; ?>" /></a></td>
+							 <td><?php echo $this->escape($item->code); ?></td>
+							 <td><a href="<?php echo $href; ?>" title="View product detail"><?php echo $this->escape($item->name); ?></a></td>
+							 <td align="right"><?php echo $this->element->qtys->getElement($item->productId); ?></td>
+							 <td align="right"><?php echo $this->Cart()->formatAmount($item->getLineCost()); ?></td>
+						</tr>
+				<?php endforeach; ?>
+				<tr>
+					<td colspan="5" align="right">SubTotal:</td>
+					<td align="right"><?php echo $this->Cart()->formatAmount($this->element->getModel()->getSubTotal()); ?></td>
+				</tr>
+				<tr>
+					<td colspan="5" align="right">Shipping: <?php echo $this->element->getElement('shipping'); ?></td>
+					<td align="right"><?php echo $this->Cart()->formatAmount($this->element->getModel()->getShippingCost()); ?></td>
+				</tr>
+				<tr>
+					<td colspan="5" align="right">Total:</td>
+					<td align="right"><?php echo $this->Cart()->formatAmount($this->element->getModel()->getTotal()); ?></td>
+				</tr>
+				<tr> 
+					<td align="center" colspan="6">
+						<a href="" class="curved_btn">back</a>
+						<a href="" class="curved_btn">continue shopping</a>	
+						<?php echo $this->element->getElement('returnto'); ?>					
+						<?php echo $this->element->getElement('update-cart'); ?>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		
+	</div>

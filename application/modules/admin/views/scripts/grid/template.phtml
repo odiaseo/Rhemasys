@@ -1,0 +1,23 @@
+  
+			 <div id="" class='left-nav'>
+			  left section
+			  </div>
+			  
+			 <div id="menu-select"> 
+			 
+				 <div id="tabs"> 
+					<ul>
+							<li><a href="#tabs-1">Templates</a></li>
+							<li><a href="<?php echo Zend_Registry::get('baseUrl') 
+													. '/admin/grid/index/table/' 
+													. MODEL_PREFIX . 'AdminSection';  
+									?>" title="Template Sections">Sections</a></li>
+					</ul>
+		 
+					<div id="tabs-1" class="div-content">	  
+		 				<?php echo $this->layout()->render('gridview'); ?> 
+		  			</div> 		  			 
+			     </div>		     
+	        </div>
+	        <div id="show-sections" style="display:none"></div>
+  

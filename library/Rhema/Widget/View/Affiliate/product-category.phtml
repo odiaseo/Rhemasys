@@ -1,0 +1,111 @@
+<div class="list-header"><h2>Discount Deals, Sales & Offer Categories</h2>
+<?php echo $this->displayAlphaList('category', $this->currentLetter); ?>
+</div> 
+ 
+<?php 
+	$isDev    = Rhema_SiteConfig::isDev();
+	$category = $this->stat['category'];
+	$total    = count($this->stat['categoryWithProducts']);
+	$mid      = $total ? floor($total/2) : 0; 
+	$count    = 0;
+ //pd();
+	if($this->currentLetter == 'all'){ ?>
+		<div id="category-tree" class="rounded">
+			<div class="column left">
+				<ul class="level-1">  <?php 
+					$done     = false ;
+					
+					foreach($this->stat['categoryTree'] as $item){		
+						$cat 	  = $item['parent'];
+						$sorted   = $item['children'];	
+						$grpTotal = 0; 
+						$str      = '';
+									
+						foreach($sorted as $child){
+							$cnt       = $child['count'];
+							if($cnt){
+								$grpTotal += $cnt;
+								$dispId    = $isDev ? " <b>[{$child['id']}]</b>" : '';
+								$num       = number_format($cnt);
+								$href      = $this->url(array('category' => $child['slug']), 'mobile-category', true);
+								$str      .= "<li id='cat-{$cat['id']}'><a href='{$href}' title='{$child['title']}'>{$child['title']} ($num){$dispId}</a></li>";	
+								$count++ ;	
+							}	
+						}		 
+						 
+						
+						$grpTotal += $cat['count'];
+						//if($grpTotal){
+							$dispId    = $isDev ? " <b>[{$cat['id']}]</b>" : '';		
+							$num  = number_format($grpTotal);
+							$href = $this->url(array('category' => $cat['slug']), 'mobile-category', true);
+							
+							if($str){
+								$str  = "<li id='cat-{$cat['id']}'><a href='{$href}' title='{$cat['title']}'>{$cat['title']} ($num){$dispId}</a><ul class='level-2'>$str</ul></li>";
+							}else{
+								$str  = "<li id='cat-{$cat['id']}'><a href='{$href}' title='{$cat['title']}'>{$cat['title']} ($num){$dispId}</a></li>";
+							}
+							
+							if($count > $mid and $done == false) {
+								print("</ul></div><div class='column right'><ul class='level-1'>");
+								$done = true ;
+							}
+							$count++ ;
+							echo $str ;	
+						//}		
+					}?> 
+		 		</ul>
+		 </div>
+    </div>
+<?php 
+	}else{ ?>   
+		<div id="category-list">
+		<?php 
+		
+			$cols    = 3 ;// $this->columns ? $this->columns : 4;  
+			$catList = array();
+ 
+			if($category){
+				foreach((array)$this->listCategory as $id =>  $cat){
+					if(isset($category[$id]['countid']) and $category[$id]['countid']){
+						$catList[$id] = $cat;
+					}
+				}				
+				
+			}else{
+				$catList = $this->listCategory ;
+			}
+			 
+			$total   = count($catList);
+			$width   = (4 == $cols) ? '212px' : '182px'; // style='width: {$width}' 
+			
+			if($total){
+				$count   = 0;
+				$ulCount = 1;
+				$perCol  = ceil($total/$cols);		
+				printf("<ul class='rounded listing first'>", $width);
+			 
+				foreach($catList as $id =>  $cat){
+					$cnt = (isset($category[$id]['countid']) and $category[$id]['countid']) 
+						 ? ' (' . number_format($category[$id]['countid']) . ')' : '' ;
+					$dispId = $isDev ? " <b>[$id]</b>" : '';
+		 			//if($cnt !== ''){
+						$href = $this->url(array('category' => $cat['slug']), 'mobile-category', true);
+						echo "<li id='cat-$id'><a href='{$href}' title='{$cat['title']} {$dispId}'>" . substr($cat['title'],0,strlen($cat['title'])) . $cnt .  $dispId . '</a></li>'; 
+						$count++;
+						if($total > $count and (($count%$perCol) == 0)){
+							$ulCount++ ;
+							$class = ($ulCount%3 == 0) ? ' last' : ($ulCount%3 == 1 ? ' first' : '') ;			
+							echo "</ul><ul class='rounded listing{$class}'>";
+						}
+		 			//}
+				}
+				echo '</ul>';
+			}else{
+				echo "<p>No category found</p>";
+			}
+		?>
+		
+		</div>
+		<div style="clear:both; text-align:center; margin-bottom:20px"><a href="<?php echo $this->url(array('letter' => 'all'), 'category-alpha-list', true); ?>">view all categories</a></div>
+<?php } ?>

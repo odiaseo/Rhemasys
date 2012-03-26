@@ -1,0 +1,13 @@
+<?php 
+      $catparm	 = array('module'=>'ecom','controller'=>'stock','action'=>'category');  
+      $urlParm	 = array('module'=>'admin','controller'=>'grid','action'=>'index');
+ ?>
+	<div id="prod-tabs" class="full-width"> 
+		<ul> 
+				<li><a href="#prod-cat">Product Categories</a></li> 
+				<li><a href="<?php echo $this->url(array('id' => 1), HELP_ROUTE); ?>">Help</a></li>	
+		</ul>
+		<div id="prod-cat">
+			<?php echo $this->gridData ; ?>
+		</div>
+	</div>

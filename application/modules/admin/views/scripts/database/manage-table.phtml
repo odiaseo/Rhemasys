@@ -1,0 +1,44 @@
+	<div id="page-design" class="full-width"> 
+ 
+		<div id="db-tabs"> 
+		 		<ul>
+		 		    <li><a href="#tools">Maintenance</a></li>
+		 			<li><a href="#diff">Difference</a></li>
+		 			<li><a href="#migration">Migrations</a></li>
+		 			<li><a href="<?php 
+		 				echo $this->url(array('action' => 'update-admin-table'), 'ajax-route');
+		 			?>">Update Admin Tables</a></li>
+		 		</ul>
+		 	<div id="tools">
+		 		<?php 
+		 			  $onclick   = array();
+		 			  foreach($this->buttons as $act => $data): 
+		 			 
+		 			  if($act == 'merge-schema' and file_exists($this->oldSchema)) {
+		 			  //	continue ;
+		 			  }
+		 			  	$onclick[] = " jQuery('#btn-{$act}').bind('click', function(){
+								jQuery('#" . Rhema_Constant::MESSAGE_DIV ."').load('{$this->url(array('action'=>$act), 'ajax-route')}',function(){
+									jQuery(this).show(); 
+								});
+							}); ";?>
+		 			  
+				 		<div id="<?php echo $act; ?>" class="db-tools clearfix">
+				 			<label class="tool-title"><?php echo ucwords($data['desc']); ?></label> 
+				 			<a class="curved-btn green" id="btn-<?php echo $act; ?>"><?php echo $data['title']; ?></a>		 			
+				 		</div>		 						 			 
+		 		<?php endforeach; ?>
+		 		
+		 	</div>	
+		 	
+		 	<div id="diff" class='sysinfo-div'><pre><?php echo print_r($this->changes, true); ?></pre></div>
+		 	<div id="migration"></div>		
+
+	  </div>
+</div>
+<?php 
+ 
+	$script = implode(PHP_EOL, $onclick);
+	$this->collateScripts($script);
+	
+?>

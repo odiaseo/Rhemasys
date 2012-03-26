@@ -1,0 +1,48 @@
+<div id="mapping-area">
+	<div id="message-div-area"></div>
+	<p><strong>Filename: </strong><?php echo $this->cacheFile; ?></p> 
+	<br />
+	<div class="table"> 
+	  <form id="feedmap-form" method="post" action="<?php echo $this->url(array('feedId' => $this->feedId), 'column-field-mapping'); ?>" onsubmit="return false"> 
+			<table id="dbmapping" class="table-to-grid">
+				<thead>
+					<tr>
+						<th width="30%">Database Columns</th>
+						<th width="30%">Feed Columns</th>
+						<th>Filters</th>
+					</tr>
+				</thead>
+				<tbody> <?php 
+				     asort($this->columns);
+				    // pd($this->mapped);
+				     //pd($this->columns);
+				    // pd($this->ignoreList);
+			 		 foreach($this->columns as $col){ //pd($this->columns);
+			 		 	$col = trim($col);
+				 		 if(!preg_match('/(^id$|_id$)/i', $col) and !in_array($col, $this->ignoreList)){?> 
+							<tr>
+								<td><?php  echo $col; ?></td>
+								<td><select name="<?php echo $col . '[columns]'; ?>">
+									 <option value="">select</option><?php  
+									foreach((array)$this->feedColumns as $ind => $item){  
+										$item  = trim($item);
+										$parms = isset($this->mapped[$col]['columns']) ? (array) $this->mapped[$col]['columns']: array();
+										$sel   = ((array_search($item, $parms) !== false) or strtolower($col) == strtolower($item)) ? ' selected="selected" ' : '';
+										echo "<option value='$item' $sel>$item</option>";	
+									}?></select>
+								</td>
+								<td><select name="<?php echo $col . '[filters]'; ?>">
+									<option value="">select</option><?php 
+									foreach((array)$this->feedFilters as $item){
+										$parms = isset($this->mapped[$col]['filters']) ? (array) $this->mapped[$col]['filters']: array();
+										$sel   = ((array_search($item, $parms) !== false) or  strtolower($col) == strtolower($item)) ? ' selected="selected" ' : '';
+										echo "<option value='$item' $sel>$item</option>";	
+									}?></select></td>
+							</tr>
+				 <?php  }}?>
+				</tbody>			
+			</table>
+		</form>				 
+	</div>
+</div>
+   

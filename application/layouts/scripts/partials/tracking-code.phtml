@@ -1,0 +1,21 @@
+<?php 
+$gaId    = Rhema_SiteConfig::getConfig('settings.google_analytics.id');
+$context = Zend_Registry::isRegistered('sys-layout-context') ? Zend_Registry::get('sys-layout-context') : CONTEXT_SITE ;
+
+if(CONTEXT_ADMIN != $context and $gaId){
+	$domain = Zend_Controller_Front::getInstance()->getRequest()->getHttpHost();?>
+	 <script type="text/javascript"> 
+	 		  window.google_analytics_uacct = "<?php echo $gaId; ?>"; 
+		 	  var analytics_installed = true; 
+			  var _gaq = _gaq || [];
+			  _gaq.push(['_setAccount', '<?php echo $gaId; ?>']);
+			  _gaq.push(['_trackPageview']);		  
+			  _gaq.push(['_setDomainName', 'none']);
+			
+			  (function() {
+			    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			  })();
+	</script>
+<?php } ?>

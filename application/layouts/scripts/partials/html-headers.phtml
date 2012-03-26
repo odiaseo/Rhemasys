@@ -1,0 +1,103 @@
+<?php echo $this->doctype();  
+      $lang       = str_replace('_', '-',Zend_Registry::get('Zend_Locale')->toString()); 
+      //$backendUrl = Rhema_Constant::getBackendPath(); //::getDomainPath('admin');
+      $backendUrl = Rhema_SiteConfig::getDomainPath('www', '', false, false);
+      $backScript = Rhema_Constant::getBackendPath() . 'scripts/'; 
+ 
+      $siteVars             = new stdClass();
+      $siteVars->role       = Zend_Registry::get(Rhema_Constant::USER_ROLE_KEY);
+      $siteVars->dir        = SITE_DIR;
+      $siteVars->backendUrl = rtrim($backendUrl, '/') ;
+      $jsVars               = Zend_Json::encode($siteVars);
+      
+      $staticPath = Rhema_SiteConfig::getStaticPath();
+      $this->jQuery()->enable()->uiEnable();
+?>
+<html lang="<?php echo $lang; ?>"  xmlns="http://www.w3.org/1999/xhtml" xmlns:og="http://ogp.me/ns#" xmlns:fb="http://www.facebook.com/2008/fbml">
+<head profile="http://www.w3.org/2006/03/hcard">
+<?php
+    $this->headLink()->headLink(array('rel' => 'favicon', 'href' => $staticPath . 'favicon.ico'), 'PREPEND' );      
+	
+	$this->headMeta()->appendHttpEquiv('content-language', $lang);
+ 
+	$title 			 = $keywords = $description = '';
+	$siteConfig      = Rhema_Util::getSessData('site-config');
+	$this->context   = Zend_Registry::isRegistered('sys-layout-context') ?  Zend_Registry::get('sys-layout-context') : false ;
+
+    $this->headScript()->appendScript("var siteVars =  {$jsVars}; ");
+    
+	if(CONTEXT_ADMIN == $this->context){
+		$this->menuId = 'mega-menu';
+	 	$this->menuTheme = 'black';
+	 	$this->includeJs($backScript . 'jquery-mega-drop-down-menu/js/jquery.dcmegamenu.1.0.js');
+		$this->includeJs($backScript . 'jquery-mega-drop-down-menu/js/jquery.hoverIntent.minified.js');
+	 	$this->includeCss(array($backScript . 'jquery-mega-drop-down-menu/css/dcmegamenu.css',
+	 	 				  	    $backScript . "jquery-mega-drop-down-menu/css/skins/{$this->menuTheme}.css")) ;
+	    $this->collateScripts("jQuery('.{$this->menuId}','#admin-menu').dcMegaMenu({  rowItems: '3', speed: 'fast' });"  );
+
+		$baseHref    = $this->baseUrl();
+		if($this->activeModule){
+			$baseHref     = $this->rhemaLink;
+			$description  = $this->activeModule['description'];
+			$keywords     = $this->activeModule['label'];
+			$modTitle     = $this->activeModule['label'];
+		}
+
+		$titleArr       = array($siteConfig['subsite']['title'],
+							'Rhema Studio Management System',
+							$modTitle
+						);
+
+		//$this->headLink()->prependStylesheet('/backend/scripts/jquery/css/redmond/jquery-ui-1.8.9.custom.css')	;
+	 }else{
+		$baseHref    = $this->rhemaLink;
+		$title       = $this->layout()->pageData['meta_title'] ? $this->layout()->pageData['meta_title'] : $this->layout()->pageData['title'];		
+		$titleArr    = array($siteConfig['subsite']['title'] ,  $title); 
+		
+				
+ 		if(strlen($siteConfig['subsite']['title'] . $title) > 70){
+			$titleArr = $title ? array($title) : array($siteConfig['subsite']['title']);
+		} 
+ 		
+		$d = $this->layout()->pageData ;
+		$keywords    = $this->layout()->pageData['keyword'];
+		$description = $this->layout()->pageData['description'];
+		$description = $description ? $description : $siteConfig['subsite']['description'];
+		$keywords    = $keywords    ? $keywords    : $siteConfig['subsite']['keyword'];
+ 
+        $this->collateScripts(
+        	'var addthis_config = {
+        		data_track_clickback : true,
+        		data_ga_property : "'. Rhema_SiteConfig::getConfig('settings.google.track_id') .'",
+        		ui_language : "' . Zend_Registry::get('Zend_Locale')->getLanguage() .'",
+        		pubid       : "' . Rhema_SiteConfig::getConfig('settings.andthis.pubid'). '",
+        		ui_508_compliant : true,
+        		ui_use_addressbook :  true,
+        		ui_open_windows    : true, 
+        		ui_click: true
+        	};
+
+        	var addthis_share = {
+        		url : "http://' . Zend_Controller_Front::getInstance()->getRequest()->getHttpHost() . '",
+        		url_transforms: {
+        			clean : true
+        		}
+        	}');
+	}
+ 
+ 	if($baseHref){
+ 		echo "<base href='$baseHref' /> ";
+ 	}
+ 	$this->setMetaTags($titleArr, $description, $keywords); 
+ 	
+ 	Rhema_View_Helper_IncludeCss::printCss();
+ 		
+ 	echo $this->headTitle(),
+ 		 $this->headStyle(),
+	     $this->headMeta(),
+	     $this->headLink (),
+	     $this->jQuery()->setRenderMode(ZendX_jQuery::RENDER_STYLESHEETS);	    		     
+?>
+</head>
+<?php flush(); ?>
+

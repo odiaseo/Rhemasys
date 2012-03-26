@@ -1,0 +1,37 @@
+<?php 
+$src  = $this->getRetailerLogo($this->retailer);
+$logo = "<img src='{$src}' height='30' alt='{$this->retailer['title']}' align='right'/>";
+?>
+<h2><?php echo $this->retailer['title']; ?></h2>
+<p><?php echo $logo , $this->retailer['description']; ?></p>
+<?php 
+	if($this->found){
+		echo '<p>Below are discount vouchers, deals and sales provided by this ' . $this->retailer['title'] . '. Click to visit retailer website. 
+		Website would open in a new window</p>';
+	}elseif(count($this->product)){
+		echo '<p>There are currently no vouchers/discount codes offered by <strong>' . $this->retailer['title'] . '</strong>. 
+			However, we have suggested similar discount vouchers, deals and sales you may like from other retailers.</p>
+			<p>Click to visit retailer website.  Website would open in a new window</p>';		
+	}else{
+		echo '<p>No voucher found</p>';
+	}
+	
+	if(count($this->product)){
+		echo '<ul>';
+		foreach($this->product as $item){
+			$item  = $this->populateAffiliateProduct($item); 
+			$logo  = '';
+			if(!$this->found){
+				$ret  = $item['AffiliateRetailer'];
+				$src  = $this->getRetailerLogo($ret);
+				$logo = $src ? "<img src='{$src}' height='30' alt='{$ret['slug']}' align='left'/>" : "<strong>{$ret['slug']}</strong> >> ";
+			}
+			$title    = $item['AffiliateRetailer']['title'] . ' : ' . Rhema_Util_String::correctEncoding($item['title']);
+			$outlink  = $this->url(array('title' => Doctrine_Inflector::urlize($item['title']), 'id' => $item['id']), 'product-outlink', true, false);
+			$deeplink = $this->affiliateLink()->getDeeplink($item, '', 'discount-vouchers');
+			printf("<li><a href='%s' title='%s' outlink='%s'>%s %s</a></li>", $outlink, $title, $deeplink, $logo, $title);
+		}
+		echo '</ul>';
+	}	 
+?>
+<a href="<?php echo $this->url(array('category' => 'vouchers-deals'), 'mobile-category'); ?>" title="view all vouchers and deals">View all</a>

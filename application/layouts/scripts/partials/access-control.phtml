@@ -1,0 +1,20 @@
+<?php 
+	//TODO does not work due to clash with jQuery tools
+	//$this->headScript()->appendScript("jQuery(document).ready(function(){ jQuery('.atip').tooltip(); }); ");
+	//$this->includeJs('jquery.tools.min.js', Rhema_Constant::PREPEND);
+ ?> 
+ <div id="access-tabs"  class="full-width"> 
+	<ul>
+		 
+<?php		
+		$param = array('table'=>$this->table);
+		foreach($this->roots as $index => $rootData){  ?>  
+			<li><a href="<?php 	$param['root_id'] =  $rootData['id'];
+								$param[Admin_Model_AdminMenu::SCOPE_KEY] = strtolower($this->scope);
+							echo $this->url($param, 'admin-access-control');  
+					?>"><?php echo $rootData['title']; ?></a></li>
+   <?php } ?>
+			<li><a href="<?php echo $this->url(array('id' => 1), HELP_ROUTE); ?>">Help</a></li>
+			</ul>
+  		 
+	     </div>	

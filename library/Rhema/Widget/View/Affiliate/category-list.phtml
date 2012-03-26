@@ -1,0 +1,64 @@
+<?php 
+ $cur  = new Zend_Currency();
+ switch($this->searchType){
+ 	case 'affiliate-retailer': $selectedTab = 2 ; break;
+ 	case 'affiliate-brand'   : $selectedTab = 1 ; break;
+ 	//case 'promotion' : $selectedTab = 3 ; break;
+ 	default:
+ 		$selectedTab = 0;
+ }
+ $this->collateScripts( "jQuery('#product-tabs').tabs();  jQuery('#product-tabs').tabs( 'select' , {$selectedTab});" );
+
+ $allUrl = $this->url(array(), 'all-affiliate-brand', true); 
+ echo $this->render('Affiliate/rotating-banner.phtml'); 
+ $numMan = count($this->stat['manufacturers']);?>
+<div> 
+	<div id="product-tabs">	 
+	 	<ul>
+	 		<li><a href="#by-category">By Category</a></li>
+	 		<li><a href="#by-brand">By Brand</a></li>
+	 		<li><a href="#by-retailer">By Retailer</a></li> 
+	 <?php  if($numMan >1){?>
+	 			<li><a href="#by-manu">By Manufacturer</a></li>
+	  <?php }?>
+	  
+	 	</ul>
+	 	<div id="by-category" class="sidebar">
+	 		<h2 style="text-align:center">Browse Categories A - Z</h2>
+	 		<?php echo $this->displayAlphaList('category',  '', 'by-letter'); ?>
+	 		<h3 style="text-align:center"><a href="<?php echo $this->url(array('letter' => 'all'), 'category-alpha-list') ; ?>">view all categories</a></h3>
+		</div>
+			 	
+	  	<div id="by-brand" class="sidebar">
+	  		<h2 style="text-align:center">Browse Brands A - Z</h2>
+	  		<?php echo $this->displayAlphaList('brand', '', 'by-letter'); ?> 
+	  		<h3 style="text-align:center"><a href="<?php echo $this->url(array('letter' => 'all'), 'brand-alpha-list') ; ?>">view all brands</a></h3>		
+	  	</div>
+		
+	 	<div id="by-retailer" class="sidebar">
+	 		<h2 style="text-align:center">Browse Stores A - Z</h2>
+	 		<?php echo $this->displayAlphaList('retailer',  '', 'by-letter'); ?>
+	 		<h3 style="text-align:center"><a href="<?php echo $this->url(array('letter' => 'all'), 'retailer-alpha-list') ; ?>">view all retailers</a></h3>
+		</div>	
+			  	 
+<?php if($numMan >1){?>
+	 	<div id="by-manu" class="sidebar">
+		 	<ul>
+		 	<?php 
+		 		$count = 0;
+		 		$str   = '';
+		 		foreach((array)$this->stat['manufacturers'] as $manu){
+		 			if($manu['countid']){
+			 			$dispCount = number_format($manu['countid']);
+			 			$title = ucwords(strtolower($manu['title']));
+			 			$url   = $this->url(array('manufacturer' => $manu['slug']), 'affiliate-manufacturer', true);
+			 			$str  .= "<li><h5><a href='{$url}' title='{$title }'>{$title } ({$dispCount})</a></h5></li>";
+		 			}	 		 
+		 		} 
+		 		echo  $str ;
+		 	?>
+		 	</ul>
+		 </div>	
+<?php } ?> 	 
+	</div>	 
+ </div>

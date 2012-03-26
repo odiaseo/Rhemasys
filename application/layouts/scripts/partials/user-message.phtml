@@ -1,0 +1,25 @@
+<div class="rounded message message-<?php echo $this->type; ?>">
+<div onclick="this.parentNode.parentNode.removeChild( this.parentNode )"
+	class="message-close-button message-close-button-<?php echo $this->type ?>">X</div>
+<h2><?php echo $this->title; ?></h2>
+<span><?php 
+    if(is_array($this->message)){
+    	echo '<ol>';
+    	foreach($this->message as $field => $item){
+    		$item = (array) $item;
+    		echo '<li>' . ucwords($field) .': ' .  current($item) . '</li>' ; 
+    	}
+    	echo '</ol>';
+    }else{
+    	echo $this->message; 
+    }?>
+    	</span></div>
+ 
+<script type="text/javascript">
+	var autoHide = <?php echo isset($this->autoHide) ? (int)$this->autoHide : 1 ?>;
+	if(autoHide) {
+		setTimeout(function() {
+		    jQuery('div.message-<?php echo $this->type; ?>').fadeOut(1200);
+		}, 10000);
+	}
+</script>

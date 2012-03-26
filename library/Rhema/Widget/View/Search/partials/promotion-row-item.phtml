@@ -1,0 +1,40 @@
+<?php 
+	$product = (array) $this->product;
+	$promo   = $product['AffiliatePromotion'];
+	//pd($product);
+	if($promo ){
+	$promoLink     = $this->url(array('id' => $promo['id'], 'promotion' => $promo['slug']), 'affiliate-promotion');
+	}
+ 
+	$title         = Doctrine_Inflector::urlize($product['title']) ;
+    $outLink       = $this->url(array('id' => $product['id'], 'title' => $title), 'product-outlink', true, false);
+	
+	
+	$categoryLink  = $this->url(array('category' => $product['AffiliateProductCategory']['slug'], 'page' => 1),'mobile-category');
+	$retailerLink  = $this->url(array('retailer' => $product['AffiliateRetailer']['slug'], 'page' => 1), 'affiliate-retailer');
+	$detailLink    = $this->url(array( 'title'	 => $title, 'id'	=> $product['id'] ),'affiliate-product-detail', true, false);
+	$limit = 55;
+	
+	if(strlen($product['title']) > $limit){
+		$product['title'] = str_replace('-',' ', $product['title']);
+		$arr   = explode(' ', substr($product['title'], 0, $limit));
+		$dispTitle = implode(' ', array_slice($arr, 0, -3)) . ' ... ' . implode(' ', array_slice(explode(' ', $product['title']), -2, 2));
+	 
+	}else{
+		$dispTitle = $product['title'];
+	}
+?>	
+	<div class="promo-listing rounded">
+		<h2 class="top"><a id="prod_<?php echo $product['id'] ;?>" href="<?php  echo $outLink ; ?>" class="outlink" rel="nofollow" target="_blank" title="<?php echo $product['title']; ?>"><?php echo $dispTitle; ?></a></h2>
+	 
+		<div class="lower">
+		   <img title="<?php echo $product['title']; ?>" src="<?php echo $product['image_url']; ?>" height="80" alt="<?php echo $product['title']; ?>" />
+			<span class="product-price"><?php echo $this->displayPrice; ?></span>
+			<?php if($promo){?>	
+				<div class="free-gift" style="display:none"><h3><a href="<?php echo $promoLink; ?>" title="<?php echo $promo['title']; ?>">Special Promotion + Free Gift</a></h3></div>
+			<?php }?>
+			<button id="promo_<?php echo $promo['id']; ?>" class="buy-now rounded prod-btn outlink" href="<?php  echo $outLink ?>">Buy Now</button>	
+		
+			<a href="<?php  echo $detailLink  ?>" class="view-more" title="View more details - <?php echo $product['title']; ?>">View Details</a>
+		</div>	
+	</div>

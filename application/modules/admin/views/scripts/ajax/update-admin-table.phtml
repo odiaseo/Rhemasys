@@ -1,0 +1,70 @@
+ <?php 
+ 	$postUrl = $this->url(array('action' => 'update-admin-table', 'task' => 'import'), 'ajax-route');
+ 	?>
+<div id="data-import" align="center" class="rounded">
+	<form action="<?php echo $postUrl;?>" method="post" onsubmit="return false">
+		<div class="table-list">
+			<table width="100%" cellpadding="5" class="upd-table-to-grid" id="upd-db-table">
+				<thead>
+					<tr> 
+						<th>#</th>
+						<th>Table</th>
+						<th>Select</th>
+						<th>Truncate</th>
+					</tr>
+				</thead>
+				
+				<tbody>
+				<?php  
+					foreach($this->tableList as $model):
+						$trunc     = preg_match(REGEX_TABLE_ADMIN, $model) ? ' checked="checked" disabled ' : '';
+						try{
+							$tableObj   = Doctrine_Core::getTable($model);
+							$tableName  = $tableObj->getTableName(); 
+							$tableName  = $tableName ? $tableName : $model ;
+							$rec        = $tableObj->count();
+							$tableName .= $rec ?  ' (' .$rec . ')' : '';
+					?>
+							<tr> 
+								<td></td>
+								<td><label><?php echo $tableName;?></label></td>
+								<td align="center"><input name="import[<?php echo $model; ?>]" type="checkbox" value="1" /></td> 
+								<td align="center"><input name="truncate[<?php echo $model; ?>]" type="checkbox" value="1" <?php echo $trunc; ?>/></td>
+							</tr>
+					<?php }catch(Exception $e){}
+				  endforeach; ?>
+				
+				</tbody>
+ 
+			</table>
+		
+		</div> 
+		
+		<div class="data-source">
+			<h4>Data Sources</h4>
+			<?php  
+			foreach($this->sourceDomains as $source){
+				list($title, $url) = explode('~', $source);
+				$selected = ($source == $this->selectedSource) ? ' checked="checked" ' : '';
+				?>
+				<div class="source-option">			
+					<input name="source" type="radio" value="<?php echo $url?>" <?php echo $selected ;?>/>
+					<label><?php echo $title?></label>
+			    </div><?php 
+			} 
+			?>
+			<div><button id="import-data">Import Data</button></div>
+		</div>
+	</form>
+</div>
+<script>
+	tableToGrid('.upd-table-to-grid', { 
+		height : 'auto',
+		rownumbers : true,
+		multiselect : false,  
+		caption : 'Table Data Import',
+		rowNum  : 25,
+		toolbar : [true,"bottom"]
+	});
+</script>
+

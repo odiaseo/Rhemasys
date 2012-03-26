@@ -1,0 +1,27 @@
+  		<div class="full-width">
+  		    <input type="hidden" id="root_type" value="<?php echo $this->rootType ; ?>" />
+			<input type="hidden" id="root_id" value="<?php echo $this->root_id ; ?>" />
+			<input type="hidden" id="menu-url" value="<?php echo $this->menuUrl; ?>" />
+			 <div id="menu-tabs"> 
+				<ul>
+				<?php 
+					$param = array('module'=>'ecom','controller'=>'stock','action'=>'navigation',
+							'rootType'=>$this->rootType,'table'=>$this->currentTable); 
+					 	
+					foreach($this->roots as $index => $rootData){ ?>
+						<li><a href="<?php $param['root_id'] =  $rootData['id'];
+										echo $this->url($param,ADMIN_ROUTE);  
+								?>"><?php echo $rootData['label']; ?></a></li>
+					<?php } ?>
+					<li><a href="<?php
+						$parm['action'] 		= 'organise' ; 
+						$parm['scope']	 		= 'ecom_navigation_menu';
+						$parm['module']	 	    = 'cms';
+						$parm['controller']	    = 'menu'; 
+						 echo  $this->url($parm,ADMIN_ROUTE);?>">Organise Menus</a>
+					</li>	
+						<li><a href="<?php echo $this->url(array('id' => 2), HELP_ROUTE); ?>">Help</a></li>
+				</ul>
+
+			  </div>
+	   </div>

@@ -1,0 +1,51 @@
+ <?php 
+ 	$backendUrl = Rhema_SiteConfig::getDomainPath('admin');	
+ 	$this->navData      = Zend_Registry::get(Rhema_Constant::NAVDATA_KEY);
+    $this->activeModule = $this->navData->getModuleData(); 
+  
+    $moduleIcon         = $backendUrl . ltrim($this->activeModule['thumb'], '/') ;
+	echo $this->render('partials/html-headers.phtml');	
+?> 
+<body>
+ <div id="admin-container">
+
+ 	<div id="admin-main-body">
+	    <?php   echo   $this->render('partials/top-navigation.phtml') ?>
+		<div id="admin-content">
+			 <div id="admin-body-top">
+			   <nav id="quick_menus"><?php echo $this->quickMenu(); ?></nav>			   
+			   <div id="admin-bread-crumb">
+		   		    <div id="cur-mod-image">
+				    <?php if(isset($this->activeModule['image_file'])){ ?>
+				    		<img src="<?php echo $moduleIcon; ?>" width="20" height="20" />
+				    <?php } ?>
+				    </div>
+			   		<?php 
+			   			$src   = $this->getImagePath()->icon('blue_arrow.gif')  ;
+			   			$seperator  = '<img src="' . $src. '" alt="seperator" style="margin:0 5px"/>';
+			   			echo $this->navigation()
+			   				->breadcrumbs($this->navData->getContainer())
+			   				->setSeparator($seperator); 			   				
+			   		?>			   		
+			   	</div>
+				<article id="admin-main" style="visibility:hidden">   
+					<div id="message-div-area">
+						<?php echo $this->printUserMessage($this->userMessage); ?>
+					</div>
+           		        		    
+           			<?php echo $this->layout()->content; ?>
+           		</article>
+           		
+             </div>
+			<section class="tab-cache" style="display:none;">
+				<?php echo $this->layout()->render('partials/disable-tab-cache');?>
+			</section>             
+	   </div>
+
+           		
+	</div>
+	<footer id="admin-footer"><?php echo $this->render('partials/footer.phtml'); ?></footer>
+ </div>
+  <?php  echo $this->render('partials/footer-scripts.phtml'); ?>
+</body>
+</html>

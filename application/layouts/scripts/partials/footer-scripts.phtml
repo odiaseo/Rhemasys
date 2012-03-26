@@ -1,0 +1,23 @@
+<?php
+echo $this->layout()->render('partials/tracking-code');		
+if(Zend_Registry::isRegistered(Rhema_Constant::SCRIPT_INDEX)){
+	$scriptArray = Zend_Registry::get(Rhema_Constant::SCRIPT_INDEX);
+	$script      = implode(PHP_EOL . ' ' , $scriptArray);
+	$minScript   = $script ; //Rhema_Jsmin::minify($script);
+	$script      = "jQuery(document).ready(function() { $minScript });";
+	//$this->jQuery()->addOnload($script);
+	$this->headScript()->appendScript($script);}
+
+	if(Zend_Registry::isRegistered(Rhema_Constant::PRE_QUERY_KEY)){
+		foreach (Zend_Registry::get(Rhema_Constant::PRE_QUERY_KEY) as $sf){
+		     $file = (strpos($sf, 'http') === false) ? SCRIPT_PATH .'/'. $sf : $sf; ?>
+			<script src="<?php echo $file; ?>" type="text/javascript" async="1"></script>
+<?php 	}
+	}
+	
+$this->jQuery()->addJavascript('var $ = $j = jQuery.noConflict();');
+echo $this->jQuery()->setRenderMode(ZendX_jQuery::RENDER_ALL &~ZendX_jQuery::RENDER_STYLESHEETS);
+
+Rhema_View_Helper_IncludeJs::printJs();
+echo $this->headScript();
+?>

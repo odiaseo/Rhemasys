@@ -1,0 +1,48 @@
+ <?php 
+ 	$path = Rhema_SiteConfig::getBackendScriptsPath();
+ 	$this->includeJs(array(
+ 		'highlighter/scripts/shCore.js',
+ 		'highlighter/scripts/shBrushXml.js',
+ 	), Rhema_Constant::APPEND, false);
+ 	
+ 	$this->includeCss(array(
+ 		$path . 'highlighter/styles/shCore.css',
+ 		$path . 'highlighter/styles/shThemeEclipse.css',
+ 	), false);
+ 	
+ 	$this->collateScripts('SyntaxHighlighter.all();');
+ ?>
+	<div id="translation" class="full-width"> 
+	
+		<div id="page-tabs">
+			<ul>
+				<li><a href="#tabs-1">Translations</a></li> 
+			    <li><a href="#route-tmx">Route TMX</a></li>
+			    <li><a href="#content-tmx">Content TMX</a></li>
+				<?php 
+					foreach($this->files as $key => $text){
+						if($key == 'syslog') continue;
+						printf("<li><a href='#%s'>%s Log</a></li>", $key, $text);
+					}
+				?> 
+				<li><a href="<?php echo $this->url(array('id' => 1), HELP_ROUTE); ?>">Help</a></li>	
+			</ul>
+			<?php 
+				foreach($this->files as $key => $text){
+					if($key == 'syslog') continue;
+					$sys     = $this->logDir . $key . '.log';
+					if(!file_exists($sys)){
+						file_put_contents($sys, '');
+					}
+				    $content = file_get_contents($sys);
+					printf("<div id='%s'><pre>%s</pre></div>", $key, $content);
+				}
+				//pd($this->routeTmxFilename);
+				$tmxData = file_get_contents("{$this->routeTmxFilename}");  
+			?> 	
+			<div id="tabs-1"><?php echo $this->gridData; ?></div> 	
+			<div id="route-tmx"><p><?php echo $this->routeTmxFilename; ?></p><pre class="brush: xml"><?php echo $tmxData ;?></pre></div> 
+			<div id="content-tmx"><p><?php echo $this->contentTmxFilename; ?></p><pre class="brush: xml"><?php echo file_get_contents($this->contentTmxFilename) ;?> </div> 		
+	  </div>
+  
+	</div>

@@ -1,0 +1,35 @@
+ 
+	<div id="page-design" class="full-width"> 
+		 	<div id="page-tabs"> 
+				<ul>
+						<li><a href="#tabs-1">Pages</a></li>
+						<li><a href="<?php $param['table']    = 'page_header'; 
+										   $param['pageType'] = 'header';
+											echo $this->url($param, $this->gridIndexRoute); 
+								     ?>">Header</a></li>
+						<li><a href="<?php $param['table'] = 'page_footer';
+										$param['pageType'] = 'footer';
+										echo $this->url($param, $this->gridIndexRoute);  
+								?>">Footer</a></li>
+						<li><a href="<?php  echo $this->url(array('table' => 'template'), $this->gridIndexRoute);  
+								?>">Template</a></li>
+						<li><a href="<?php  $param['table']   = 'category';
+											$param['root_id'] = $this->root_id; 
+											echo $this->url($param, $this->gridIndexRoute); 
+								?>">Categories</a></li>
+						<li><a href="<?php  $param['table']   = 'component';
+											$param['root_id'] = $this->root_id; 
+											echo $this->url($param, $this->gridIndexRoute);
+								?>">Contents</a></li> 
+				</ul>
+				<div id="tabs-1">
+		 			<?php echo $this->gridData; ?>
+		 		</div> 
+		 	</div>
+	</div>
+	<?php 
+ 
+		 // $this->headScript()->appendFile('http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js');	
+		  echo $this->inlineScript()->setScript("var layoutItems = " . Zend_Json::encode($this->layoutItems)); 
+		  echo $this->layout()->render('partials/layout-shell');
+	?>

@@ -1,0 +1,42 @@
+<?php if($this->allow){
+    $page = Rhema_Util::getSessData('active-page');
+    $pageId = $page['id'];
+    ?>
+	<div id="layout-tool" class="adminToolBar" title="Layout tools">
+		<form method="post" action="<?php echo $this->formAction; ?>" id="form-layout-tool">
+			<input type="hidden" value="<?php echo $this->updateUrl; ?>" id="update_url" />
+
+				<div <?php if(!$this->editMode){ echo ' style="display:none"' ; } ;?> id="toolUpdateButtons">
+					<h2>Layout Update</h2>
+						 <button id="update-layout">Update Layout</button>
+				</div>
+
+
+				<h2>Display Mode</h2>
+	 				<?php
+						  echo new Zend_Form_Element_Radio('editmode', array(
+								'label'			=> '',
+								'multiOptions'	=> array('0' => 'Preview',
+														 '1' => 'Edit'),
+								'decorators'	=> Rhema_Util::getDecor() ,
+								'value'			=> array($this->editMode)
+						 ));
+						 ?>
+
+
+
+	<div id="">
+		<h2>Quick Links</h2>
+    		<a href='<?php echo $this->url(array(), 'clear-cache' ); ?>' class='panel_menu_item'>
+    		<ins alt='1' title='Clear Cache' id='clear_cache'></ins>Clear Cache</a>
+
+			<a id="panel-get-meta" href="<?php echo $this->url(array('pageId' => $pageId), 'manage-page-meta' ); ?>">
+				Edit Meta Tags</a>
+			<a href="<?php echo $this->url(array(), 'master-default' ); ?>">
+				Control Panel</a>
+			<a href="<?php echo $this->url(array(), 'logout-page'); ?>">
+				Logout</a>
+	</div>
+		</form>
+	</div>
+<?php } ?>

@@ -1,0 +1,7 @@
+<ul>
+<?php
+foreach($this->container as $page){	
+	echo '<li><span>' , $this->navigation()->menu()->htmlify($page) ,  '</span></li>'  , PHP_EOL;
+}
+?>
+</ul>

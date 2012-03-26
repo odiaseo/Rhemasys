@@ -1,0 +1,100 @@
+BlogCategory:
+  tableName: blog_category
+  actAs:
+    Rhema_Model_Template_Subsite:
+  columns:
+    title:
+      type: string(45)
+    description:
+      type: string(255)  
+BlogPost:
+  tableName: blog_post
+  actAs:
+    Rhema_Model_Template_Subsite:
+    Blameable:
+    Sluggable:
+      unique: true
+      fields: [title]
+      canUpdate: true
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+    description:
+      type: string(255)
+    keyword:
+      type: string(255)
+    excerpt:
+      type: string(255)
+    is_active:
+      type: integer(1)
+      default: 1
+    blog_category_id:
+      type: integer(4)
+      notnull: true
+    content:
+      type: string
+      notnull: true
+    role_id:
+      type: integer(4)
+      notnull: false
+    image_file:
+      type: string(45)
+    user_id:
+      type: integer(4)
+      name: user_id as author
+  relations:
+    BlogCategory:
+      foreignAlias: BlogCategory
+    User:
+      foreignType: one
+    Role:
+      foreignType: one
+BlogComment:
+  tableName: blog_comment
+  actAs:
+    Rhema_Model_Template_Subsite:
+  columns:
+    title:
+      type: string(55)
+    name:
+      type: string(150)
+    url:
+      type: string(100)
+    comment:
+      type: string(1280)
+      notnull: true
+    blog_post_id:
+      type: integer(4)
+    user_id:
+      type: integer(4)
+      name: user_id as author
+    is_active:
+      type: integer(1)
+      default: 1
+    rating:
+      type: decimal(4)
+    ip_address:
+      type: string(15)
+      ip : true
+  relations:
+    User:
+      foreignType: one
+    BlogPost:
+      foreignAlias: PostComment
+      class: BlogPost
+      refClass: BlogPostComment
+BlogPostComment:
+  tableName: blog_post_comment
+  actAs: 
+    Rhema_Model_Template_Subsite:
+  columns:
+    blog_post_id:
+      type: integer(4)
+    blog_comment_id:
+      type: integer(4)
+  relations:
+    BlogPost:
+      foreignAlias: PostComments
+    BlogComment:
+      foreignAlias: PostComments

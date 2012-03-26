@@ -1,0 +1,14 @@
+<div id="social-media" class="vcard">
+	<a class="feed-icon" href="<?php echo $this->url(array(),'blog-rss-feed'); ?>" target="_blank" 
+	title="Subscribe to our blog feed" ></a>
+	
+	<span style="display:none" class="tel" title="Contact <?php echo $this->siteDetails['title']; ?>"> 
+		<?php echo $this->siteDetails['telephone']; ?>
+	</span>
+	
+	<div class="plus-one">
+		<?php echo $this->addGooglePlusOne(); ?>
+	</div>
+
+
+</div>

@@ -1,0 +1,19 @@
+	<div class="pager">
+		<?php $this->nav->display(); ?>
+	</div>
+	
+	<div class="product-search">
+		<?php 
+			foreach($this->products as $prod){  
+				$url 							= array('slug' => $prod['EcomProduct']['slug'],'product_id' => $prod['EcomProduct']['id']); 
+    			$replace['attr']['/PRD_URL/']   = $this->url($url, PRODUCT_ROUTE);?>
+				<div class="search-result">	
+					<?php echo $this->Cart($prod, 'EcomProduct')->buildDisplay($this->displayTemplate, $replace); ?>					
+				</div>	 
+<?php	    }?>		
+		
+	</div>
+	<div class="pager">
+		<?php $this->nav->display(); ?>
+	</div>
+	 

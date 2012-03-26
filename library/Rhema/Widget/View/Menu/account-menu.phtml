@@ -1,0 +1,10 @@
+   
+	<div id="account-menu" class="side-menu">
+		<h2 class="nav-header toprnd">My Account Menus</h2>
+		<?php
+				echo $this->navigation()->menu($this->navData['container'])
+		    	 				 	->setMinDepth(1)
+		    	 				 	->setUlClass('ul-side-menu')
+		    	 					->render(); 
+		?>
+	</div>

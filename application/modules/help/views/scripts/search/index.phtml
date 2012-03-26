@@ -1,0 +1,26 @@
+ 
+		<?php $param = array('module'=>'admin','controller'=>'grid','action'=>'index'
+					, 'table'=>HELP_PREFIX . 'HelpDocument'); ?>	
+					  
+			<div id="page-design" class="help-tab"> 
+				<div id="db-tabs">  
+					<ul>
+					<?php    
+							$cnt = -1; 
+							foreach($this->allTypes as $type){
+								if(++$cnt == 0){ ?>
+								<li><a href="#tab-0"><?php echo $type['title']; ?></a></li>	
+						<?php  }else{ ?>										 
+								<li><a href="<?php $param['type_id'] =  $type['id'];
+											echo $this->url($param,ADMIN_ROUTE); ?>">  
+									<?php echo $type['title']; ?></a>
+								</li>					<?php 	
+					          }
+							}
+  						?>
+								<li><a href="<?php echo $this->url(array('id' => 1), HELP_ROUTE); ?>">Help</a></li> 
+					</ul>  
+					<div id="tab-0"><?php echo $this->gridData; ?></div> 			
+				</div>
+	 
+			 </div>

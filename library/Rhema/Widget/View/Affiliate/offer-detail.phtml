@@ -1,0 +1,136 @@
+<?php 
+$this->cur = new Zend_Currency(); 
+$this->route        = Zend_Controller_Front::getInstance()->getRouter()->getCurrentRoutename();
+
+if(!$this->offer) {
+	echo $this->render('Affiliate/product-not-found.phtml');
+}else{
+	$product     = (array) $this->populateAffiliateProduct($this->offer);
+ 
+	if($product['AffiliateRetailer']['affiliate_retailer_type_id'] == 2){
+		$this->text  = 'Recycle';
+		$this->class = 'recycle';
+	}else{
+		$this->text  = 'Buy Now';
+		$this->class = 'buy-now';
+	}
+	 
+	$product['title']   = Rhema_Util_String::correctEncoding($product['title']);
+	$product['price']   = preg_replace('/[^\d\.]+/i','',$product['price']);
+	$price 				= floatval($product['price']) ? $product['price'] : 0;
+	$urlTitle           = Doctrine_Inflector::urlize($product['title']);
+	$outLink       		= $this->url(array('id' => $product['id'], 'title' => $urlTitle), 'product-outlink', true, false);
+	//$deepLink      		= $product['deeplink'] ; 
+
+	$deepLink      		= $this->affiliateLink()->getDeeplink($product, '', "p{$product['id']}");
+	$basketUrl   		= isset($product['basket_url']) ? $product['basket_url'] : false;
+		 
+	if($price){
+		$this->cur->setValue($price);
+		$this->displayPrice = $this->cur;
+	}else{
+		$this->displayPrice = '';
+	} 
+	$product['description'] = Rhema_Util_String::correctEncoding($product['description']);
+	$this->product = $product ;
+	$this->title   = $urlTitle;
+	
+	if(!isset($product['AffiliateProductType']['code']) or !$product['AffiliateProductType']['code']){
+		$product['AffiliateProductType']['code'] = 'standard';
+	}
+	if( isset($product['AffiliateProductType']['code']) and $product['AffiliateProductType']['code'] != 'standard' and $product['code']){
+		echo $this->render('Search/partials/voucher-code-detail.phtml');
+	}else{?> 
+		
+	<div id="offer-detail" class="rounded <?php echo $product['AffiliateProductType']['code']; ?>">
+		<h2><a id="prod_<?php echo $product['id'] ;?>" <?php echo "{$this->linkAttribute}='$deepLink'" ;?> href="<?php  echo $outLink; ?>" 
+			class="outlink" rel="nofollow" target="_blank" title="<?php echo $product['title']; ?>"><?php echo $product['title']; ?></a>				 
+			</h2>
+			<?php 
+		if($product['network_promotion'] and $product['network_promotion']){  ?>			 
+		   		<h3 class="promotion-heading">*** <?php  echo Rhema_Util_String::correctEncoding($product['network_promotion']); ?> *** </h3>
+<?php 	 }
+		  
+		if(isset($product['AffiliatePromotion']) and $product['AffiliatePromotion']){ 
+			$promo = $product['AffiliatePromotion'];
+			$promoLink   = $this->url(array('id' => $promo['id'], 'promotion' => $promo['slug']), 'affiliate-promotion', true);?>
+				<h4 style="text-align:center">Promotion - <a href="<?php echo $promoLink; ?>" title="Products with similar promotional offers"><?php echo $promo['title']; ?></a></h4>
+	    <?php 	}  
+	?> 				
+		<div class="left-section">	
+		 
+			<a id="prod_<?php echo $product['id'] ;?>" href="<?php  echo $outLink; ?>" class="outlink" rel="nofollow" target="_blank" 
+			  title="<?php echo $product['title']; ?>" <?php echo "{$this->linkAttribute}='$deepLink'" ;?>><img border="0"  
+				src="<?php echo $this->getImagePath()->product($product); ?>"  alt="<?php echo $product['title']; ?>" class="main-prod"/></a>
+
+ 			
+		</div>
+		
+		<div  id="m-summary" class="right-section">	   			 
+				<ul class="m-contract">
+					<?php echo $this->displayProductInfoList($product); ?> 
+				</ul>
+				<?php if($this->displayPrice){?>				
+				<span class="detail-price" style="float:left">Price: <?php echo $this->displayPrice; ?></span>
+				<?php }?>
+				 <a href="<?php echo $outLink; ?>" <?php echo "{$this->linkAttribute}='$deepLink'" ;?> class="outlink" rel="nofollow">
+				 <button class="<?php echo $this->class?> prod-span rounded prod-btn"><?php echo $this->text; ?></button>
+				 </a>
+				 <?php if($basketUrl){?>
+					<div class="basket"><a id="prod_<?php echo $product['id'] ;?>" href="<?php echo $outLink ; ?>" <?php echo "{$this->linkAttribute}='$basketUrl'" ;?>
+						 class="outlink" rel="nofollow">view basket
+				   </a></div>
+			     <?php }?>
+			 
+				<div style="margin:10px 0">
+				<script type="text/javascript">
+					google_ad_client = "ca-pub-2668862008618650";
+					/* Our Mobile Deals - Product Detail */
+					google_ad_slot = "9794106454";
+					google_ad_width = 234;
+					google_ad_height = 60;
+					//
+				</script>
+				<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"> </script>
+				</div>
+ 
+		 </div> 
+			<div id="info-block" style="display:table;">
+				<?php  
+				if($product['description'] and $product['description'] != $product['title']){  
+					echo '<p class="descripion">' . $product['description'] . '</p>'; 
+			    }				
+				echo '<div style="margin-bottom:5px; display:table">' .$this->buildTagLinks($product['title'] . ' ' . $product['keywords']) . '</div>';
+				$this->showShareButtons = true ;
+				echo $this->render('Search/partials/product-links.phtml') ;
+				?>  
+			</div>		
+	</div>
+<?php } 
+      
+   	if($this->paginator instanceof Zend_Paginator and count($this->paginator) > 1){
+		$pager = (string)$this->paginator;
+	}else{
+		$pager = '';
+	} 
+	 
+	echo $pager;   
+      ?>
+	<div style="display:table">	
+	<?php 
+		if($this->similar){
+			$related = 'Products Similar to ' . $product['title'];
+		}elseif('all-promotions' == $this->route  or 'affiliate-promotion' == $this->route){
+			$related = 'Other Promotional and Sale Products - ' . date('Y');
+		}else{
+			$related = 'Related Products in ' . $product['AffiliateProductCategory']['title']. ' Category - ' . date('Y');
+		}
+	?>
+		<h2 class="search-title" style="margin:10px 0"><?php echo $related; ?> </h2>
+	 	<div class="row">
+			<?php  echo $this->layout()->render('row-items'); ?>
+		</div>
+	</div>	
+<?php }
+  echo $pager; 
+?>

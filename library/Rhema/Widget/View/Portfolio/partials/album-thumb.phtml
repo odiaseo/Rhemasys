@@ -1,0 +1,27 @@
+<?php
+	$prefix    = $this->photobookPath . $this->album->album_dir . '/' . 'thumb.';  
+	$thumbPath = '';
+	
+	foreach(array('gif', 'jpg', 'png') as $ext){
+		$realPath = $this->docRoot . '/' . PHOTOBOOK_DIR . '/' . $this->album->album_dir . '/thumb.' . $ext; 
+		if(file_exists($realPath)){
+			$thumbPath = $prefix . $ext;
+			break;
+		}
+	}
+ 
+	$sale		  = 'nonsale-album';
+	if($this->album->Event['is_sale']){
+		$sale    = 'sale-album';
+		$href    = $this->url(array('category' => 'download', 'keyword' => $this->album->slug), 'portfolio-search');
+	}else{
+		$href    = $this->url(array('album'=> $this->album->slug, 'useThumb' => 0), 'portfolio-album-preview');
+	} ?>
+	<a class="album-thumb <?php echo $sale; ?> rounded" href="<?php echo $href; ?>" title="<?php echo $this->album->title; ?> - Photobbok Album">
+			<span class="bg-thumbnail toprnd" style="background:url('<?php echo $thumbPath; ?>') no-repeat bottom center"></span>
+			<span class="desc">
+				<?php echo $this->escape($this->album->title); ?><br />
+				<?php echo $this->escape($this->album->Event['location']); ?>
+			</span>
+	</a>
+ 

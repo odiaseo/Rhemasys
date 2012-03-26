@@ -1,0 +1,43 @@
+
+<div id="blog_post" class="sidebar clearfix">
+	<h2>Latest Blog Posts</h2> 
+	<a href="<?php echo $this->url(array(), 'blog-rss-feed')?>" title="Click for blog feed" target="_blank">
+		<?php echo $this->render('partials/block-icon.phtml'); ?>
+	</a>
+ 
+<?php 	 
+		$maxLength = Rhema_SiteConfig::getConfig('settings.excerpt_maxlength');
+		foreach($this->latest as $items){ 
+			$urlParm['slug'] = $items['slug'] ;
+			$author    = $items['User'];
+			$postUrl   = $this->url($urlParm, BLOG_ROUTE);
+			$timeStamp = strtotime($items['created_at']);
+			$date      = new Zend_Date($timeStamp, Zend_Date::TIMESTAMP);
+			$month     = strtoupper($date->toString(Zend_Date::MONTH_NAME_SHORT));
+			$day       = $date->toString(Zend_Date::DAY);
+			$postDate  = $date->toString("dd-MM-Y");
+			$excerpt   = strlen($items['excerpt']) > $maxLength 
+						 ? substr_replace($items['excerpt'], ' ...', $maxLength)
+						 : $items['excerpt'] ;
+		?>
+			<div class="post-summary">
+				<div class="post-date">
+					<span class="month"><?php echo $month; ?></span>
+					<span class="day"><?php echo $day?></span>
+				</div>
+				<div class="excerpt">
+			    	<h3><a href="<?php echo $postUrl; ?>" title="<?php echo $items['title'] ; ?>"> 
+			    		<?php echo ucwords($items['title']) ; ?></a> 
+			    	</h3> 	    		
+			    		<p class="text"><?php echo ucfirst($excerpt); ?></p>
+			    	 
+					<span class="read-more"><a href="<?php echo $postUrl; ?>" title="read more about <?php echo $items['title'] ; ?>">read more</a></span>
+				</div>
+			</div>
+<?php	}?>
+
+	 
+	<div id="view-all-post" class="view-all clearfix">
+		<a href="<?php echo $this->url(array(), 'blog-home')?>" title="view post summaries">view post summaries</a>
+	</div>
+</div>

@@ -1,0 +1,27 @@
+<?php 
+	if(isset($_SERVER['REQUEST_URI']) and !Rhema_Util::isAdminRoute($_SERVER['REQUEST_URI'])):?>
+	<div id="other-sites" style="text-align:center; padding-top:15px;"><a href="http://www.ourmobiledeals.com" target="_blank">Best Online Mobile Deals</a> 
+		| <a href="http://www.rhemastudio.com" target="_blank">Home, Bridal & Photography</a> 
+		| <a href="http://www.peleodiase.com" target="_blank">Dating, Relationships and Marriage Tips</a> 
+		| <a href="http://www.rhema-webdesign.com" target="_blank">Computer, Web & Internet</a>
+		| <a href="http://www.vaboose.com" target="_blank">Fashion & Style</a>
+		| <a href="http://www.mealcentre.com" target="_blank">Restaurant Vouchers, Meal Deals and Drink Offers</a>
+		| <a href="http://www.affiliate-marketing-platform.com" target="_blank">Affiliate Marketing Platform</a>
+		| <a href="http://www.nmsexboys.com" target="_blank">NMS Exboys</a>
+		 
+	</div>
+<?php endif; 
+ $role = Zend_Registry::isRegistered('user-role') ? Zend_Registry::get('user-role') : 'guest';
+?>
+<span class="copy"> <input type="hidden" id="site-dir"
+	value="<?php echo SITE_DIR; ?>" /> powered by &copy; <a
+	href="http://www.rhema-webdesign.com">rhema webdesign</a> - all rights
+reserved. Valid XHTML &amp; CSS. </span>
+<div id="ajax-loading" style="display: none; text-align: center"
+	title="Please wait">
+<ul>
+	<li>&nbsp;</li>
+</ul>
+<span class="wait-image">&nbsp;</span></div>
+<div id="info-div" style="display: none"><span id="user-role"><?php echo strtolower($role); ?></span>
+</div>

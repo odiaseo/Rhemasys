@@ -1,0 +1,15 @@
+
+<div id="blog_post">
+	<h2>Latest Blog Posts</h2> 
+	<ul>
+<?php 	
+		foreach($this->latest as $items){ 
+			$urlParm['slug'] = $items['slug'] ;
+		?>
+			<li><a href="<?php echo $this->url($urlParm,BLOG_ROUTE); ?>" title="<?php echo $items['title'] ; ?>">
+				<?php echo $items['title'] ; ?></a> 
+			</li>
+<?php	}?>
+
+	</ul>
+</div>

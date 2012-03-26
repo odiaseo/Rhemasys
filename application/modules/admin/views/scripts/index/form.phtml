@@ -1,0 +1,15 @@
+  
+	<?php $param = array('module' => 'admin', 'controller' => 'grid', 'action' => 'index' ); ?> 
+	
+	<div id="web-forms" class="full-width"> 
+		 	<div id="page-tabs"> 
+				<ul>
+					<li><a href="#tabs-1">Web Forms</a></li> 		
+					<li><a href="<?php echo $this->url(array('id' => 1), HELP_ROUTE); ?>">Help</a></li> 			 					 
+				</ul>
+				<div id="tabs-1">
+		 			<?php echo $this->gridData; ?>
+		 		</div> 
+		 		 
+		 	</div>
+	</div>

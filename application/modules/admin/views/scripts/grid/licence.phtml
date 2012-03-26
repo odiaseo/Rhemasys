@@ -1,0 +1,13 @@
+ 
+ <?php $urlParm	 = array('module'=>'admin','controller'=>'grid','action'=>'licence','task'=>'save'); ?>
+<div id="show-licence" title="Site Licences">	
+		<div><form action="<?php echo $this->url($urlParm, ADMIN_ROUTE) ;?>" > 
+			<select id="licence_id" multiple size="10" style="height:300px; width:450px" class="multiselect">
+		<?php		foreach($this->multiOpt as $key => $val){ 
+						$sel = (array_search($key, $this->selected) === false) ? '' : 'selected="selected"';
+						echo "<option value='$key' $sel>$val</option>";
+					} ?>
+			</select> 
+		</form>	
+		</div>
+</div>

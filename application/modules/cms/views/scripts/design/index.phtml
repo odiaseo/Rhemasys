@@ -1,0 +1,46 @@
+
+<table width="100%"><tr><td width="40%" valign="top">
+<div id="layout-left" >
+	<div id="accordion-tools">
+		<h3><a href="#">Pages</a></h3>
+		<div id="page" class="sort-item"><?php echo $this->layoutItems['Page']; ?></div> 
+		 
+		
+		<h3><a href="#">Templates</a></h3> 
+		<div id="temp" class="sort-item"><?php echo $this->layoutItems['AdminTemplate']; ?></div>
+		 
+		
+		<h3><a href="#">Elements</a></h3>
+		<div id="elem" class="sort-item"><?php echo $this->layoutItems['AdminElement']; ?></div>
+		 
+		
+		<h3><a href="#">Components</a></h3> 
+		<div id="comp" class="sort-item"><?php echo $this->layoutItems['Component']; ?></div>
+ 	</div>	 
+ 
+</div>
+</td>
+
+<td valign="top">
+
+<div id="layout-right">  
+
+ 
+	<div class="ui-jqgrid ui-widget-content ui-corner-all">	
+	   <div class="ui-jqgrid-titlebar ui-corner-tl ui-corner-tr ui-state-default">
+	    	<span class="ui-jqgrid-title" style="float:none" id="page-title">Page title</span>
+	    </div>
+	 	<div class="ui-jqgrid-view clearfix">
+	         <div class="ui-jqgrid-bdiv" id="layout-table">
+				<?php echo $this->pageLayoutTable; ?>		
+			 </div>
+	     </div>
+	     <div id="layout-buttons" class="ui-jqgrid-pager ui-corner-bottom ui-state-default do-wait">
+	        <a class="fm-button ui-state-default ui-corner-all fm-button-icon-left" id="update-layout" 
+	            href="javascript:void(0)"> Update<span class="ui-icon ui-icon-disk"></span>
+	        	</a>        
+	     </div>
+	  </div>
+ 
+</div>
+</td></tr></table>

@@ -1,0 +1,32 @@
+<?php
+	   $this->includeJs('jquery-raty/js/jquery.raty.min.js');
+ 
+		foreach((array) $this->reviews as $items){
+			$author    = $items['User'];
+			$timeStamp = strtotime($items['created_at']);
+			$date      = new Zend_Date($timeStamp, Zend_Date::TIMESTAMP);
+			$display   = '' ; // - ' . $date->toString("dSS  MMM Y");
+			$user      =  ucwords(substr($author['firstname'],0,1)  . '. ' . $author['lastname']);
+		?>
+			<div class="comment">
+		    	<blockquote class="description">
+		    	    <p class="user-comment"><?php echo ucfirst($items['comment']); ?></p>
+			    	<div class="rating"><?php echo $items['rating']; ?></div>
+			    	<span class="author reviewer fn"><?php echo $user; ?>  <?php echo $display ; ?></span>
+		    	</blockquote>
+			</div>
+<?php	}
+
+ 
+		$imgPath = SCRIPT_PATH . '/jquery-raty/img';
+		$this->collateScripts("jQuery('.rating','#reviews, .review-div').each(function(){
+			var r = jQuery(this);
+			var v = r.text()*1;
+			r.html('');
+			r.raty({
+				readOnly : true,
+				start    : v,
+				hintList : ['bad', 'poor', 'regular', 'good', 'excellent'],
+				path     : '{$imgPath}'
+			});
+		});");

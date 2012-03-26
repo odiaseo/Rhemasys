@@ -1,0 +1,17 @@
+
+	<div class="full-width">
+
+		 <div id="systems-tabs">
+			<ul>
+					<li><a href="#tabs-1" title="Modules">Modules</a></li>
+					<li><a href="<?php $url['table'] = 'admin_subsite';
+						echo $this->url($url, 'grid-index');?>"  title="Sites">Sites</a></li>
+					<li><a href="<?php $url['table'] = 'admin_licence';
+						echo $this->url($url, 'grid-index');?>"  title="Licences">Licences</a></li>
+			</ul>
+
+			<div id="tabs-1" class="div-content">
+ 				<?php echo $this->gridData; ?>
+	  			</div>
+		     </div>
+        </div>

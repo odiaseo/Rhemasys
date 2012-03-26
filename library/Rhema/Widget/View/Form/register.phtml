@@ -1,0 +1,7 @@
+<h2>Registration Form</h2>
+<?php 
+ try{
+	echo $this->form->render();
+ }catch (Exception $e){
+ 	echo $e->getMessage();
+ } ?>

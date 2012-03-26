@@ -1,0 +1,33 @@
+<?php  
+	$this->route        = Zend_Controller_Front::getInstance()->getRouter()->getCurrentRoutename();
+ 	$perPage     		= Rhema_SiteConfig::getConfig('settings.items_per_page');
+	$backendPath 		= Rhema_SiteConfig::getBackendPath();
+	$this->headScript()->appendFile($backendPath . 'scripts/affiliate-discount.js');
+			
+	$namespace        = $namespace = Zend_Registry::get('namespace' );
+	$this->viewAdult  = isset($namespace->viewAdult) ? $namespace->viewAdult : false;	
+	
+	if(!count($this->paginator)){ 
+	 	$this->search    = true ;
+		$this->paginator = Rhema_Model_Service::factory('affiliate_product')->getTopProducts(50) ;
+	}
+	echo $this->render('Search/partials/result-header.phtml');
+      	 
+
+	 
+	if($this->paginator instanceof Zend_Paginator and count($this->paginator) > 1){
+		$pager = (string)$this->paginator;
+	}else{
+		$pager = '';
+	} 
+	 
+	echo $pager;
+	
+	$this->cur = new Zend_Currency();  
+?>
+
+<div id="result-set" class="rounded"><?php
+	echo $this->layout()->render('row-items');
+?>	
+</div> 
+<?php echo $pager; ?>

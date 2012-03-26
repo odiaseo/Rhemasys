@@ -1,0 +1,27 @@
+<div id="show-sections" title="Template Sections">	
+		<div>
+		<?php 
+			$form   = new Zend_Form();
+			$action = $this->url( array('task'=>'save'), 'admin-grid-section');
+			$form->setAction($action)
+				  ->setMethod('post');
+				  
+			$form->addElement('multiselect', 'section_id',array(
+				'value'			=> $this->selected,
+				'multiOptions'	=> $this->multiOpt,
+			    'decorators'	=> array('ViewHelper',),
+			    'size'		    => 10 ,
+			    'class'			=> 'multiselect',
+				'style'			=> 'height:300px; width:450px'
+			    
+			));
+			
+			$form->addElement('hidden', 'template_id', array(
+				'value'		=> $this->template_id ,
+			'decorators'	=> array('ViewHelper',)
+			
+			));
+			echo $form;
+		?>
+ </div>
+</div>

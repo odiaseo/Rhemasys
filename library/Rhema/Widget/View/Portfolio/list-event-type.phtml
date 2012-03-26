@@ -1,0 +1,88 @@
+ <?php
+ switch($this->category){
+ 	case 'download': $selectedTab = 2 ; break;
+ 	case 'location': $selectedTab = 1 ; break;
+ 	default:
+ 		$selectedTab = 0;
+ }
+
+ //pd($this->category);
+ $this->collateScripts( "jQuery('#album-tabs').tabs(); jQuery('#album-tabs').tabs( 'select' , {$selectedTab});" );
+
+ ?>
+
+<div id="album-tabs">
+
+ 	<ul>
+ 		<li><a href="#event-type-list">Category</a></li>
+ 		<li><a href="#by-location">Location</a></li>
+ 		<li><a href="#download">Download</a></li>
+ 	</ul>
+
+	 <div id="event-type-list" class="sidebar">
+		 <ul>
+		<?php
+			$string = '';
+			$sum    = 0;
+			foreach($this->eventTypes as $type){
+				$count = (isset($type['Event']['countid'])  and $type['Event']['countid']) ? $type['Event']['countid']: 0;
+				$href = $this->url(array('category' => $type['slug'], 'page' => 1), 'portfolio-category');
+				$string .= "<li class='rounded'><a href='$href' title='{$type['description']}'>"
+							 . $this->escape($type['title']) . " Photography</a>
+								<span class='category-count'>({$count})</span>
+					  		</li>";
+				$sum += $count ;
+			}
+
+			$href    = $this->url(array('category' => 'all'), 'portfolio-category');
+			$all     = "<li class='rounded'><a href='$href' title='View all photobook albums'>All</a>
+							<span class='category-count'>({$sum})</span>
+				  		</li>";
+			echo $all . $string ;
+		?>
+		</ul>
+	 </div>
+
+	 <div id="by-location" class="sidebar">
+		 <ul>
+		<?php
+			$string = '';
+			$sum    = 0;
+			foreach($this->locations as $type){
+				$count = isset($type['countlocation']) ? $type['countlocation'] : 0;
+				$href = $this->url(array('category' => 'location', 'keyword' => strtolower($type['location']), 'page' => 1), 'portfolio-search');
+				$string .= "<li class='rounded'><a href='$href' title='{$type['location']}'>{$type['location']} Photographs</a>
+								<span class='category-count'>({$count})</span>
+					  		</li>";
+				 $sum += $count ;
+			}
+			$href = $this->url(array('category' => 'all'), 'portfolio-category');
+			$string = "<li class='rounded'><a href='$href' title='All Weddings'>All</a>
+							<span class='category-count'>({$sum})</span>
+				  		</li>" . $string;
+			echo $string ;
+		?>
+		</ul>
+
+	 </div>
+
+	 <div id="download" class="sidebar">
+	 	<?php
+	 		$store = array();
+	 		foreach($this->saleItems as $item){
+	 			//pd($item);
+	 			$time = strtotime($item['Event']['start_at']);
+	 			$year = date('Y', $time);
+	 			$day  = date('M', $time);
+	 			$href = '#';
+	 			$href = $this->url(array('category' => 'download', 'keyword' => $item['slug']), 'portfolio-search');
+	 			$store[$year][] =  '<li><a href="' . $href . '" title="'. $item['Event']['description']. '">'
+	 							  . $this->escape($item['Event']['title']) . ' Photographs</a> ('. $day .')</li>';
+	 		}
+
+	 		foreach($store as $year => $string){
+	 			echo '<ul><li>' . $year . '<ul>' . implode( PHP_EOL, $string) . '</ul></li></ul>';
+	 		}
+	 	?>
+	 </div>
+</div>

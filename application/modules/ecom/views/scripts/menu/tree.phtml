@@ -1,0 +1,14 @@
+   
+	<div class="side-menu">
+		<h2 class="nav-header toprnd"><?php echo $this->treeLabel; ?></h2>
+		<?php
+				$acl = Rhema_Util::getAcl('ecom');
+				$e = $this->dto;
+				$container = $this->dto->getContainer();
+				echo $this->navigation()->setAcl($acl)
+									->menu($container)
+		    	 				 	->setMinDepth(1)
+		    	 				 	->setUlClass('ul-side-menu')
+		    	 					->render(); 
+		?>
+	</div>

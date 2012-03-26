@@ -1,0 +1,183 @@
+<?php 
+ $cur  = new Zend_Currency();
+ switch($this->searchType){
+ 	case 'affiliate-retailer': $selectedTab = 2 ; break;
+ 	case 'affiliate-brand'   : $selectedTab = 1 ; break;
+ 	case 'promotion' : $selectedTab = 3 ; break;
+ 	default:
+ 		$selectedTab = 0;
+ }
+ $this->collateScripts( "jQuery('#product-tabs').tabs();  jQuery('#product-tabs').tabs( 'select' , {$selectedTab});" );
+
+ $allUrl = $this->url(array(), 'all-affiliate-brand', true);
+?>
+<div>
+	 <script type="text/javascript"><!--
+		google_ad_client = "ca-pub-2668862008618650";
+		/* OMD - Sidebar */
+		google_ad_slot = "6524629204";
+		google_ad_width = 300;
+		google_ad_height = 250;
+		//-->
+		</script>
+		<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+		</script>
+</div>
+<div>
+	<div id="product-tabs">
+		 
+	 	<ul>
+	 		<li><a href="#by-category">By Category</a></li>
+	 		<li><a href="#by-brand">By Brand</a></li>
+	 		<li><a href="#by-retailer">By Retailer</a></li> 
+	 		<?php if(count($this->gifts) > 1){?>
+	 			<li><a href="#by-gift">Promotions</a></li>
+	 		<?php }
+	 		 
+	 		   if(count($this->manufacturers) >1){?>
+	 			<li><a href="#by-manu">By Manufacturer</a></li>
+	 		<?php }?>
+	 		<li><a href="#by-price">By Price</a></li>
+	 	</ul>
+	  	<div id="by-brand" class="sidebar">
+	  	<?php echo $this->displayAlphaList('brand-alpha-list', $this->currentLetter); ?><!--
+		 	<ul>
+		 	<?php 
+	/*	 		$count = 0;
+		 		$str   = '';
+		 		foreach((array)$this->brands as $brand ){
+		 			if($brand ['countid']){
+			 			$dispCount = number_format($brand ['countid']);
+			 			//$brand  = $item['AffiliateProductBrand'];
+			 			$title  = ucwords($brand['title']);
+			 			$url    = $this->url(array('brand' => $brand['slug']), 'affiliate-brand', true);
+			 			$str   .= "<li><a href='{$url}' title='{$title }'>{$title } ({$dispCount})</a></li>";
+			 			$count += $brand['countid'];
+		 			}
+		 		}
+		 		$allStr = "<li><h5><a href='{$allUrl}' title='All discount, deals and offers'>All (".number_format($count).")</a></h5></li>";
+		 		echo $allStr, $str ;*/
+		 	?>
+		 	</ul>
+		 --></div>	
+	 	<div id="by-category" class="sidebar">
+	 	<?php echo $this->displayAlphaList('category-alpha-list', $this->currentLetter); ?>
+		 <?php 
+		  		/*  echo $this->navigation()
+							->menu($this->categoryMenu)
+		    	 			->setMinDepth(1)
+		    	 			->setMaxDepth(1)
+		    	 			->setUlClass("ul-affiliate-category") 
+			    	 		->render();*/
+		
+		 ?>	
+		 	<ul>
+		 	<?php 
+	/*	 		$count = 0;
+		 		$str   = '';
+		 		//pd($this->category);
+		 		foreach((array)$this->category as $brand ){
+		 			if($brand ['countid']){
+			 			$dispCount = number_format($brand ['countid']);
+			 			//$brand  = $item['AffiliateProductBrand'];
+			 			$title  = ucwords($brand['title']);
+			 			$url    = $this->url(array('category' => $brand['slug']), 'mobile-category', true);
+			 			$str   .= "<li><a href='{$url}' title='{$title }'>{$title } ({$dispCount})</a></li>";
+			 			$count += $brand['countid'];
+		 			}
+		 		}
+		 		$allStr = "<li><h5><a href='{$allUrl}' title='All discount, deals and offers'>All (".number_format($count).")</a></h5></li>";
+		 		echo $allStr, $str ;*/
+		 	?>
+		 	</ul>	 
+		 </div>
+	
+		<?php if(count($this->manufacturers) >1){?>
+	 	<div id="by-manu" class="sidebar">
+		 	<ul>
+		 	<?php 
+		 		$count = 0;
+		 		$str   = '';
+		 		foreach((array)$this->manufacturers as $manu){
+		 			if($manu['countid']){
+			 			$dispCount = number_format($manu['countid']);
+			 			$title = ucwords(strtolower($manu['title']));
+			 			$url   = $this->url(array('manufacturer' => $manu['slug']), 'affiliate-manufacturer', true);
+			 			$str  .= "<li><h5><a href='{$url}' title='{$title }'>{$title } ({$dispCount})</a></h5></li>";
+		 			}	 		 
+		 		} 
+		 		echo  $str ;
+		 	?>
+		 	</ul>
+		 </div>	
+		<?php } ?> 	 
+	 	<div id="by-retailer" class="sidebar">
+		 	<ul>
+		 	<?php 
+		 		$count = 0; 
+		 		$str   = '';
+		 		foreach((array)$this->retailers as $retailer){
+		 			if($retailer['countid']){
+			 			$dispCount = number_format($retailer['countid']);
+			 			//$retailer = $item['AffiliateRetailer']; 
+			 			$title = ucwords(strtolower($retailer['title']));
+			 			$url   = $this->url(array('retailer' => $retailer['slug']), 'affiliate-retailer', true);
+			 			$str  .= "<li><h5><a href='{$url}' title='{$title }'>{$title } ({$dispCount})</a></h5></li>";
+		 			}	 		 
+		 		} 
+		 		
+		 		echo  $str ;
+		 	?>
+		 	</ul>
+		 </div>	 
+		 <?php if(count($this->gifts) > 1){?>
+	 	<div id="by-gift" class="sidebar">
+		 	<ul> <?php  
+		 		 $count      = 0;
+				 $giftStr     = '';
+				 //foreach(array() as $promo){ 
+				 foreach((array)$this->gifts as $promo){ 
+				 	if(!preg_match(Admin_Model_AffiliatePromotion::PROMO_REGEX, $promo['title'])){
+				 		$p = explode('with', strtolower($promo['title']));			 		 
+		 				$promoLink   = $this->url(array('id' => $promo['id'], 'promotion' => $promo['slug']), 'affiliate-promotion', true);
+		 				$title       = ucwords($promo['title']); 
+		 				$giftStr  .= "<li><h5><a href='{$promoLink}' title='Free {$title }'>{$title }</a></h5></li>";
+			 		 
+			 		}
+				 }		 	
+		 	
+		 		echo  $giftStr ; 
+		 	?> </ul>
+		 </div>	
+		 <?php } ?>
+	 	<div id="by-price" class="sidebar">
+		 	<ul> <?php 	 		 
+		 		$min = 0.01;
+		 		$byPrice     = '' ;	 		 
+		 		foreach($this->getPriceRanges($min) as $range){
+		 			foreach($range as $start => $end){
+			 			$startPrice = $cur->setValue($start)->toString();
+			 			$enPrice    = $cur->setValue($end)->toString();	 
+			 			$href       = $this->url(array('price'=> "{$start}-{$end}"),'product-search-filters', true);			
+			 			$byPrice .= "<li><h5><a href='{$href}'>{$startPrice} - {$enPrice}</a></h5></li>";	
+		 			} 			
+		 		}
+		 		$topLimit = $end + $min;
+		 		$href     = $this->url(array('price'=> "{$topLimit}", 'page' => 1),'product-search-filters', true);
+		 		$byPrice .= "<li><h5><a href='{$href}'>{$cur->setValue($topLimit)->toString()} and above</a></h5></li>";
+		 		 echo  $byPrice ; 
+		 	?> </ul>
+		 </div> 
+		 
+	
+	</div>	 
+	<br />
+	<div class="sidebar">
+		<script language="javascript" type="text/javascript">
+		var myTarget='http://track.webgains.com/click.html?wglinkid=181700&wgcampaignid=101254&js=0&clickref=mazuma-sidebar';
+		var uri = 'http://track.webgains.com/link.html?wglinkid=181700&wgcampaignid=101254';
+		document.write('<a href="'+myTarget+'" target="_blank" onMouseOver="window.status=\'http://www.mazumamobile.com\';return true;" onMouseOut="window.status=\'\'"><img src="'+uri+'" width="300" height="250" border="0" alt=""/></a>');
+		</script>
+	<noscript><a href="http://track.webgains.com/click.html?wglinkid=181700&wgcampaignid=101254&clickref=mazuma-sidebar" target="_blank"><img src="http://track.webgains.com/link.html?wglinkid=181700&wgcampaignid=101254" width="300" height="250" alt="" border="0" /></a></noscript>
+	</div>
+</div>

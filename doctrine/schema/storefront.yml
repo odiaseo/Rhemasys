@@ -1,0 +1,804 @@
+AddressBook:
+  actAs: 
+    Geographical:
+  tableName: address_book
+  columns: 
+    title:
+      type: string(45)
+    description:
+      type: string(45)
+      default: home
+    line1:
+      type: string(45)
+      notnull: true
+    line2:
+      type: string(45)
+    line3:
+      type: string(45)
+    city:
+      type: string(45)
+      notnull: true
+    state:
+      type: string(45)
+    post_code:
+      type: string(45)
+      notnull: true
+    region:
+      type: string(45)
+    country:
+      type: string(10)
+      country: true
+  relations:
+    User:
+      foreignAlias: Address
+      class: User
+      refClass: UserAddress
+Category:
+  tableName: category
+  actAs:
+    Rhema_Model_Template_Subsite:
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+    description:
+      type: string(45)
+Component:
+  tableName: component
+  actAs: 
+    Blameable:
+    Searchable:
+      fields: [title, content, description]
+    Rhema_Model_Template_Subsite:
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+    description:
+      type: string(45)
+    content:
+      type: string(2147483647)
+      notnull: true
+    category_id:
+      type: integer(4)
+      notnull: true
+  relations:
+    Category:
+      foreignType: one
+Menu:
+  tableName: menu
+  actAs:
+    Sluggable:
+      unique: true
+      fields: [label]
+      canUpdate: true
+      uniqueBy: [label, admin_subsite_id]
+    SoftDelete:
+    NestedSet:
+      hasManyRoots: true
+      rootColumnName: root_id
+    Rhema_Model_Template_Subsite:
+  inheritance:
+    extends: AdminMenu
+    type: concrete
+  columns:
+    sequence:
+      type: integer(3)
+      default: 1
+    page_id:
+      type: integer(4)
+    params:
+      type: string(255)
+  indexes:
+    menuindex:
+      fields: [page_id]
+  relations:
+    Page:
+      foreignAlias: PageMenu
+Role:
+  tableName: role
+  actAs:
+    Rhema_Model_Template_Subsite: 
+    Blameable:
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+    description:
+      type: string(255)
+    sequence:
+      type: integer(4)
+      default: 1
+    is_admin:
+      type: integer(1)
+      default: 0
+Salutation:
+  tableName: salutation
+  actAs:
+    Rhema_Model_Template_Subsite:
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+    description:
+      type: string(255)
+User:
+  tableName: user
+  actAs:
+    Rhema_Model_Template_Subsite:
+    SoftDelete:
+    Blameable:
+  columns:
+    firstname:
+      type: string(80)
+      notnull: true
+      minlength: 2
+    lastname:
+      type: string(100)
+      notnull: true
+      minlength: 2
+    username:
+      type: string(50)
+      notnull: true
+      unique: true
+      minlength: 5
+    dob_at:
+      type: date
+      past: true
+    nickname:
+      type: string(50)
+      unique: true
+    gender:
+      type: enum
+      notnull: true
+      values: [male, female]
+    password:
+      type: string(40)
+      notnull: true
+      minlength: 5
+    telephone:
+      type: string(20)
+    mobile:
+      type: string(11)
+      minlength: 11
+    fax:
+      type: string(20)
+    email:
+      type: string(80)
+      notnull: true
+      email: true
+      unique: true
+    company:
+      type: string(80)
+    image_file:
+      type: string(255)
+    website:
+      type: string(80)
+    start_at:
+      type: timestamp(25)
+    end_at:
+      type: timestamp(25)
+      future: true
+    is_blocked:
+      type: integer(1)
+      unsigned: true
+      default: 0
+    is_active:
+      type: integer(1)
+      default: 1
+    is_admin:
+      type: integer(1)
+      default: 0
+    is_member:
+      type: integer(1)
+      default: 0
+    is_online:
+      type: integer(1)
+      default: 0
+    visits:
+      type: integer(4)
+      default: 0
+      unsigned: true
+    salutation_id:
+      type: integer(4)
+      notnull: true
+      default: 1
+    usergroup_id:
+      type: integer(4)
+      unsigned: true
+      notnull: false 
+      default: 1
+    admin_group_id:
+      type: integer(4)
+      notnull: false 
+      default: 1
+    admin_menu_id:
+      type: integer(4)
+      notnull: false 
+    is_mailing:
+      type: integer(1)
+      default: 1
+    role_id:
+      type: integer(4)
+      default: 1
+    note:
+      type: string(255)
+  indexes:
+    userindex:
+      fields: [email, lastname, dob_at]
+  relations:
+    Role:
+      foreignType: one
+    AdminGroup:
+      foreignType: one
+    AdminMenu:
+      foreignType: one
+    Salutation:
+      foreignType: one
+    Usergroup:
+      foreignType: one
+    AdminSubsite:
+      foreignAlias: Users
+      class: AdminSubsite
+      refClass: UserSubsite
+UserAddress:
+  tableName: user_address
+  columns:
+    user_id:
+      type: integer(4)
+    address_book_id:
+      type: integer(4)
+  relations:
+    User:
+      foreignAlias: UserAddresses
+    AddressBook:
+      foreignAlias: UserAddresses
+UserSubsite:
+  tableName: user_subsite
+  columns:
+    user_id:
+      type: integer(4)
+      unsigned: true
+    admin_subsite_id:
+      type: integer(4)
+  relations:
+    User:
+      foreignAlias: SubsiteUsers
+    AdminSubsite:
+      foreignAlias: SubsiteUsers
+Usergroup:
+  tableName: usergroup
+  actAs:
+    Rhema_Model_Template_Subsite:
+    SoftDelete:
+  columns:
+    title:
+      type: string(50)
+      notnull: true
+      unique: true
+    description:
+      type: string(255)
+    is_hidden:
+      type: integer(1)
+      unsigned: true
+Featured:
+  tableName: featured
+  actAs:
+    Rhema_Model_Template_Subsite:
+    SoftDelete:
+    Blameable:
+  columns:
+    title:
+      type: string(50)
+    menu_id:
+      type: integer(4)
+    label:
+      type: string(50)
+    caption:
+      type: string(50)
+    description:
+      type: string(255)
+    image_file:
+      type: string(255)
+    thumb:
+      type: string(255)
+    note:
+      type: string(255)
+    information:
+      type: string(255)
+    css:
+      type: string(45)
+    is_active:
+      type: integer(1)
+    sequence:
+      type: integer(4)
+      default: 1
+  relations:
+    Menu:
+      foreignType: one
+PageFooter:
+  tableName: page_footer
+  actAs:
+    Blameable:
+    SoftDelete:
+    Rhema_Model_Template_Subsite:
+  columns:
+    title:
+      type: string(50)
+      notnull: true
+      unique: true
+    template_id:
+      type: integer(4)
+      notnull: true
+    description:
+      type: string(255)
+    category_id:
+      type: integer(4)
+      notnull: true
+    is_active:
+      type: integer(1)
+      default: 1
+  relations:
+    Category:
+      foreignType: one
+    Template:
+      foreignType: one
+PageHeader:
+  tableName: page_header
+  actAs:
+    Blameable:
+    SoftDelete:
+    Rhema_Model_Template_Subsite:
+  columns:
+    title:
+      type: string(50)
+      notnull: true
+      unique: true
+    template_id:
+      type: integer(4)
+      notnull: true
+    description:
+      type: string(255)
+    category_id:
+      type: integer(4)
+      notnull: true
+    is_active:
+      type: integer(1)
+      default: 1
+  relations:
+    Category:
+      foreignType: one
+    Template:
+      foreignType: one
+Page:
+  tableName: page
+  actAs:
+    Blameable:
+    SoftDelete:
+    Rhema_Model_Template_Subsite:
+    Sluggable:
+      unique: true
+      fields: [title]
+      uniqueBy: [title, admin_subsite_id]
+      canUpdate: true
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+    meta_title:  
+      type: string(512)
+    description:
+      type: string()
+    category_id:
+      type: integer(4)
+      notnull: true
+    is_active:
+      type: integer(1)
+      default: 1
+    keyword:
+      type: string()
+    start_at:
+      type: timestamp(25)
+    end_at:
+      type: timestamp(25)
+    is_hidden:
+      type: integer(1)
+      default: 0
+    is_cached:
+      type: integer(1)
+      default: 0
+    is_secure:
+      type: integer(1)
+      default: 0
+    template_id:
+      type: integer(4)
+      notnull: true
+    page_header_id:
+      type: integer(4)
+      notnull: true
+    page_footer_id:
+      type: integer(4)
+      notnull: true
+    note:
+      type: string(255)
+  relations:
+    Category:
+      foreignType: one
+    PageHeader:
+      foreignType: one
+    Template:
+      foreignType: one
+    PageFooter:
+      foreignType: one
+Inquiry:
+  tableName: inquiry
+  actAs:
+    Rhema_Model_Template_Subsite:
+    SoftDelete:
+    Blameable:
+  columns:
+    user_id:
+      type: string(45)
+    salutation_id:
+      type: string(45)
+    subject_id:
+      type: integer(4)
+    url:
+      type: string(150)
+    messsage:
+      type: string(255)
+      notnull: true
+      notblank: true
+    is_resolved:
+      type: integer(1)
+    ip_address:
+      type: string(15)
+      ip: true
+  relations:
+    User:
+      foreignType: one
+    Subject:
+      foreignType: one
+    Salutation:
+      foreignType: one
+Subject:
+  tableName: subject
+  actAs:
+    Rhema_Model_Template_Subsite:
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+    description:
+      type: string(45)
+Setting:
+  tableName: setting
+  actAs:
+    Rhema_Model_Template_Subsite:
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+    description:
+      type: string(120)
+    code:
+      type: string(80)
+    param:
+      type: string
+  indexes:
+    code_index:
+      fields: [code]
+      type: unique
+EventType:
+  tableName: event_type
+  actAs:
+    Rhema_Model_Template_Subsite:
+    Sluggable:
+      unique: true
+      fields: [title]
+      canUpdate: true
+      uniqueBy: [title, admin_subsite_id]
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+    description:
+      type: string(255)
+    sort_order:
+      type: integer(4)
+      default: 1
+DisplayGroup:
+  tableName: display_group
+  actAs:
+    Rhema_Model_Template_Subsite:
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+    description:
+      type: string(45)
+Event:
+  tableName: event
+  actAs:
+    Rhema_Model_Template_Subsite:
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+    description:
+      type: string(255)
+    keyword:
+      type: string(255)
+    location:
+      type: string(500)
+      notnull : true
+    content:
+      type: string(2048)
+    start_at:
+      type: timestamp(25)
+      notnull: true
+    end_at:
+      type: timestamp(25)
+    event_type_id:
+      type: integer(4)
+    address_book_id:
+      type: integer(4)
+      notnull : false
+    user_id:
+      type: integer(4)
+      notnull: false
+    is_active:
+      type: integer(1)
+      default: 1
+    is_allday:
+      type: integer(1)
+      default: 0
+    is_sale:
+      type: integer(1)
+      default: 0
+    color:
+      type: string(120) 
+    recurring_rule:
+      type: string(500)
+    image_file:
+      type: string(145)  
+  relations:
+    AddressBook:
+      foreignType: one
+    EventType:
+      foreignType: one
+    User:
+      foreignType: one
+Portfolio:
+  tableName: portfolio
+  actAs:
+    Rhema_Model_Template_Subsite:
+    Sluggable:
+      unique: true
+      fields: [title]
+      canUpdate: true
+      uniqueBy: [title, admin_subsite_id]
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+    description:
+      type: string(255)
+    keyword:
+      type: string(255)
+    page_count:
+      type: integer(4)
+    photo_count:
+      type: integer(4)
+    role_id:
+      type: integer(4)
+    note:
+      type: string(2048)
+    event_id:
+      type: integer(4)
+    is_active:
+      type: integer(1)
+      default: 1
+    is_feature:
+      type: integer(1)
+      default: 1
+    is_complete:
+      type: integer(1)
+      default: 0
+    image_file:
+      type: string(255) 
+    album_dir:
+      type: string(45) 
+    url:
+      type: string(150) 
+  relations:
+    Event:
+      foreignType: one
+    Role:
+      foreignType: one 
+PortfolioComment:
+  tableName: portfolio_comment
+  actAs:
+    Rhema_Model_Template_Subsite:
+  columns:
+    comment:
+      type: string(2048)
+      notnull: true
+    portfolio_id:
+      type: integer(4)
+    user_id:
+      type: integer(4)
+      name: user_id as author
+    is_active:
+      type: integer(1)
+      default: 1
+    rating:
+      type: decimal(4)
+    ip_address:
+      type: string(15)
+      ip : true
+  relations:
+    User:
+      foreignType: one
+    Portfolio:
+      foreignAlias: PortfolioComment
+News:
+  tableName: news
+  actAs:
+    Rhema_Model_Template_Subsite:
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+    description:
+      type: string(45)
+    start_at:
+      type: timestamp(25)
+    end_at:
+      type: timestamp(25)
+    is_active:
+      type: integer(1)
+      default: 1
+    url:
+      type: string(150
+    news_category_id:
+      type: integer(4)
+      notnull: true  
+    content:
+      type: string
+      notnull: true
+  relations:
+    NewsCategory:
+      foreignType: one
+NewsCategory:
+  tableName: news_category
+  actAs:
+    Rhema_Model_Template_Subsite:
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+    description:
+      type: string(45)
+    image_file:
+      type: string(255) 
+Template:
+  tableName: template
+  actAs:
+    Rhema_Model_Template_Subsite:
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+    description:
+      type: string(45)
+    is_header:
+      type: integer(1)
+      default: 0
+    is_footer:
+      type: integer(1)
+      default: 0
+    image_file:
+      type: string(45)
+    thumb:
+      type: string(45)
+    category_id:
+      type: integer(4)
+      notnull: true
+  relations:
+    AdminSection:
+      foreignAlias: Template
+      class: AdminSection
+      refClass: TemplateSection
+    Category:
+      foreignType: one
+TemplateSection:
+  tableName: template_section
+  actAs: 
+    SoftDelete:
+  columns:
+    admin_section_id:
+      type: integer(4)
+      notnull: true
+    template_id:
+      type: integer(4)
+      notnull: true
+    sequence:
+      type: integer(4)
+      default: 1
+  indexes:
+    templateindex:
+      fields: [template_id]
+  relations:
+    AdminSection:
+      foreignAlias: TemplateSections
+    Template:
+      foreignAlias: TemplateSections
+PageLayout:
+  tableName: page_layout
+  actAs:
+    Timestampable:
+    SoftDelete:
+  columns:
+    item:
+      type: integer(4)
+      notnull: true
+    admin_content_type_id:
+      type: string(45)
+      notnull: true
+    page_id:
+      type: integer(4)
+      notnull: true
+    admin_table_id:
+      type: integer(4)
+      notnull: true
+    admin_section_id:
+      type: integer(4)
+      notnull: true
+    template_id:
+      type: integer(4)
+      notnull: true
+    section_seq:
+      type: integer(4)
+      default: 1
+    item_seq:
+      type: integer(4)
+      default: 1
+  indexes:
+    layoutindex:
+      fields: [page_id, admin_table_id, template_id]
+  relations:
+    Template:
+       foreignAlias: Templates
+    Page:
+      foreignAlias: PageLayout
+    AdminContentType:
+      foreignAlias: ContentType
+    AdminSection:
+      foreignAlias: LayoutSections
+    AdminTable:
+      foreignAlias: SourceTable
+Translation:
+  tableName: translation
+  actAs:
+    Rhema_Model_Template_Subsite:
+    Timestampable:
+    Blameable:
+    Sluggable:
+      unique: true
+      fields: [trans_key, file_type]
+      canUpdate: true
+      uniqueBy: [trans_key, file_type, admin_subsite_id]
+  columns:
+    trans_key:
+      type: string(100)
+      notnull: true
+    file_type:
+      type: enum
+      notnull: true
+      values: [route, content]
+    en_GB: string 
+    en_US: string
+    fr_FR: string
+    de_DE: string
+    es_ES: string

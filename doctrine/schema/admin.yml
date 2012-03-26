@@ -1,0 +1,427 @@
+connection: admin
+actAs:
+  Timestampable:
+options:
+  type: INNODB
+  collate: utf8_general_ci
+  charset: utf8
+detect_relations: true
+AdminAcl:
+  tableName: admin_acl
+  actAs:
+    Blameable:
+    Rhema_Model_Template_Subsite:
+  columns:
+    title:
+      type: string(45)
+    scope:
+      type: string(45)
+    resource:
+      type: string(45)
+    privilege:
+      type: string(45)
+    allow:
+      type: integer(1)
+    role:
+      type: string(45)
+    root_id:
+      type: integer(4)
+AdminControl:
+  tableName: admin_control
+  actAs:
+    Rhema_Model_Template_Subsite:
+  columns:
+    licence_key:
+      type: string(45)
+    num_site:
+      type: integer(4)
+      default: 1
+AdminCounty:
+  tableName: admin_county
+  columns:
+    title:
+      type: string(45)
+    code:
+      type: string(45)
+    admin_state_id:
+      type: integer(4)
+    ecom_tax_id:
+      type: integer(4)
+  relations:
+    AdminState:
+      foreignType: one
+    EcomTax:
+      foreignType: one
+AdminState:
+  tableName: admin_state
+  columns:
+    title:
+      type: string(45)
+    code:
+      type: string(45)
+    country:
+      type: string(100)
+      country: true
+    ecom_tax_id:
+      type: integer(4)
+  relations:
+    EcomTax:
+      foreignType: one
+AdminCurrency:
+  tableName: admin_currency
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+    description:
+      type: string(45)
+    code:
+      type: string(8)
+      notnull: true
+    rate:
+      type: decimal(18)
+    symbol:
+      type: string(8)
+    position:
+      type: integer(1)
+      notnull: true
+      default: 0
+AdminDatabase:
+  tableName: admin_database
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+    description:
+      type: string(255)
+AdminContentType:
+  tableName: admin_content_type
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+      unique: true
+    description:
+      type: string(255)
+    code:
+      type: string(45)
+      unique: true
+      notblank: true
+      notnull: true
+    admin_table_id:
+      type: integer(4)
+    thumb:
+      type: string(145)
+    color:
+      type: string(7)
+      htmlcolor: true;
+    is_table:
+      type: integer(1)
+    sequence:
+      type: integer(4)
+    note:
+      type: string(255)
+  relations:
+    AdminTable:
+      foreignType: one
+AdminDictionary:
+  tableName: admin_dictionary
+  actAs:
+    Searchable:
+      fields: [title, description, label]
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+    description:
+      type: string(45)
+    label:
+      type: string(45)
+      notnull: true
+    row:
+      type: integer(4)
+    col:
+      type: integer(4)
+      default: 1
+    sequence:
+      type: integer(4)
+      default: 1
+    note:
+      type: string(255)
+AdminElement:
+  tableName: admin_element
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+    description:
+      type: string(255)
+    widget:
+      type: string(45)
+      notnull: true
+    admin_category_id:
+      type: integer(4)
+      notnull: true
+      default: 1
+    admin_licence_id:
+      type: integer(4)
+      default: null
+  relations:
+    AdminCategory:
+      foreignType: one
+    AdminLicence:
+      foreignType: one
+AdminGroup:
+  tableName: admin_group
+  columns:
+    title:
+      type: string(50)
+      notnull: true
+      unique: true
+    description:
+      type: string(255)
+    is_active:
+      type: integer(1)
+      default: 1
+AdminLicence:
+  tableName: admin_licence
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+      unique: true
+    description:
+      type: string(150)
+    licence_key:
+      type: string(45)
+      notnull: true
+      unique: true
+      default: 'FREE'
+    price:
+      type: float
+      default: 0
+AdminMenu:
+  tableName: admin_menu
+  actAs:
+    Timestampable:
+    NestedSet:
+      hasManyRoots: true
+      rootColumnName: root_id
+  columns:
+    title:
+      type: string(45)
+    description:
+      type: string(150)
+    label:
+      type: string(45)
+    m_module:
+      type: string(45)
+      notnull: true
+      default: storefront
+    m_controller:
+      type: string(45)
+      notnull: true
+      default: index
+    sequence:
+      type: integer(4)
+      default: 1
+    m_action:
+      type: string(45)
+      default: 'index'
+    m_route:
+      type: string(45) 
+    image_file:
+      type: string(150)
+    is_label:
+      type: integer(1)
+      default: 0
+    is_visible:
+      type: integer(1)
+      default: 1
+AdminSubsiteLicence:
+  tableName: admin_subsite_licence
+  actAs:
+    SoftDelete:
+  columns:
+    admin_licence_id:
+      type: integer(4)
+    admin_subsite_id: integer(4)
+    is_active:
+      type: integer(1)
+      default: 1
+  relations:
+    AdminLicence:
+      foreignAlias: SubsiteLicence
+    AdminSubsite:
+      foreignAlias: Subsites
+AdminModule:
+  tableName: admin_module
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+    description:
+      type: string(150)
+    label:
+      type: string(45)
+    code:
+      type: string(45)
+      notnull: true
+    thumb:
+      type: string(145)
+      notnull: true
+    image_file:
+      type: string(45)
+      notnull: true
+    admin_menu_id:
+      type: integer(4)
+      notnull: true
+    admin_licence_id:
+      type: integer(4)
+      notnull: true
+    sequence:
+      type: integer(4)
+      default: 1
+    content:
+      type: string
+  relations:
+    AdminMenu:
+      foreignType: one
+    AdminLicence:
+      foreignType: one
+AdminSection:
+  tableName: admin_section
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+    description:
+      type: string(150)
+    cssid:
+      type: string(45)
+    cssclass:
+      type: string(45)
+    note:
+      type: string()
+    admin_category_id:
+      type: integer(4)
+  relations:
+    AdminCategory:
+      foreignType: one
+AdminSetting:
+  actAs:
+    SoftDelete:
+  tableName: admin_setting
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+    description:
+      type: string(255)
+    config_key:
+      type: string(145)
+    value:
+      type: string(45)
+    note:
+      type: string(255) 
+AdminTable:
+  tableName: admin_table
+  columns:
+    title:
+      type: string(45)
+      unique: true
+    description:
+      type: string(150)
+    name:
+      type: string(45)
+      notnull: true
+    is_admin:
+      type: integer(1)
+    is_hidden:
+      type: integer(1)
+    note:
+      type: string()
+    admin_category_id:
+      type: integer(4)
+      notnull: true
+      default: 1
+    admin_database_id:
+      type: integer(4)
+      notnull: true
+  relations:
+    AdminCategory:
+      foreignType: one
+    AdminDatabase:
+      foreignType: one
+AdminCategory:
+  tableName: admin_category
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+    description:
+      type: string(150)
+AdminSubsite:
+  connection: remote
+  tableName: admin_subsite
+  actAs:
+    Blameable:
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+    description:
+      type: string()
+    keyword:
+      type: string()
+    contact_email:
+      type: string(45)
+      notnull: true
+      email: true
+    sales_email:
+      type: string(45)
+      email: true
+    telephone:
+      type: string(45)
+      notnull: true
+    fax:
+      type: string(45)
+    domain:
+      type: string(45)
+      notnull: true
+    root_dir:
+      type: string(45)
+      notnull: true
+    user_id:
+      type: integer(4)
+      unsigned: true
+      notnull: true
+    template_id:
+      type: integer(4)
+      notnull: false
+    ssid:
+      type: integer(4)
+      notnull: false
+      default: 1
+    is_active:
+      type: integer(1)
+      default: 0
+    renewal_at:
+      type: timestamp(25)
+    colour_scheme:
+      type: string(45)
+      default: default
+    address_book_id:
+      type: integer(4)   
+      notnull: false
+  relations:
+    User:
+      foreignAlias: Subsites
+    AddressBook:
+      foreignType: one
+    Template:
+      foreignType: one
+    AdminLicence:
+      foreignAlias: LicencedModules
+      class: AdminLicence
+      refClass: AdminSubsiteLicence

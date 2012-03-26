@@ -1,0 +1,579 @@
+AffiliateProductType:
+  actAs:
+    Sluggable:
+      unique: true
+      fields: [title]
+      canUpdate: true
+      uniqueBy: [title]   
+  tableName: affiliate_product_type
+  columns:
+    title:
+      type: string(150)
+      notnull: true
+    description:
+      type: string 
+    code:
+      type: string(25)
+    sort_order:
+      type: integer(2)
+      default: 1       
+AffiliateFeedType:
+  actAs:   
+    Sluggable:
+      unique: true
+      fields: [title]
+      canUpdate: true
+      uniqueBy: [title]  
+  tableName: affiliate_feed_type
+  columns:
+    title:
+      type: string(150)
+      notnull: true
+    description:
+      type: string
+AffiliateBanner:
+  actAs:
+    Rhema_Model_Template_Subsite:
+  tableName: affiliate_banner
+  columns:
+    title:
+      type: string(150)
+      notnull: true
+    image_file:
+      type: string
+    url:
+      type: string
+    width:
+      type: integer(2) 
+    is_active:
+      type: integer(1)
+      default: 1
+    height:
+      type: integer(2)
+    affiliate_network_id: integer(4)
+    affiliate_retailer_id: integer(4)
+    affiliate_product_brand_id: integer(4)
+  relations: 
+    AffiliateNetwork:
+      foreignType: one 
+    AffiliateRetailer:
+      foreignType: one 
+    AffiliateProductBrand:
+      foreignType: one 
+AffiliateProductManufacturer:
+  actAs:
+    Rhema_Model_Template_Subsite:
+    Sluggable:
+      unique: true
+      fields: [title]
+      canUpdate: true
+      uniqueBy: [title, admin_subsite_id]
+  tableName: affiliate_product_manufacturer
+  columns:
+    title:
+      type: string(150)
+      notnull: true
+    description:
+      type: string 
+    keywords:
+      type: string     
+    image_file:
+      type: string(255) 
+AffiliatePromotion:
+  actAs:
+    Rhema_Model_Template_Subsite:
+    Sluggable:
+      unique: true
+      fields: [title]
+      canUpdate: true
+      uniqueBy: [title, admin_subsite_id]
+  tableName: affiliate_promotion
+  columns:
+    title:
+      type: string(150)
+      notnull: true
+    description:
+      type: string 
+    keywords:
+      type: string     
+    image_file:
+      type: string(255)
+    is_active:
+      type: integer(1)
+      default: 1
+  indexes:
+    title_index:
+      fields: [title]
+    is_active_index:
+      fields: [is_active]
+AffiliateRetailerType:
+  actAs:
+    Rhema_Model_Template_Subsite:
+    Sluggable:
+      unique: true
+      fields: [title]
+      canUpdate: true
+      uniqueBy: [title, admin_subsite_id]
+  tableName: affiliate_retailer_type
+  columns:
+    title:
+      type: string(150)
+      notnull: true
+    description:
+      type: string 
+    keywords:
+      type: string     
+    image_file:
+      type: string(255)
+    is_active:
+      type: integer(1)
+      default: 1  
+AffiliateRetailer:
+  actAs:
+    Rhema_Model_Template_Subsite:
+    SoftDelete:
+    Sluggable:
+      unique: true
+      fields: [title]
+      canUpdate: true
+      uniqueBy: [title, admin_subsite_id]
+    Searchable:
+      fields: [title, description]
+  tableName: affiliate_retailer
+  columns:
+    title:
+      type: string(255)
+      notnull: true
+    description:
+      type: string
+    strapline:
+      type: string 
+    keywords:
+      type: string     
+    tags:
+      type: string
+    feed_url:
+      type: string
+    logo:
+      type: string(255)
+    image_file:
+      type: string(255)
+    deeplink:
+      type: string(255)
+    category:
+      type: string(255)
+    affiliate_retailer_type_id:
+      type: integer(8)
+      default: 1
+    programid:
+      type: integer(8)
+    program_name:
+      type: string(255)
+    is_active:
+      type: integer(1)
+      default: 1
+    is_adult:
+      type: integer(1)
+      default: 0   
+    affiliate_retailer_id: integer(2)   
+    affiliate_network_id:
+      type: integer(8)
+      notnull: true
+  indexes:
+    deleted_index:
+      fields: [deleted_at]
+    title_index:
+      fields: [title]
+    is_active_index:
+      fields: [is_active]
+    adult_index:
+      fields: [is_adult]
+  relations: 
+    AffiliateRetailer:
+      foreignType: one
+    AffiliateNetwork:
+      foreignType: one 
+    AffiliateRetailerType:
+      foreignType: one 
+AffiliateProductBrand:
+  actAs:
+    Rhema_Model_Template_Subsite:
+    SoftDelete:
+    Sluggable:
+      unique: true
+      fields: [title]
+      canUpdate: true
+      uniqueBy: [title, admin_subsite_id]
+    Searchable:
+      fields: [title, description]
+  tableName: affiliate_product_brand
+  columns:
+    title:
+      type: string(255)
+      notnull: true
+    description:
+      type: string 
+    keywords:
+      type: string     
+    is_active:
+      type: integer(1)
+      default: 1
+    sort_order:
+      type: integer(8)
+      default: 1
+    brand_type:
+      type : string(100)
+  indexes:
+    deleted_index:
+      fields: [deleted_at]
+    title_index:
+      fields: [title]
+    is_active_index:
+      fields: [is_active]
+AffiliateFeaturedCategory:
+  actAs:
+    Rhema_Model_Template_Subsite: 
+  tableName: affiliate_featured_category
+  columns:
+    title: string(150)
+    description: string(255)
+    is_active: 
+      type: integer(1)
+      default: 0
+    affiliate_product_category_id: integer(8)
+    sort_order: integer(2)
+  relations: 
+    AffiliateProductCategory:
+      foreignType: one
+AffiliateProductCategory:
+  tableName: affiliate_product_category
+  actAs:
+    Sluggable:
+      unique: true
+      fields: [title,admin_subsite_id]
+      canUpdate: true
+    SoftDelete:
+    NestedSet:
+      hasManyRoots: true
+      rootColumnName: root_id
+    Rhema_Model_Template_Subsite:
+    Searchable:
+      fields: [title, description]
+  inheritance:
+    extends: AdminMenu
+    type: concrete
+  columns:
+    title:
+      type: string(255)
+    description:
+      type: string 
+    keywords:
+      type: string  
+    categoryid:
+      type: integer(8)
+    category_name:
+      type: string(255)
+    category_path:
+      type: string(512)
+    merchant_category:
+      type: string(512)
+    sequence:
+      type: integer(3)
+      default: 1
+    params:
+      type: string(255)
+    affiliate_network_id:
+      type: integer(8)
+      notnull: true
+    is_adult:
+      type: integer(1)
+      default: 0
+  indexes:
+    title_index:
+      fields: [title]
+    adult_index:
+      fields: [is_adult]
+    deleted_index:
+      fields: [deleted_at]
+  relations: 
+    AffiliateNetwork:
+      foreignType: one            
+AffiliateNetwork:
+  actAs:
+    Rhema_Model_Template_Subsite:
+    SoftDelete:
+    Blameable:
+  tableName: affiliate_network
+  columns:
+    title:
+      type: string(150)
+      notnull: true 
+    description:
+      type: string(512)
+    url:
+      type : string(150) 
+    merchant_metadata:
+      type: string
+    merchant_mapping:
+      type : string 
+    category_metadata:
+      type: string
+    category_mapping:
+      type : string
+    field_mapping:
+      type: string 
+    feed_url:
+      type: string(512) 
+    note:
+      type: string  
+AffiliateFeed:
+  actAs:
+    Rhema_Model_Template_Subsite:
+    SoftDelete:
+    Blameable:
+  tableName: affiliate_feed
+  columns:
+    title:
+      type: string(150)
+      notnull: true 
+    description:
+      type : string 
+    feed_url:
+      type: string(512)
+      notnull: true
+    field_mapping:
+      type: string 
+    is_active:
+      type : integer(1)
+      default: 1
+    downloaded_at:
+      type: timestamp(25)
+    affiliate_network_id:
+      type: integer(8)
+      notnull: true
+    affiliate_feed_type_id:
+      type: integer(4)
+      notnull: true
+      default: 1
+  relations: 
+    AffiliateNetwork:
+      foreignType: one  
+    AffiliateFeedType:
+      foreignType: one  
+AffiliateProduct:
+  actAs:
+    Rhema_Model_Template_Subsite:
+    SoftDelete:
+    Blameable:
+    Searchable:
+      fields: [title]
+      batchUpdates: false
+  tableName: affiliate_product
+  columns:
+    title:
+      type: string(512)  
+    keywords:
+      type: string(512)        
+    description:
+      type: string
+    deeplink:
+      type: string(1024)
+    price:
+      type: decimal(5)
+    currency:
+      type: string(5)
+    country:
+      type: string(15)
+    language:
+      type: string(5)
+    barcode:
+      type: string(25)
+    image_url:
+      type: string(150)
+    image_large_url:
+      type: string(150)    
+    image_thumbnail_url:
+      type: string(150)
+    mobile_network:
+      type: string(15)
+    contract_type:
+      type: string(15)
+    contract_length:
+      type: integer(4)
+    inclusive_minutes:
+      type: integer(4)
+    inclusive_texts:
+      type: integer(4)
+    data_allowance:
+      type: integer(2)
+    network_promotion:
+      type: string
+    service_provider:
+      type: string(25)
+    product_data:
+      type: string()
+    in_stock:
+      type: integer(1)
+    code:
+      type: string(25)
+    isbn:
+      type: string(15)
+    valid_from:
+      type: timestamp(25)
+    valid_to:
+      type: timestamp(25)
+    search_price:
+      type: decimal(10) 
+    is_hot_pick:
+      type: integer(1)
+    is_featured:
+      type: integer(1)
+      default: 0
+    is_expired:
+      type: integer(1)
+      default: 0
+    unique_hash:
+      type: string(32)
+    is_archived:
+      type : integer(1)
+      default: 0
+    is_for_sale:
+      type : integer(1)
+      default: 0
+    index_status:
+      type : enum
+      length: 10
+      values : [to_delete, to_update, to_index, no_index, indexed]
+      default: to_index
+    fabric:
+      type: string(15)
+    size:
+      type: integer(8)
+    colour:
+      type: string(15)
+    gender:
+      type: string(10)
+    affiliate_product_brand_id:
+      type: integer(4)
+    affiliate_product_category_id: 
+      type: integer(4)
+      notnull : false
+    affiliate_network_id: 
+      type: integer(4) 
+    affiliate_retailer_id: 
+      type: integer(4)
+    affiliate_feed_id: 
+      type: integer(4)
+    affiliate_promotion_id: 
+      type: integer(4)
+      default: null
+    affiliate_product_manufacturer_id: 
+      type: integer(4)
+      default: null
+    affiliate_product_type_id: 
+      type: integer(2)
+      default: null
+  indexes:    
+    prod_status:
+      fields: [index_status]
+      length: 10
+    hash_index:
+      fields: [unique_hash]
+      type: unique
+      length: 32
+    valid_from_index:
+      fields: [valid_from]
+      length: 25
+    valid_to_index:
+      fields: [valid_to]
+      length: 25
+    price_index:
+      fields: [is_expired,  price]
+    code_index:
+      fields: [code]
+    deleted_at_index:
+      fields: [deleted_at]
+      length: 25
+    expired_index:
+      fields: [is_expired, affiliate_product_type_id, id]
+    prod_cat_index:
+      fields: [is_expired, affiliate_product_category_id, id]
+    retailer_index:
+      fields: [is_expired, affiliate_retailer_id, id]
+  relations:
+    AffiliateProductManufacturer:
+      foreignType: one
+    AffiliatePromotion:
+      foreignType: one
+    AffiliateFeed:
+      foreignType: one
+    AffiliateRetailer:
+      foreignType: one
+    AffiliateProductBrand:
+      foreignType: ProductBrand
+    AffiliateProductCategory:
+      foreignType: one
+    AffiliateNetwork:
+      foreignType: one
+    AffiliateProductType:
+      foreignType: one
+Slide:
+  actAs:  
+    Rhema_Model_Template_Subsite 
+  tableName: slide
+  columns:
+    title:
+      type: string(20)
+      notnull: true
+    description:
+      type: string(255) 
+    strapline:
+      type: string(120)
+    sort_order:
+      type: integer(2)
+      default: 1
+    is_active: integer(1)
+    is_category: 
+      type: integer(1)
+      default: 0
+    image_file: string(255)
+    link: string(120)
+    link_text: string(255)
+    font_color:
+      type: string(10)
+      default: 444444
+    affiliate_product_category_id:
+      type: integer(2)
+      notnull: false
+    total: 
+      type: integer(2)
+      default: 12
+  relations:
+     AffiliateProductCategory:
+      foreignType: one 
+SlideRetailer:
+  actAs:  
+    Rhema_Model_Template_Subsite: 
+    SoftDelete:
+  tableName: slide_retailer
+  columns:
+    slide_id: integer(4)
+    affiliate_retailer_id: integer(4)    
+  relations:
+    Slide:
+      foreignType: one  
+    AffiliateRetailer:
+      foreignType: one  
+SlideCategory:
+  actAs:  
+    Rhema_Model_Template_Subsite: 
+    SoftDelete:
+  tableName: slide_category
+  columns:
+    slide_id: integer(4)
+    affiliate_product_category_id: integer(4)    
+  relations:
+    Slide:
+      foreignType: one  
+    AffiliateProductCategory:
+      foreignType: one   

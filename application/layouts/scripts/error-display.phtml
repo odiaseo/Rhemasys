@@ -1,0 +1,20 @@
+<?php
+	echo $this->render('partials/html-headers.phtml');
+	$currentAction = Zend_Controller_Front::getInstance()->getRequest()->getActionName();	
+?>
+<body>
+  <div id="divSurround" class="page <?php echo $currentAction; ?>">
+		<div id="divContainer" class="toprnd">
+			<input type="hidden" id="site_dir" value="<?php echo SITE_DIR; ?>" />
+ 
+			<div id="divContents">
+				<div class="content-wrap"> <?php echo $this->layout()->content; ?></div>
+			</div>
+		</div>
+ 		<div id="divFooter">
+			<div class="footer-wrap"><?php echo $this->render('partials/footer.phtml') ?></div>
+		</div>
+
+  </div>
+</body>
+</html>

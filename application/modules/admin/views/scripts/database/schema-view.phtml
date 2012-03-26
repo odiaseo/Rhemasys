@@ -1,0 +1,16 @@
+ 	<div id="schema-files"> 	
+		 	<div id="schema-tabs" style="margin: 20px auto"> 
+		 		<ul>
+		 	<?php 
+		 		foreach($this->schemaFiles as $label => $filename){
+		 			if(file_exists($filename)){ 
+		 				echo "<li><a href='#$label'>" . ucwords($label) . '</a></li>';
+		 				$divs[] = "<div id='$label' class='sysinfo-div'><pre>" . file_get_contents($filename) . '</pre></div>';		
+		 			} 			
+		 		}
+		 	?>
+				</ul>
+			<?php echo implode(PHP_EOL, $divs); ?>
+		</div>
+   </div>
+ 

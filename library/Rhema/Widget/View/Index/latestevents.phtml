@@ -1,0 +1,22 @@
+<div id="event-summary">
+	<h2>Forth Coming Events</h2>
+	<?php  
+		echo $this->render('partials/block-icon.phtml');  
+		foreach((array) $this->events as $item){
+			$item  = (object) $item;
+			$month = '';
+			$day   = '';?>
+			<div class="event-item">
+				<div class="event-date">
+					<span class="month"></span>
+					<span class="day"></span>
+				</div>
+				<div class="event-description">
+					<h2><?php echo $item->title; ?></h2>
+					<p><?php echo $item->description; ?></p>
+				</div>
+			</div>
+<?php 	}
+	?>
+	<div id="view-all-events">view all</div>
+</div>

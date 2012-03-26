@@ -1,0 +1,61 @@
+<?php 
+	$product = (array)  $this->product ; 
+	$product['title'] = Rhema_Util_String::correctEncoding($product['title']);
+	 
+	if($logo = $this->getRetailerLogo($product['AffiliateRetailer'], '')){	
+		$productImage = sprintf("<img src='%s'  alt='%s' title='%s' class='code-image'/>", $logo, $product['title'], $product['title']);
+	}elseif('affiliate-promotion' == $this->route){
+		$productImage = $this->getInfoboxText($product['network_promotion']);
+	} else{
+		$productImage = $this->getInfoboxText($product['title']);
+	}
+	 
+	
+	$title   	= Doctrine_Inflector::urlize(html_entity_decode($product['title'])) ;
+	$outLink 	= $this->url(array('id' => $product['id'], 'title' => $title), 'product-outlink', true, false);
+	$type    	= isset($product['AffiliateProductType']['code']) ? $product['AffiliateProductType']['code'] : 'deal' ;
+	$deepLink   = $this->affiliateLink()->getDeeplink($product, '', "v{$product['id']}"); 
+?>
+
+<div class="mobile-prod-long rounded wrapper clearfix <?php echo $type; ?>">
+	<div class="left-section codes">
+		<div class="rounded code-block detail"><?php 
+ 			printf("<a id='prod_%d' href='%s' %s='%s' class='outlink info-box' target='_blank' title='%s'>%s</a>"
+ 			,$product['id'], $outLink, $this->linkAttribute, $product['deeplink'], $product['title'], $productImage);
+ 			?>
+		 	<h5><?php echo strtoupper($type)?></h5>
+		</div>
+	</div>
+	<div class="right-section"><span class="expiry-info"><?php printf("Added %s | <span style='font-weight:bold; color:#E17009'>Expires</span> %s", date('jS F Y', strtotime($product['created_at'])), 
+				date('jS F Y', strtotime($product['valid_to']))) ;?></span>
+		<h2 class="code-title"><a href="<?php echo $outLink; ?>" class="outlink" rel="nofollow"
+			<?php echo "{$this->linkAttribute}='$deepLink'" ;?>><?php echo $product['title']; ?></a>
+		</h2>
+		<a class="rounded outlink reveal" href="<?php echo $outLink; ?>"
+			<?php echo "{$this->linkAttribute}='$deepLink'" ;?>>
+				<?php if($type == 'voucher'){?>
+						<span class="tag-item" title="Click to reveal code and visit retailer">Get Code & Offer</span>
+						<span class="code-detail" style="display:none"><?php echo $product['code']; ?></span>
+				<?php }else{ ?>
+						<span class="tag-item">Get Offer Now!</span>
+				<?php }?>
+				
+			</a>	 
+	</div>
+
+	<div style="clear:both; display:table; margin:10px 0;">	
+		<?php 
+			if($product['AffiliateRetailer']['description']){
+				echo "<p>{$product['AffiliateRetailer']['description']}</p>";
+			}					 
+		   if($product['network_promotion'] and $product['network_promotion']){  ?>			 
+		   		<p><?php  echo Rhema_Util_String::correctEncoding($product['network_promotion']); ?></p>
+<?php 	 	}  ?>
+ 		<p class='tag-list'><?php echo $this->buildTagLinks($product['title']); ?></p> 	
+ 	</div>
+	<?php $this->title = $title ;
+	//pd($product);
+		$this->showShareButtons = true ;
+		echo $this->render('Search/partials/product-links.phtml') ;
+	?>
+</div>

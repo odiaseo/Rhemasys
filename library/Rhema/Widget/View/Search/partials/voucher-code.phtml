@@ -1,0 +1,93 @@
+<?php 
+	$product 		  			= (array)  $this->product ;
+	$product['description']     = Rhema_Util_String::correctEncoding(html_entity_decode($product['description']));
+	$product['title'] 			= Rhema_Util_String::correctEncoding($product['title']);
+	$logo						= '';
+			
+	if(isset($product['AffiliateRetailer']['title'])){
+		$logo  = $this->getRetailerLogo($product['AffiliateRetailer'], '');
+	}
+	
+	if($logo and $this->route != 'affiliate-retailer'){
+		$productImage = sprintf("<img src='%s'  alt='%s' title='%s' class='code-image'/>", $logo, $product['title'], $product['title']);
+	}elseif($this->usePromotionText){
+		if($image  = $this->getImagePath()->product($product)){			
+			$productImage = sprintf("<img src='%s'  alt='%s' title='%s' class='code-image'/>", $image, $product['title'], $product['title']);
+		}else{
+			$productImage = $this->getInfoboxText($product['network_promotion']);
+		}
+	}else{
+		$productImage = $this->getInfoboxText($product['title']);
+	}
+	 
+	
+	$divClass    = array('mobile-prod-long', 'clearfix');
+ 
+	$title       = Doctrine_Inflector::urlize(html_entity_decode($product['title'])) ;
+	$outLink     = $this->url(array('id' => $product['id'], 'title' => $title), 'product-outlink', true, false);
+	$type        = isset($product['AffiliateProductType']['code']) ? $product['AffiliateProductType']['code'] : 'deal' ;
+	$divClass[]  = $product['is_expired'] ? 'expired' : '';
+	$divClass[]  = $type;    
+	
+	if($product['is_expired'] and $product['AffiliateRetailer']['deeplink']){ 
+		$deepLink  = $this->affiliateLink()->addClickRef($product, $product['AffiliateRetailer']['deeplink']); 
+	}else{
+		$deepLink = $this->affiliateLink()->getDeeplink($product,'', "v{$product['id']}"); 
+		//$deepLink = $product['deeplink'] ;
+	}    
+?>
+
+<div class="<?php echo implode(' ', $divClass); ?>">
+	<div class="left-section codes">
+		<div class="rounded code-block"><?php 
+		 	printf("<a id='prod_%d' href='%s' %s='%s' class='outlink info-box' target='_blank' title='%s'>%s</a>"
+		 		,$product['id'], $outLink, $this->linkAttribute, $product['deeplink'], $product['title'], $productImage); ?>
+		 <h5><?php echo strtoupper($this->translate($type)); ?></h5>
+		</div>
+	</div>
+	<div class="right-section"><span class="expiry-info">
+		<?php 
+			if($product['is_expired']){
+				$time = strtotime($product['valid_to']);
+				$d    = new Zend_Date($time);
+				printf("<span style='font-weight:bold; color:red'>%s</span> %s", ucfirst($this->translate('expired')), $d->toString($this->dateFormat)) ;				
+			}elseif($product['valid_to'] == '0000-00-00 00:00:00'){
+				$time = strtotime($product['created_at']);
+				$d    = new Zend_Date($time);
+				printf("Added %s", $d->toString($this->dateFormat)) ;
+			}else{
+				$time   = strtotime($product['created_at']);
+				$crt    = new Zend_Date($time);	
+				$to     = new Zend_Date(strtotime($product['valid_to']));
+				printf("Added %s | <span style='font-weight:bold; color:#E17009'>%s</span> %s", $crt->toString($this->dateFormat), ucfirst($this->translate('expires')), $to->toString($this->dateFormat)) ;				
+			} ?>
+			</span>
+		<h2 class="code-title"><a href="<?php echo $outLink; ?>" class="outlink" rel="nofollow" <?php echo "{$this->linkAttribute}='$deepLink'" ;?>><?php echo $product['title']; ?></a>
+<?php    	if($product['network_promotion'] and $product['network_promotion'] != $product['title']){  
+				echo '<br /><span style="color:red">' . Rhema_Util_String::correctEncoding($product['network_promotion']) . '</span>';  
+			} ?></h2>		
+		<a class="rounded outlink reveal" href="<?php echo $outLink; ?>" <?php echo $this->linkAttribute . "='{$deepLink}'" ; ?> rel="nofollow">
+				<?php if($type == 'voucher'){
+						if(!$product['is_expired']){?>
+							<span class="tag-item" title="<?php echo $this->translate('Click to reveal code and visit retailer'); ?>"><?php echo $this->translate('Get Code & Offer'); ?></span>
+							<span class="code-detail" style="display:none"><?php echo $product['code']; ?></span>
+					<?php }else{?>
+							<span class="code-detail"><?php echo $product['code']; ?></span>
+					<?php } 
+				   }else{ 
+					   	if($product['is_expired']){?>
+							<span class="tag-item"><?php echo $this->translate('Visit retailer'); ?></span>
+				<?php   }else{?>
+							<span class="tag-item"><?php echo $this->translate('Get Offer Now!'); ?></span>
+		<?php			}
+				    }?>
+				
+			</a>
+	</div>
+	<?php $this->title = $title ;		
+		if($product['image_large_url']){
+			printf("<img src='%s' class='large' style='display:none'/>", $product['image_large_url']);
+		}
+		echo $this->render('Search/partials/product-links.phtml') ;	
+	?>
+</div>

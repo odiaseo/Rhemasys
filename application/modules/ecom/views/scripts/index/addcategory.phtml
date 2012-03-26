@@ -1,0 +1,14 @@
+ <?php $urlParm	 = array('module'=>'ecom','controller'=>'index','action'=>'addcategory','task'=>'save'); ?> 
+<div id="show-category" title="Assign Category">	
+		<div><form action="<?php echo $this->url($urlParm, ADMIN_ROUTE); ?>" > 
+			<select id="category_id" multiple size="10" style="height:300px; width:450px" class="multiselect">
+		<?php		foreach($this->allCat as $key => $val){
+						$catId = $val['ecom_category_id'];
+						$text  = $val['EcomCategory']['title'] . " - ($val[title])";
+						$sel   = isset($this->selected[$catId]) ?  'selected="selected"' : '';
+						echo "<option value='$catId' $sel>$text</option>";
+					} ?>
+			</select>
+		</form>	
+		</div>
+</div>

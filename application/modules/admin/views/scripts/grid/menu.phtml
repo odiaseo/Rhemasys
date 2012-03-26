@@ -1,0 +1,20 @@
+
+<div id="menu-editor" class="ui-corner-all ui-widget-content"> 
+	<div id="div-position">
+		<?php echo $this->positions; ?>
+	</div>
+	<div id="div-tree"> 
+		<label>Menu tree</label>
+			<table id="<?php echo $this->gridId; ?>" class="scroll"></table> 
+			<div id="<?php echo $this->pagerId; ?>" class="scroll" style="text-align:center"></div> 
+	 </div>
+	 
+	 <div id="div-menu">	 	
+	 	<ul>
+	 		<li><ins> </ins><?php echo $this->layout()->htmlMenu; ?></li>
+	 	</ul>
+	 </div>
+</div>
+ 
+
+ 

@@ -1,0 +1,17 @@
+<div class="tip-details">  
+<?php 
+	foreach($this->toolTip as $key => $value){
+		if($key != 'title'){
+			$label = isset($this->labels[$key]) ? $this->labels[$key] : $key;
+			if(is_array($value)){
+				$value = '<pre>' . print_r($value, true) . '</pre>';
+			}elseif(substr($key,-3) == '_at'){
+				$value = date('jS F Y', strtotime($value));
+			}
+			echo '<div class="tip-item" id="'. $key .'"><label>' . $label . '</label>
+			<div class="content">' . $value . '</div></div>';
+		}
+	}
+?>
+</div>
+ 

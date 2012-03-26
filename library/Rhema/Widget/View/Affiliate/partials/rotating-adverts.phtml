@@ -1,0 +1,56 @@
+<style> 
+#advert{
+	position: relative;
+	height: 250px;
+    width : 300px;
+    margin:0 auto 10px;
+}
+
+#advert .item {
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 8;
+	opacity: 0.0;
+}
+
+#advert .item.active {
+	z-index: 10;
+	opacity: 1.0;
+}
+
+#advert .item.last-active {
+	z-index: 9;
+}  
+</style>
+
+ <div id="advert" class="sidebar rounded">
+	<div class="item rounded" style='background-image: url("http://track.webgains.com/link.html?wglinkid=181700&wgcampaignid=101254")'>
+		<a href="http://track.webgains.com/click.html?wglinkid=181700&wgcampaignid=101254&clickref=mazuma-sidebar" target="_blank"><span 
+			 style="display:block; width:300px; height:250px"></span></a>
+ 	</div>
+ 	 
+   <div class="item">
+	 <script type="text/javascript"><!--
+		google_ad_client = "ca-pub-2668862008618650";
+		/* OMD - Sidebar */
+		google_ad_slot = "6524629204";
+		google_ad_width = 300;
+		google_ad_height = 250;
+		//-->
+	 </script>
+	<script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+		</script>
+   </div>
+	 
+
+</div> 
+ 
+<?php $this->collateScripts("
+	slideSwitch('div.item', '#advert');
+	setInterval(function(){
+		slideSwitch('div.item', '#advert');
+	}, 6000 );" );
+?>
+ 
+

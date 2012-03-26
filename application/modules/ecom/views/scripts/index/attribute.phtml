@@ -1,0 +1,41 @@
+
+ 
+ <div id="edit-attribute" title="<?php echo $this->title; ?> - Attributes"> 		
+ 		<form action="<?php echo $this->formAction; ?>" name="attribute-form"  method="post" id="attribute-form">  
+ 		   <div class="help-tips ui-corner-all">info</div>
+  			<div id="attribs" class="ui-corner-all">
+				<label>Attributes</label>
+
+					<ul id="attributes" class="layout-tree sortable">							
+						<?php
+							foreach($this->attr as $index => $arr){
+								echo "<li id='li_attr-$arr[id]'><ins>&nbsp;</ins><label title='$arr[id] - $arr[description]'>$arr[title]</label>								
+								<input type='text' value='$arr[label]' id='label-$arr[id]'/><ins class='update' title='Update attribute label'></ins>
+								<ins class='remove' parent='attributes' child='li-attr-$arr[id]'>&nbsp;</ins></li>";
+							}
+						?>
+					</ul> 
+			</div> 
+	    	<div id="tosave" class="ui-corner-all" align="center">
+		    	<label>Layout</label>
+		    	<ul id="saved" class="sortable">
+               <?php 	
+               		if(count($this->saved)){	
+               			$hide   = 'style="display:none"'; 
+               			foreach($this->saved as $id => $a){ 
+               				$itemId  = $a['ecom_attribute_id'];
+							echo "<li id='li_attr-$itemId'><ins>&nbsp;</ins><label>". $this->attr[$itemId]['title'] . "</label>
+								 <input type='text' value='$a[label]' id='label-$itemId'/><ins class='update' title='Update attribute label'></ins>
+								 <ins class='delete'>&nbsp;</ins></li>"; 								                  
+                  		} 
+               		}else{
+               			$hide  = '';                   			
+					}?> 
+                     	
+					<li id="blank_0-saved" class="fixed" <?php echo $hide; ?>><ins>&nbsp;</ins>Blank</li>     						
+ 					
+                </ul>
+            </div> 
+   	</form>
+ </div> 
+ 

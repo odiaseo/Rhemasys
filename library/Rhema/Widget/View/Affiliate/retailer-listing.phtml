@@ -1,0 +1,41 @@
+<h1>Retailers with products, deals and discounts beginning with <strong><?php echo strtoupper($this->currentLetter); ?></strong></h1>
+<p>Find your  favourite retailers and grab a bargain!</p> 
+<?php echo $this->displayAlphaList('retailer',  $this->currentLetter); ?>
+
+<div id="brand-list">
+<?php 	
+	$retailerList = array();
+	$retailers       = $this->stat['retailers'];
+	foreach($this->byLetter as $item){
+		$id        = $item['id'];
+		if(isset($retailers[$id]) and $retailers[$id]['countid']){
+			$retailerList[$id]  = $retailers[$id];
+		}
+	}
+ 
+	$total  = count($retailerList);			
+	$cols   = 3 ; 
+	$width  = (4 == $cols) ? '212px' : '182px'; 
+	if($total){
+		$count   = 0;
+		$ulCount = 1;
+		$perCol  = ceil($total/$cols);		
+		printf("<ul class='rounded listing first'>", $width);
+		foreach($retailerList as $id => $retailer){	
+ 			$class = ($count%$perCol) == 1 ? ' first' : '';
+			$cnt   =  ' (' . number_format($retailer['countid']) . ')' ;			 
+			$href  = $this->url(array('retailer' => $retailer['slug']), 'affiliate-retailer', true);
+			echo "<li id='retailer-$id'><a href='{$href}' title='{$retailer['title']}'>" . substr($retailer['title'],0,25) . $cnt . '</a></li>'; 
+			$count++;
+			if($total > $count and (($count%$perCol) == 0)){
+				$ulCount++ ;
+				$class = ($ulCount%3 == 0) ? ' last' : ($ulCount%3 == 1 ? ' first' : '') ;
+				echo "</ul><ul class='rounded listing{$class}'>";
+			} 
+			 
+		}
+		echo '</ul>';
+	}
+?>
+</div>
+<div style="clear:both; text-align:center"><a href="<?php echo $this->url(array('letter' => 'all'), 'retailer-alpha-list', true);?>" title="view all brands">view all retailers</a></div>

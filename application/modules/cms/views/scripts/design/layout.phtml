@@ -1,0 +1,40 @@
+ <div id="page-layout" title="Page - <?php echo $this->title; ?>">
+	<form method="post" id="layout-form" action="<?php echo $this->formAction; ?>">
+             <table width="100%" border="0" cellpadding="0" cellspacing="2" class="ui-jqgrid-btable" id="layout-table">             
+	             <tbody> 
+		              <tr class="ui-widget-content ui-row-ltr jqgrow">
+		                <td valign="top" width="40%"> 
+		                <div id="lay-accordion">
+		                <?php  
+		                		foreach($this->items['content-type']['raw'] as $ct){
+		                			$cId  = $ct['id'];
+		                			$code = $ct['code'];			                		
+		                			if(isset($this->items['bycat'][$cId])){ ?>
+                            			<h3><a href="#"><?php echo $ct['title'] ; ?></a></h3>
+                            			<div id="<?php echo strtolower($code); ?>" class="sort-item">
+                            				<?php echo $this->getLayoutListItems($cId, $this->items['bycat'][$cId]);  ?>
+                            			</div> 		                				
+		                			
+		           	<?php     		} 
+		                		}?> 
+ 
+                        		<h3><a href="#">Template Information</a></h3>
+                           		<div id="temp-info"> 
+                           			<span id="temp-title"><h4><?php echo $this->items['template']['title']; ?></h4>
+                           			<span id="temp-desc"><?php echo $this->items['template']['description']; ?></span> 
+                           			<span id="temp-image"><img src="/images/template/<?php echo $this->items['template']['image_file']; ?>" /></span>
+                           		</div>
+                        </div>  
+                       </td>
+		                <td valign="top"> 
+		               	  <div id="layout-body"> 
+								<?php echo $this->render('design/partials/page-layout.phtml'); ?>
+						 </div>
+		                
+		                </td>
+		              </tr>
+
+	              </tbody>
+            </table>
+		</form>
+</div>

@@ -1,0 +1,50 @@
+<?php
+$g =$this;
+$data = $this->items;
+if(count($data ['sections'])){
+      foreach($data ['sections'] as $seq => $sxnData){ 
+          $sxn        = $sxnData['id'];
+          $itemCount  = isset($data['layout']['items'][$sxn]) ? count($data['layout']['items'][$sxn]) : 0; ?>
+                            			                            	 		                            	 
+           <div class="layout-section ui-corner-all" id="div_sxn-<?php echo $sxn; ?>"> 		                                	  
+                 <label>
+                    <ins class="fold open" style="float:left"></ins>
+                     <span class="div-sort-handle">
+                     	<?php echo $data['sections'][$seq]['title']; ?>
+                         <span id="count-<?php echo $sxn; ?>" class="item-count"><?php echo $itemCount; ?></span>
+                     </span>
+                 </label>                                     
+				<span>
+	                <ul id="sxn-<?php echo $sxn; ?>" class="sortable">		                                                
+                      <?php 
+                            if($itemCount){
+                               $hide  = 'style="display:none"';
+                               foreach($data['layout']['items'][$sxn] as $itemSeq => $items){ 
+                                   foreach($items as $type => $combo){
+                                       list($itemId, $layoutId,$tableId) = explode('_', $combo);?> 
+                                        <li id="<?php echo "item{$itemSeq}_{$type}-$itemId"; ?>">			                                                	
+                                           <a href="#"><ins class="saved">&nbsp;</ins></a>
+                                           <?php 
+                                               $title  =  $data ['type-id'][$type][$itemId]['title'];  
+                                               $title .= ' - [' . $data ['content-type']['raw'][$type]['title'] . ']';
+                                                echo $title;
+                                            ?> 
+                                             <ins class="delete">&nbsp;</ins>
+                                         </li>
+	<?php 								}	
+                       				} 
+                               }else{
+                                    $hide = '';
+                               } ?>
+									 
+                         		<li id="blank_0-<?php echo $sxn; ?>" class="fixed" <?php echo $hide; ?>>
+                         			<a href="#"><ins>&nbsp;</ins></a>Blank
+                         		</li>
+	                    </ul>
+                     </span>
+                </div>
+ <?php 			}
+ }else{
+    echo '<p>No section found for this page\'s template</p>';
+}
+?>

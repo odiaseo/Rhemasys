@@ -1,0 +1,77 @@
+  
+			 <div id="menu-tree" class='left-nav'>
+			  	<?php echo $this->navigation()->menu()->renderMenu($this->treeContainer);  ?>
+			  </div>
+			  
+			 <div id="menu-select"> 
+			 
+				 <div id="tabs"> 
+					<ul>
+							<li><a href="#tabs-1">Manage Menus</a></li>
+							<li><a href="<?php echo Zend_Registry::get('baseUrl') 
+													. '/admin/grid/index/table/' 
+													. $this->currentTable 
+													. '/root_id/' . $this->root_id; 
+									?>">All Menus</a></li>
+					</ul>
+		 
+					<div id="tabs-1" class="div-content">	
+						<form action="<?php echo Zend_Registry::get('baseUrl') . '/cms/menu/index'; ?>" 
+									name="menu-form" id="menu-form" method="post" enctype="multipart/form-data">  
+		 				<?php 
+		 				
+		 					echo new Zend_Form_Element_Radio( 'root_id', array(
+											'label'			=> 'Select menu root',	
+											'required'		=> true,
+											'decorators'	=> Rhema_Util::getDecor('menu-position'),
+											'value'			=> array($this->root_id),
+											'multiOptions'	=> $this->roots			
+							));
+							 	  		
+					  		echo new Zend_Form_Element_Radio('rootType', array(
+											'label'			=> 'Select menu type',	
+											'required'		=> true,
+											'multiOptions'	=> array('admin' => 'Admin',
+																	 'site'	 => 'Site'),
+											'decorators'	=>  Rhema_Util::getDecor('menu-type') ,
+											'value'			=> array($this->rootType)		
+							));
+				 		 ?>
+						<div class="ui-dialog ui-widget ui-widget-content ui-corner-all" style="width:640px;height:420px; margin:0 auto 20px; float:left">		
+							<div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix">
+								<span class="ui-dialog-title">Available Sub Menus</span>
+								<a href="#" class="ui-dialog-titlebar-close ui-corner-all"></a>
+							</div> 
+						  
+						   <div class="ui-dialog-content ui-widget-content" style="overflow:hidden; margin:0 auto;">
+					   <?php
+					  		echo new Zend_Form_Element_Multiselect('children', array(
+											'label'			=> 'Select sub menus',	
+											'required'		=> true,
+											'class'			=> 'multiselect',
+											'style'			=> 'width:606px;',
+											'size'			=> 15,
+											'decorators'	=> Rhema_Util::getDecor('menu-child') ,
+											'value'			=> $this->children,
+											'multiOptions'	=> $this->options
+																	
+							));							
+					 		echo new Zend_Form_Element_Hidden('baseUrl',array(
+						  					'id'			=> 'baseUrl',
+						  					'value'			=> Zend_Registry::get('baseUrl'),
+						  					'decorators' 	=> Rhema_Util::getDecor('blank')
+						  	));
+		 				
+		 				?>
+		 				</div>
+						<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix"> 
+							<a class="fm-button ui-state-default ui-corner-all fm-button-icon-left" id="btn-update" href="javascript:void(0)">Update<span class="ui-icon ui-icon-disk"></span></a>
+		 		
+						</div>
+					</div>
+		 		</form>	
+		  			</div> 
+			</div>	
+	    </div>
+	 
+  

@@ -1,0 +1,37 @@
+ <?php 
+ 	$path = Rhema_SiteConfig::getBackendScriptsPath();
+ 	$this->includeJs(array(
+ 		'highlighter/scripts/shCore.js',
+ 		'highlighter/scripts/shBrushPlain.js',
+ 	), Rhema_Constant::APPEND, false);
+ 	
+ 	$this->includeCss(array(
+ 		$path . 'highlighter/styles/shCore.css',
+ 		$path . 'highlighter/styles/shThemeEclipse.css',
+ 	), false);
+ 	
+ 	$this->collateScripts('SyntaxHighlighter.all();');
+ ?>
+<div id="page-design" class="full-width">
+	<div id="page-tabs">
+		<ul>
+			 <li><a href='#syslog'>System Log</a></li> 
+			 <li><a href='#logo'>Missing Retailer Logos</a></li>
+			 <li><a href='#cron'>Cron Jobs</a></li>
+		</ul>
+		<?php 
+		 
+			$sys     = $this->logDir . 'syslog.log';
+			$logo    = $this->logDir . 'logo-not-found.log';
+			$cron    = $this->logDir . 'cron.log';
+			
+			if(!file_exists($sys)){
+				file_put_contents($sys, '');
+			}
+		    $content = file_get_contents($sys);
+			printf("<div id='syslog'><pre class='brush: plain'>%s</pre></div>", $content);
+			printf("<div id='logo'><pre class='brush: plain'>%s</pre></div>", file_get_contents($logo)); 
+			printf("<div id='cron'><pre class='brush: plain'>%s</pre></div>", file_get_contents($cron));
+		?> 		
+	</div>
+</div>

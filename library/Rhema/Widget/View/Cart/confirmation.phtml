@@ -1,0 +1,9 @@
+<h1>Order Confirmation</h1>
+<p>
+Thank you for you order.   Please find a confirmation of your order below. An order confirmation email would be sent
+to you email address.
+</p>
+<?php
+	$table = $this->cart()->cartTable($this->cartTable) ;
+	echo $table->render();
+?>

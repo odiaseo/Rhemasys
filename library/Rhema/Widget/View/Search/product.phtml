@@ -1,0 +1,28 @@
+	<div id="product-detail"> 
+		<table width="100%" border="1">
+			<tr>
+				<td width="360" valign="top">
+					<?php
+						$res          = $this->product->getZoomImage('zoom');
+						$imageParams  = $res['attr'];
+						$imgSize      = "style='width:$imageParams[0]px; height:$imageParams[1]px;'";
+						
+						 $this->inlineScript()->setScript("jQuery( function(){  gbl.initImageZoom('#prod-image','$res[src]'); })"); 
+					?> 
+						<img src="<?php echo $this->product->getImage('large'); ?>" title="<?php echo $this->product->title; ?>" 
+							alt="Product Image" border="0" id="prod-image"/> 
+						<?php echo $this->inlineScript(); ?>
+				</td>
+				<td valign="top">
+					<div id="product-attributes">
+						<?php echo $this->Cart($this->product)->buildDisplay($this->displayTemplate); ?> 
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" valign="top">
+					<div id="bottom-tabs">bottom</div>
+				</td>
+			</tr>
+		</table>				 
+	</div>

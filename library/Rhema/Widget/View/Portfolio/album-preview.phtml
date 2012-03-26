@@ -1,0 +1,35 @@
+<div class="carousel-area">
+
+</div>
+
+<?php 
+	$this->includeJs('infinitecarousel/jquery.infinitecarousel2.min.js');
+	
+	$itemId     = $this->albumData['slug'] . '-carousel';	
+	$width      = $this->prevWidth * count($this->imageList); 
+	
+	$this->headStyle()->appendStyle($this->slideShow()->getCarouselCss($itemId, $width)); 
+	$this->collateScripts($this->slideShow()->getCarouselScript($itemId, 0));
+	
+?>
+<div class="carousel" id="<?php echo $itemId; ?>" style="display:none">
+<ul>
+	<?php 
+ 
+	foreach ($this->imageList as $src) {  
+    	echo "<li><img src='$src' alt='{$this->albumData['title']}' 
+    				width='{$this->prevWidth}' height='{$this->prevHeight}' class='round-img' /> 
+    			 </li>"; 
+	}
+
+ 	?>
+ 	</ul>
+</div>
+
+<div class="review-div">
+	<h2>Reviews & Comments</h2>
+	<?php 
+		$this->reviews = $this->albumData['PortfolioComment'];
+		echo $this->render('Post/partials/review-item.phtml'); 
+	?>
+</div>

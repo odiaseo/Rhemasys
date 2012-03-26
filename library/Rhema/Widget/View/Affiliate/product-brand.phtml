@@ -1,0 +1,46 @@
+<div class="list-header"><h2>Discount Deals, Sales & Offers for All the Top Brands</h2>
+  
+<?php echo $this->displayAlphaList('brand', $this->currentLetter); 
+	$brands = $this->stat['brands'];
+?>
+</div> 
+<div id="brand-list">
+<?php 	
+	$brandList = array();
+	if($brands){
+		foreach((array)$this->listBrands  as $id =>  $brand){
+			if(isset($brands[$id]['countid']) and $brands[$id]['countid']){
+				$brandList[$id] = $brand;
+			}
+		}
+	}else{
+		$brandList = $this->listBrands ;
+	}
+	$total  = count($brandList);			
+	$cols   = 3 ; //$this->columns ? $this->columns : 4;
+	$width  = (4 == $cols) ? '212px' : '182px';
+	if($total){
+		$count   = 0;
+		$ulCount = 1;
+		$perCol  = ceil($total/$cols);		
+		printf("<ul class='rounded listing first'>", $width);
+		foreach($brandList as $id =>$brand){	
+ 			$class = ($count%$perCol) == 1 ? ' first' : '';
+			$cnt   = (isset($brands[$id]['countid']) and $brands[$id]['countid']) 
+				 ? ' (' . number_format($brands[$id]['countid']) . ')' : '' ;	
+			//if($cnt !== ''){
+				$href  = $this->url(array('brand' => $brand['slug']), 'affiliate-brand', true);
+				echo "<li id='brand-$id'><a href='{$href}' title='{$brand['title']}'>" . substr($brand['title'],0,25) . $cnt . '</a></li>'; 
+				$count++;
+				if($total > $count and (($count%$perCol) == 0)){
+					$ulCount++ ;
+					$class = ($ulCount%3 == 0) ? ' last' : ($ulCount%3 == 1 ? ' first' : '') ;
+					echo "</ul><ul class='rounded listing{$class}'>";
+				} 
+			//}
+		}
+		echo '</ul>';
+	}
+?>
+</div>
+<div style="clear:both; text-align:center; margin-bottom:20px"><a href="<?php echo $this->url(array('letter' => 'all'), 'brand-alpha-list', true);?>" title="view all brands">view all brands</a></div>

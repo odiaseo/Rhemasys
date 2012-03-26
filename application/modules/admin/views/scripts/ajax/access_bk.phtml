@@ -1,0 +1,97 @@
+
+ <form method="post" id="form_<?php echo $this->tableId; ?>" action="<?php echo $this->editurl ; ?>">
+	<input type="hidden" value="<?php echo $this->url(); ?>" name="returnto" />
+			<table id="<?php echo $this->tableId; ?>" class="acl-table" width="100%" cellpadding="0" cellpadding="0">
+			   <thead>
+					<tr>			 
+						<th>&nbsp;</th>
+						<th width="5%">Help</th>
+						<th width="25%">Resources</th>
+						<?php 
+							$width  = floor(60/count($this->roles));
+							$topRow = '';
+							foreach($this->roles as $items){
+								$role    = strtolower($items['title']);	
+								//$hide    = ('super' == $role) ? 'style="display:none"' : '';
+								echo "<th width='$width%'>$items[title] <br /> <input type='checkbox' id='top_row_$role' /></th>"; 
+							}
+						?>
+					</tr>
+					
+
+				</thead>
+			   <tbody> 
+				<?php
+					$count = 0;
+					foreach($this->menus as $list){
+						$count++;
+						$space = ($list['level'] >= 0) ? str_repeat('&nbsp;', $list[level]*5) : '';
+						$class = (($list['lft'] + 1 )== $list['rgt']) ? 'leaf' : 'parent';
+						 
+						
+						$help  = $list['description'] ? "<img src='/../backend/images/icons/help.png' width='16' border='0'  class='atip' title='$list[title]|$list[description]'/>" : '&nbsp;'; 
+						echo "<tr>
+								<td>&nbsp;</td>
+								<td align='center' width='5%'>$help</td>
+								<td width='25%'>{$space}<ins class='$class'></ins>$list[title]</td>"; 
+						foreach($this->roles as $items){
+							$sel	  = '';
+							if(!($list[Rhema_Constant::MENU_MODULE] 
+								and $list[Rhema_Constant::MENU_CONTROLLER] 
+								and $list[Rhema_Constant::MENU_ACTION])){
+								$sel  = 'disabled';
+							}
+							$resource = Rhema_Util::getMenuResource($list) ; //"mvc:$list[module].$list[controller]";
+							$priv     = Rhema_Util::getMenuPrivilege($list); // $list['action'];
+							$role	  = strtolower($items['title']);
+							$allowed  = ($this->acl->has($resource) and $this->acl->isAllowed($role, $resource, $priv)) ? true : false;
+							$sel     .= $allowed ? ' checked="checked" ' : '';
+							$sel      = ('super' == $role) ? 'checked="checked" readonly="readonly"' : $sel;
+							//$hide     = ('super' == $role) ? 'style="display:none"' : 'style="text-align:center"';
+							echo "<td style='text-align:center' width='$width%'><input type='checkbox' name='rule[$role][$resource][$priv]' value='$items[id]' $sel/></td>";
+						 
+						}
+						echo '</tr>';
+					}
+				?>
+				</tbody>
+			</table>
+		
+		<div id="pager_<?php echo $this->tableId; ?>" class="scroll"></div>  
+		<div style="margin:10px 0;">			 
+			<a href="#" class="curved-btn green" onclick="rms.updateAcl('#form_<?php echo $this->tableId; ?>'); return false;">Update</a>
+		</div>
+		 
+		</form>
+		 <?php 
+		
+			$this->inlineScript()->setScript(
+				"jQuery(function () {
+					tableToGrid('#$this->tableId',{
+						rownumbers		: true,
+						toolbar			: [true,'bottom'],
+						datatype		: 'local',	
+						toolbar			: [true, 'bottom'],
+						caption			: 'Access Control Rules',
+						pager			: '#pager_$this->tableId',
+						height			: 'auto',
+						width			: 870,
+						forceFit		: false,
+						altRows			: true,
+						hidegrid        : false,
+						rowNum			: 10,
+						viewsortcols    : [false,'vertical',false],
+						rowList			: [5, 10, 20, 50],
+						altRows			: true,
+						altclass        : 'odd' 
+					}); 
+					
+					rms.updateGridStyle('$this->tableId','$width'); 				
+					jQuery('img.atip').cluetip({splitTitle: '|',  cluetipClass: 'rhema'}); 
+					rms.bindAclBoxes('#form_$this->tableId');
+				});"
+			 );
+																			
+			echo $this->inlineScript(); 
+		?>
+ 	

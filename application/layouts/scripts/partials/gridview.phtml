@@ -1,0 +1,10 @@
+<datagrid class="data-grid">
+<?php
+echo $this->gridData;
+echo $this->jQuery()->setRenderMode(ZendX_jQuery::RENDER_JQUERY_ON_LOAD);
+	if(isset($this->layoutItems)){ 
+		echo $this->inlineScript()->setScript("var layoutItems = " . Zend_Json::encode($this->layoutItems)); 
+		echo $this->layout()->render('partials/layout-shell');
+	}
+?>
+</datagrid>

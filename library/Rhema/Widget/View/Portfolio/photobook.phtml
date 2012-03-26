@@ -1,0 +1,58 @@
+<h1>Photobook Albums, Weddings and Event Photographs</h1>
+
+<p>
+	Browse photobook albums in <strong><?php echo $this->category; ?></strong>.
+	Use our search feature to filter by category, by location or to do keyword searches.
+ 	Click on photobook thumbnails to view the selected wedding, event or photobook album.
+ 	Photobook albums open in new browser windows.
+ 	Please contact us if you are unable to find a particular wedding, event or photobook album.
+ </p>
+
+ 
+<p>You searched <strong><?php echo $this->keyword; ?> photobook albums</strong>, 
+<strong><?php echo $this->keyword ; ?> weddings</strong> and event photographs.</p>
+ 
+
+<div id="photobook-albums" class="clearfix">
+<?php
+	$pageCount  = count($this->paginator);
+	$pageString = '';
+	$this->photobookPath = Rhema_SiteConfig::getStaticPath() . 'media/portfolio/photobook/';
+	//pd($this->photobook);
+	if($pageCount > 1){
+		$pageString = $this->paginator ;
+	}
+
+	echo $pageString;
+	
+	if($pageCount){
+		foreach($this->paginator as $item){
+			if('download' == $this->category and $this->keyword){
+				$this->imagePath =  $item;
+				echo $this->render('Portfolio/partials/download-preview.phtml');
+			}else{
+				$this->album = (object) $item;
+				//pd($item);
+				echo $this->render('Portfolio/partials/album-thumb.phtml');
+			}
+		}
+	}else{
+		echo 'No item found';
+	}
+?>
+
+</div>
+
+<?php echo $pageString;
+	  echo $this->render('Portfolio/partials/preview.phtml');
+
+		$imagePath = SCRIPT_PATH  . '/infinitecarousel/images/';
+
+		$dialogScripts = "gbl.bindAlbumViewLinks('.album-preview', '.nonsale-album', '$imagePath');";
+		$this->collateScripts($dialogScripts);
+
+		$this->includeJs(array('formdesigner/js/jquery.formdesigner-1.0.0-min.js', 'jquery-raty/js/jquery.raty.min.js'), 
+						Rhema_Constant::APPEND, false );
+
+
+?>

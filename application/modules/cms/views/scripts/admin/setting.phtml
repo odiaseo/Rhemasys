@@ -1,0 +1,13 @@
+<div id="manage-events" class="full-width"> 
+	 	<div id="setting-tabs"> 
+			<ul>
+				<li><a href="#site-details">Site Details</a></li>
+				<li><a href="<?php $param['table']    = 'setting';  
+									echo $this->url($param, 'grid-index'); 
+				?>">Preferences</a></li>				
+			    <li><a href="<?php echo $this->url(array('id' => 1), HELP_ROUTE); ?>">Help</a></li>
+			</ul>
+			<div id="site-details"> <?php echo $this->form; ?> </div> 
+			
+	 	</div>
+</div>

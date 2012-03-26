@@ -1,0 +1,29 @@
+
+	<?php $param = array('module' => 'admin', 'controller' => 'grid', 'action' => 'index' ); ?>
+
+	<div id="users" class="full-width">
+		 	<div id="page-tabs">
+				<ul>
+						<li><a href="#allusers">All Users</a> </li>
+						<li><a href="<?php $param['table']    =  'address_book';
+									echo $this->url($param, 'grid-index');
+						     ?>">Address Book</a>
+						</li>
+
+						<li><a href="<?php $param['table']    =  'usergroup';
+											echo $this->url($param, 'grid-index');
+								     ?>">User Groups</a>
+						</li>
+						<li><a href="<?php $param['table']    =  'role';
+											echo $this->url($param, 'grid-index');
+								     ?>">Roles</a>
+						</li>
+						<li><a href="<?php $param['table']    =  'salutation';
+											echo $this->url($param, 'grid-index');
+								     ?>">Salutations</a>
+						</li>
+				       <li><a href="<?php echo $this->url(array('id' => 1), HELP_ROUTE); ?>">Help</a></li>
+				</ul>
+				<div id="allusers"><?php echo $this->gridData; ?></div>
+		 	</div>
+	</div>

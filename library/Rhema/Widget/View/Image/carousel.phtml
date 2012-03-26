@@ -1,0 +1,28 @@
+<?php $itemId = $this->divId . '-carousel'; ?>
+<div class="carousel" id="<?php echo $itemId; ?>" style="display:none">
+<ul>
+	<?php 
+	$html = '';
+	 
+	$width      = $this->width * count($this->images);
+	$useThumbs  = preg_match('/.*(header).*/i', $itemId);
+	$this->headStyle()->appendStyle($this->slideShow()->getCarouselCss($itemId, $width)); 
+	
+	foreach ($this->images as $name => $dto) { 
+    	$src   	    = $dto->getSrc();  
+    	$href       = $dto->getHref();  
+    	$title      = $dto->getTitle();
+    	$subTitle   = $dto->getSubTitle();
+    	$caption    = $this->slideShow()->getCaptions($dto);  
+    	$html .= "<li><img src='$src' alt='$href' 
+    				width='{$this->width}' height='{$this->height}' class='round-img' />
+    	            $caption
+    			 </li>"; 
+ 
+	}
+ 	echo $html;
+ 		
+  	$this->collateScripts($this->slideShow()->getCarouselScript($itemId, $useThumbs));
+ 	?>
+ 	</ul>
+</div>

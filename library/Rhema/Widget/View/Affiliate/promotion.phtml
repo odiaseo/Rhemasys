@@ -1,0 +1,60 @@
+<style>
+<!--
+#promotion {
+display:table;
+}
+
+#promotion li {
+border:solid 1px #A6C9E2;
+position:relative;
+width:103px;
+float:left;
+height:180px;
+margin:0 9px 5px 0;
+background:none; 
+padding:5px;
+box-shadow: 0 1px 2px #CCCCCC;
+}
+#promotion li:hover *{
+ cursor:pointer;
+text-decoration:none;
+ 
+}
+ 
+
+#promotion li:hover .product-price{
+background-position:-62px -220px !important;
+}
+#promotion li img{
+bottom:10px;
+position:absolute;
+max-width:100px;
+max-height: 120px;
+border:0;
+}
+
+#promotion .product-price {
+top:120px;
+}
+-->
+</style>
+<?php echo $this->render('Google/partials/medium-banner.phtml');  ?>
+ 
+<div id="promotion">
+<?php 
+	echo $this->displayFeaturedCategoryColumn()->getProducts($this->featured);
+/*	$done = array();
+	$this->cur = new Zend_Currency();
+	foreach($this->featured as $item){ 
+		$price = floatval($item['price']) ? $item['price'] : $item['handset_price'];	 
+		if($price){
+			$this->cur->setValue($price);
+			$this->displayPrice = $this->cur;
+		}else{
+			$this->displayPrice = '&nbsp;';
+		} 
+		$this->product = $this->populateAffiliateProduct($item); 
+		 echo $this->render('Search/partials/promotion-row-item.phtml'); 
+	}*/
+?>
+</div>

@@ -1,0 +1,18 @@
+ 
+	<div id="affilate-details" class="full-width"> 
+		 	<div id="page-tabs"> 
+				<ul>
+						<li><a href="#tabs-1">Products</a></li> 
+						<li><a href="<?php $param['table']    = 'affiliate_product_type';  
+										echo $this->url($param, 'grid-index'); 
+							     ?>">Product Type</a></li>
+						<li><a href="<?php $param['table']    = 'affiliate_promotion';  
+										echo $this->url($param, 'grid-index'); 
+							     ?>">Promotions</a></li>							     							     
+					    <li><a href="#field-mapping">Help</a></li>						 
+				</ul>
+				<div id="tabs-1">
+		 			<?php echo $this->gridData; ?>
+		 		</div> 
+		 	</div>
+	</div>

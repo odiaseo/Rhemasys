@@ -1,0 +1,10 @@
+<?php 
+      $urlParm	 = array('module'=>'admin','controller'=>'grid','action'=>'index');  
+ ?>
+	<div id="prod-tabs" class="full-width"> 
+		<ul>
+				<li><a href="#comments">Post Comments</a></li> 
+				<li><a href="<?php echo $this->url(array('id' => 2), HELP_ROUTE); ?>">Help</a></li>	
+		</ul>
+		<div id="comments"><?php echo $this->gridData; ?></div>
+	</div>

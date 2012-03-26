@@ -1,0 +1,28 @@
+<?php
+	//$publicPath   =   PHOTOBOOK_DIR . '/' . $this->album->album_dir . '/' . 'thumb.png';
+	//$realPath     =   $this->docRoot . '/' . $publicPath ;
+	$href		  =  '#' ; //$this->url(array(Rhema_Constant::MENU_FRONTEND_KEY => $this->album->slug), 'portfolio-album-preview');
+	$imageId = substr(basename($this->imagePath), 0, -4);
+	$action  = $this->url(array('action' => 'add'), 'ecommerce-task');
+	$form    = new Rhema_Form_Cart_AddDownload();
+	$form->setAction($action)
+		 ->populate(array('imageId'      => $imageId ,
+		 				  'category'     => $this->keyword ,
+		 				  'imagePath'    => $this->imagePath,
+		                  'downloadPath' => $this->photobook['album_dir'] //str_replace('/thumb', '', $this->imagePath)
+		 ));
+
+/*	if(!file_exists(dirname($realPath))){
+		mkdir(dirname($realPath), true, 0755);
+	}*/
+	//$publicPath = 'http://www.rhemastudio.com/images/bookpages/'   . $this->album->album_dir . '/thumb.gif' ;
+?>
+	<div class="album-thumb rounded download" id="<?php echo strtolower($imageId); ?>">
+			<span class="bg-thumbnail toprnd" title="<?php  echo $this->photobook['title'] . ' - ' . $imageId; ?>"
+				style="background:url('<?php echo $this->imagePath; ?>') no-repeat top center"></span>
+			<span class="desc">
+				<span class="image-id"><?php  echo $imageId; ?></span>
+				<?php echo $form; ?>
+			</span>
+	</div>
+

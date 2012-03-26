@@ -1,0 +1,11 @@
+<?php 
+$icon     = $this->getImagePath()->icon($this->icon);
+$fullPath = realpath(getcwd() . '/../') . $icon ;
+$showIcon = (file_exists($fullPath) and is_file($fullPath));
+  if($showIcon): 
+        $params = getimagesize($fullPath);
+   ?>
+		<img src="<?php echo $icon; ?>" <?php echo $params[3]; ?>  alt="<?php echo $this->title; ?>" class="block-icon" />
+	<?php 
+  endif;
+  ?>

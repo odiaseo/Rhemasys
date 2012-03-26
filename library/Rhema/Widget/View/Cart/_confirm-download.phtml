@@ -1,0 +1,55 @@
+ 	<div id="shopping-cart">
+		<table width="100%" border="0" class="rounded">
+			<thead>
+				<th width="5%">&nbsp;</th>
+				<th width="5%">&nbsp;</th>
+				<th width="10%">Code</th>
+				<th>Title</th>
+				<th width="10%">Qty</th>
+				<th width="10%">&nbsp;</th>
+			</thead>
+			<tbody>
+				<?php
+					$i = 0;
+					foreach($this->element->getModel() as $item):
+					    $cls  = ($i%2) ? 'odd' : 'even';
+						$href = (isset($item->href) and $item->href)
+								? $item->href
+								: $this->url(array('slug' => $item->slug,'productId' => $item->productId), PRODUCT_ROUTE);
+						?>
+						<tr class="<?php echo $cls; ?>">
+							 <td><?php echo ++$i; ?></td>
+							 <td><a href="<?php echo $href; ?>" title="View product detail"><img src="<?php echo $item->thumb; ?>" border="0" alt="<?php echo $item->name; ?>" /></a></td>
+							 <td><?php echo $this->escape($item->code); ?></td>
+							 <td><a href="<?php echo $href; ?>" title="View product detail"><?php echo $this->escape($item->name); ?></a></td>
+							 <td align="right"><?php echo $this->element->qtys->getElement($item->productId)->getValue(); ?></td>
+							 <td align="right"><?php echo $this->cart()->formatAmount($item->getLineCost()); ?></td>
+						</tr>
+				<?php endforeach; ?>
+				</body>
+				<tfoot>
+				<tr>
+					<td colspan="5" align="right">SubTotal:</td>
+					<td align="right"><?php echo $this->cart()->formatAmount($this->element->getModel()->getSubTotal()); ?></td>
+
+				</tr>
+				<tr>
+					<td colspan="5" align="right">Shipping:</td>
+					<td align="right"><?php echo $this->cart()->formatAmount($this->element->getModel()->getShippingCost()); ?></td>
+
+				</tr>
+				<tr>
+					<td colspan="5" align="right">Total:</td>
+					<td align="right"><?php echo $this->cart()->formatAmount($this->element->getModel()->getTotal()); ?></td>
+
+				</tr>
+				<tr class="last-row">
+					<td align="center" colspan="6">
+						<a class="curved-btn blue" href="/">continue shopping</a>
+						<a class="curved-btn green" href="<?php echo $this->url(array(), 'file-download'); ?>">download</a>
+					</td>
+				</tr>
+			</tfoot>
+		</table>
+
+	</div>

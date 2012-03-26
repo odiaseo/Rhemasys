@@ -1,0 +1,24 @@
+ 
+	<div id="prod-tabs" class="full-width"> 
+		<ul>
+				<li><a href="#product">Products</a>						
+				</li>
+				<li><a href="<?php 
+								$urlParm['table'] ='ecom_brand';
+								echo $this->url($urlParm, Rhema_Constant::ROUTE_GRID_INDEX); ?>">
+								Brand Names</a>						 
+				</li>
+				<li><a href="<?php 
+						$urlParm['table'] =  'ecom_category';
+						echo $this->url($urlParm, Rhema_Constant::ROUTE_GRID_INDEX); ?>">
+						Product Categories</a>
+				</li> 
+				<li><a href="<?php 
+						$urlParm['table'] =  'ecom_tax';
+						echo $this->url($urlParm, Rhema_Constant::ROUTE_GRID_INDEX); ?>">
+						Tax Rates</a>
+				</li> 						
+				<li><a href="<?php echo $this->url(array('id' => 2), HELP_ROUTE); ?>">Help</a></li>	
+		</ul>
+		<div id="product"><?php echo $this->gridData; ?></div>
+	</div>

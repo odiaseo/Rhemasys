@@ -1,0 +1,12 @@
+<?php $infoPath   = Rhema_SiteConfig::getBackendPath(); ?>
+<div id="page-design" class="full-width">
+	<div id="page-tabs">
+		<ul>
+			<li><a href="#phpinfo">PHP Info</a></li> 
+			<li><a href="#apcinfo">APC</a></li> 
+		</ul>
+		
+		<div id="phpinfo" class='sysinfo-div'><iframe border="0" src="<?php echo $infoPath . 'phpinfo.php'; ?>" width="100%"></iframe></div>
+		<div id="apcinfo" class='sysinfo-div'><iframe border="0" src="<?php echo $infoPath . 'apc.php'; ?>" width="100%"></iframe></div>
+	</div>
+</div>

@@ -1,0 +1,34 @@
+ 
+	
+	<?php $param = array('module'=>'help','controller'=>'design','action'=>'index'); ?>
+		
+		<div id="page-design" class="help-tab"> 
+		 	<div id="db-tabs"> 
+				<ul>
+						<li><a href="#tabs-0">Fields</a></li>
+						<li><a href="<?php $param['table'] =  HELP_PREFIX . 'HelpSection';
+											echo $this->url($param,ADMIN_ROUTE); 
+									?>">Sections</a></li>
+						<li><a href="<?php  $param['table'] =  HELP_PREFIX  . 'HelpTemplate';
+											$tparam = array('module'=>'help','controller'=>'design','action'=>'template');
+											echo $this->url($param,ADMIN_ROUTE); 
+									?>">Templates</a>
+						</li>
+						<li><a href="<?php  $param['table'] =  HELP_PREFIX  . 'HelpBoilerPlate';
+											echo $this->url($param,ADMIN_ROUTE);
+									?>">Boiler Plates</a></li>						
+						<li><a href="<?php  $param['table'] =  HELP_PREFIX  . 'HelpType';
+											echo $this->url($param,ADMIN_ROUTE);  
+									?>">Help Types</a></li> 
+						<li><a href="<?php  $param['table'] =  HELP_PREFIX  . 'HelpCategory';
+											echo $this->url($param,ADMIN_ROUTE); 
+									?>">Category</a>
+						</li>  		
+				</ul>
+				<div id="tabs-0">
+		 			 <?php echo $this->gridData; ?>
+		 		</div> 				
+		 	</div>
+	</div>
+
+		 	 	 

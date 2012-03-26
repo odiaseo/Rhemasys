@@ -1,0 +1,43 @@
+			<section id="admin-menu" style="visibility:hidden">
+			
+					 	<div id="module-nav">
+						<?php
+							$mods = $this->navData->getModules();
+							$path = rtrim(Rhema_SiteConfig::getDomainPath('admin'), '/');
+							foreach($mods as $ind => $module){
+								if(is_array($module)){
+									$module = (object) $module ;
+								}
+							 	if(is_object($module)){
+									$menu =  (object) $module->AdminMenu;
+									$parm = array();
+									$parm['module'] 	= (string) $menu->m_module;
+									$parm['controller'] = (string) $menu->m_controller;
+									$parm['action'] 	= (string) $menu->m_action;
+			
+									$imageFile			= $path . (string)  $module->image_file ;
+									$imageLabel         = (string)  $module->label ;
+									$imageThumb         = $path . (string)  $module->thumb ;
+			
+									echo "<a href='" . $this->url($parm,ADMIN_ROUTE) ."'>
+										<img src=' $imageThumb' alt='$imageFile' width='24' height='24'
+										title='$imageLabel' style='padding-left:10px'/>
+									</a>";
+					 			}
+							}
+						?>
+					</div>	
+					<nav class="clearfix">
+						<div class="<?php echo $this->menuTheme; ?>"> 
+			    	 <?php
+			    	 	$container = $this->navData->getContainer();
+			    	 	echo $this->navigation()->menu()
+			    	 				 	->setMinDepth(1)
+			    	 				 	->setUlClass($this->menuId)
+			    	 					->renderMenu($container);
+			    	 ?>
+			    	 	</div>
+			    	 </nav>
+			 
+		        </section>
+		

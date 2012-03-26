@@ -1,0 +1,33 @@
+<div id="organise-menu"> 
+ <?php
+    $minDepth = $this->minimumDepth ? $this->minimumDepth : 0 ; 	
+    $filter   = new Rhema_Filter_FormatCssClassName();
+	foreach($this->roots as $rootData){ ?>				 
+	<div id="organise_<?php echo $filter->filter($rootData['title']); ?>" class="menu-tree ui-corner-all">   <?php
+		$options   = array('root_id' => $rootData['id']) ;
+		$dto       = $this->menuObj->getMenuTree($options, $this->menuObj->getModel());
+		echo $this->navigation()->menu()
+				  ->setMinDepth($minDepth)
+				  ->renderMenu($dto->getContainer()); ?>			       		  	 
+   </div> 				 
+ <?php
+	}
+	 
+	if($this->rogueMenus){ ?> 		
+		<div id="organise_orphan" class="menu-tree ui-corner-all"> <?php 
+		echo $this->navigation()->menu()->renderMenu($this->rogueMenus); ?>			       		  	 
+	  	</div>
+<?php
+	}
+	$this->inlineScript()->setScript('
+ 		jQuery(function () { 
+ 			rms.setupMenuTree(\'div[id^="organise_"]\');  
+ 		}); 
+ 	');
+	echo $this->inlineScript();
+	?>
+ 
+ </div>
+
+
+

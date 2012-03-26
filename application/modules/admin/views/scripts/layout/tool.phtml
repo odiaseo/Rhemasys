@@ -1,0 +1,34 @@
+<?php if($this->allow){ ?>
+	<div id="layout-tool" class="adminToolBar" title="Layout tools">
+		<form method="post" action="<?php echo $this->formAction; ?>" id="form-layout-tool">
+			<input type="hidden" value="<?php echo $this->updateUrl; ?>" id="update_url" />
+				
+				<fieldset <?php if(!$this->editMode){ echo ' style="display:none"' ; } ;?> id="toolUpdateButtons">
+					<legend>Layout Update</legend>
+						<table>						
+							<tr><td></td><td><button id="update-layout">Update Layout</button></td></tr>					
+						</table> 
+				</fieldset>
+		
+			<fieldset>
+				<legend>Display Mode</legend> 
+	 				<?php 
+						  echo new Zend_Form_Element_Radio('editmode', array(
+								'label'			=> '',	
+								'multiOptions'	=> array('0' => 'Preview',
+														 '1' => 'Edit'),
+								'decorators'	=> Rhema_Util::getDecor() ,
+								'value'			=> array($this->editMode)		
+						 )); 
+						 ?>
+			</fieldset>
+			<fieldset>
+				<legend>Links</legend>
+				<a href="<?php echo $this->url(array('action'=>'index','controller'=>'index','module'=>'cms'), ADMIN_ROUTE ); ?>">
+					Control Panel</a>
+				<a href="<?php echo $this->url(array('action'=>'logout','controller'=>'index','module'=>DEFAULT_MODULE), FRONT_MENU_ROUTE); ?>">
+					Logout</a>
+			</fieldset>
+		</form>
+	</div>
+<?php } ?>

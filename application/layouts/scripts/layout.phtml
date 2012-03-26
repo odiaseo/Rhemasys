@@ -1,0 +1,33 @@
+<?php
+	echo $this->render('partials/html-headers.phtml');
+?>
+<body>
+  <div id="divSurround" class="page <?php echo $this->getPageId(); ?>">
+		<div id="divContainer" class="toprnd">
+			<input type="hidden" id="site_dir" value="<?php echo SITE_DIR; ?>" />
+			<div id="divHeader">
+				<div class="header-wrap"><?php
+					echo $this->displayContent($this->layout()->PageHeaderSections, $this->layout()->PageHeader, 'head');
+				?></div>
+			</div>
+			<div id="divContents">
+				<div class="content-wrap clearfix content-area rounded">
+				<div id="message-div-area"><?php echo $this->printUserMessage($this->userMessage); ?></div><?php
+				echo $this->displayContent($this->layout()->PageBodySections, $this->layout()->PageBody, 'body');
+				?></div>
+			</div>
+		</div>
+
+		<div id="divBottom">
+			<div class="bottom-wrap clearfix"><?php
+			echo $this->displayContent($this->layout()->PageFooterSections, $this->layout()->PageFooter, 'foot');
+			?></div>
+		</div>
+
+		<div id="divFooter">
+			<div class="footer-wrap clearfix"><?php echo $this->render('partials/footer.phtml') ?></div>
+		</div>
+  </div>
+  <?php echo $this->render('partials/footer-scripts.phtml'); ?>
+</body>
+</html>

@@ -1,0 +1,74 @@
+ <?php
+$data   = array();
+$util   = Rhema_Util_String::getInstance();
+$root   = Rhema_Constant::getSiteRoot();
+$filter = new Zend_Filter_RealPath();
+$css    = array();
+foreach($this->slideData as $slide){
+	$storeLogos  = array();
+	$storeString = '';
+	$fontColor   = $slide['font_color'] ? "#{$slide['font_color']}" : '#444';
+	$class       = Doctrine_Inflector::urlize($slide['title']);
+	
+	$css[] = sprintf(".%s * { color: %s !important; } ", $class, $fontColor);
+	
+	if($slide['is_category']){
+		foreach($slide['AffiliateProductCategory'] as $category){ 
+			$logo  = $category['image_file'] 
+					? $util->getImageSource($category['image_file'])
+					: 'notfound.jpg';  
+			$href  = $this->url(array('category' => $category['slug']), 'mobile-category', true) ;
+			$title = $category['title'];				
+			$storeLogos[] = sprintf("<li><a href='%s' title=\"%s\" class='rounded'><img src=\"%s\" alt=\"%s\"/></a>"
+						    , $href, $title, $logo, $title);
+			 
+		}
+	}else{
+		foreach($slide['AffiliateRetailer'] as $store){
+			$logo  = $this->getRetailerLogo($store);
+			$logo  = $logo ? $logo : $store['image_file']; 	
+			$href  = $this->url(array('retailer' => $store['slug']), 'affiliate-retailer', true) ;
+			$title = $store['title']; 
+			$storeLogos[] = sprintf("<li><a href='%s' title=\"%s\" class='rounded'><img src=\"%s\" alt=\"%s\"/></a>"
+						    , $href, $title, $logo, $title);			
+		}		
+	}		
+	
+	if(count($storeLogos)){
+		$storeString = '<ul>' . implode(PHP_EOL, $storeLogos) . '</ul>';
+	}
+	//pd($slide);
+	
+	$obj    = new stdClass();
+	$img    = $util->getImageSource($slide['image_file']);
+	$thumb  = str_replace('/original/', '/small/', $img);
+	
+	$obj->content = sprintf("<div class='slide_inner %s' style='background:url(\"%s\") 0 0 no-repeat'><h1>%s</h1>%s<h3>%s</h3></div>"
+				   ,$class, $img,$slide['description'], $storeString, $slide['strapline']);
+	$obj->content_button = sprintf("<div class='thumb'><img src='%s' alt=\"%s\" /></div><p>%s</p>",$thumb,  $slide['title'], $slide['title']);
+	$data[] = $obj;
+}
+ 
+if(count($data)){
+	$jsonString = Zend_Json::encode($data);
+	//pd($jsonString);
+	$this->collateScripts("
+        jQuery('#flavor_3').agile_carousel({
+            carousel_data: {$jsonString},
+            carousel_outer_height: 220,
+            carousel_height: 220,
+            slide_height: 220,
+            carousel_outer_width: 620,
+            slide_width: 620,
+            transition_time: 700,
+            timer: 8000,
+            continuous_scrolling: true,
+            control_set_1: 'content_buttons'
+        });"	
+	);
+}
+ 
+printf("<style>%s</style>",implode(PHP_EOL, $css)); 
+?>
+<div class="slideshow rounded" id="flavor_3"></div>
+ 

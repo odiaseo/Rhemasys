@@ -1,0 +1,42 @@
+			    
+<div id="admin-left-nav" class="left-nav">
+	<div id="admin-menu-side">
+	<label>Database tables</label>
+	  <div id="list-otree">
+	<?php	  
+		if(is_array($this->adminTables) and $this->adminTables){ 
+			$page = array(); 
+ 			$cnt = 0;
+				foreach($this->adminTables as $catDesc => $list){
+					$count = count($list);
+					$page[$cnt]['title'] = $catDesc;
+					$page[$cnt]['uri']   = '#';
+					$cnt++;
+					$sub = 0;
+				 	foreach($list as $table => $label){
+						$urlParam['table1'] = $table;
+						$href  = $this->url($urlParam, 'grid-index');
+						$page[$cnt]['pages'][$sub]['title'] = $label ;
+						$page[$cnt]['pages'][$sub]['uri']   = $href ;
+						$sub++; 
+					}
+				} 
+				pd($page);
+			}
+		 ?>
+	  </div> 
+   </div>			
+</div>	
+
+<div id="menu-select"> 
+	<div id="tabs"> 
+		<ul>
+				<li><a href="#tabs-1"><?php echo $this->caption; ?></a></li>
+		</ul>
+		<div id="tabs-1"> 
+			<?php echo $this->gridData ; ?>
+			 
+			 
+		</div>
+	</div>
+</div>

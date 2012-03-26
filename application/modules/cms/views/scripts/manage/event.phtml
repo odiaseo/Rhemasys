@@ -1,0 +1,19 @@
+  
+	<?php $param = array('module' => 'admin', 'controller' => 'grid', 'action' => 'index' ); ?> 
+	
+	<div id="manage-events" class="full-width"> 
+		 	<div id="page-tabs"> 
+				<ul>	<li><a href="#event-1">Events</a> </li> 					 	
+						<li><a href="<?php $param['table']    = 'event_type';  
+											echo $this->url($param, Rhema_Constant::ROUTE_GRID_INDEX); ?>">
+											Event Types</a>
+						</li> 
+						<li><a href="#event-2">Design View</a> </li> 
+				       <li><a href="<?php echo $this->url(array('id' => 1), HELP_ROUTE); ?>">Help</a></li>
+				</ul>
+				<div id="event-1"><?php echo $this->gridData; ?></div> 
+				<div id="event-2"><?php echo $this->render('manage/partials/event-design.phtml'); ?>
+				<!--  <iframe src="/backend/scripts/wdcalendar/sample.php" style="border:0;width:100%;"></iframe> -->
+				</div>
+		 	</div>
+	</div>

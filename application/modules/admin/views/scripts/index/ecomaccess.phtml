@@ -1,0 +1,16 @@
+ 	 
+			 <div id="access-tabs"  class="full-width"> 
+				<ul>
+					 
+			<?php		
+					$param = array('action'=>'access');
+					foreach($this->roots as $index => $rootData){  ?>  
+						<li><a href="<?php 	$param['root_id'] =  $rootData['id'];
+											$param['scope']	  = strtolower($this->scope);
+										echo $this->url($param,ADMIN_ROUTE);  
+								?>"><?php echo $rootData['label']; ?></a></li>
+			   <?php } ?>
+						<li><a href="<?php echo $this->url(array('id' => 1), HELP_ROUTE); ?>">Help</a></li>
+				</ul>
+	  		 
+		     </div>	

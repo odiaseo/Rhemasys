@@ -1,0 +1,31 @@
+	<?php
+	foreach($this->configs as $k => $v){  
+		$list[$k] = "<li><a href='#{$k}'>". ucwords($k) . "</a></li>";
+		$divs[]   = "<div id='{$k}' class='sysinfo-div'><pre>".  print_r($v, true) . '</pre></div>';		
+	}
+	ksort($list);
+	?>	
+<div id="page-design" class="full-width">
+	<div id="page-tabs">
+		<ul>
+			<li><a href="#tabs-1">Site Information</a></li> 
+			<li><a href="#server">Server</a></li> 
+			<?php echo implode("\n", $list); ?>
+		</ul>
+		<div id="tabs-1"> 
+				<pre><?php echo wordwrap(print_r($this->serverInfo, true),150); ?></pre> 
+		</div>
+		
+		<div id="server" class='sysinfo-div'><?php 
+			foreach($_SERVER as $key => $val){
+				$data[$key] = is_array($val) ? print_r($val, true) :  substr($val, 0, 100);
+			}
+			
+			ksort($data);
+			echo '<pre>' . print_r($data, true) . '</pre>' ; ?>
+		</div>
+ 
+		 <?php echo implode("\n", $divs); ?>
+		 
+	</div>
+</div>

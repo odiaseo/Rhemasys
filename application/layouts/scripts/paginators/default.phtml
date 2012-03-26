@@ -1,0 +1,68 @@
+<?php
+if (!isset($params)) {
+    $params = array();
+}
+$routeName = null;
+if ($this->pageCount) {
+	$front     = Zend_Controller_Front::getInstance();
+    $params    = $front->getRequest()->getParams();
+ 	$routeName = $front->getRouter()->getCurrentRouteName();
+}
+ 
+$preHidden  = $postHidden = '';
+ 
+//$this->collateScripts('jQuery(".pagestats:first").show();');
+?>
+<div class="clearfix pagestats"> <?php
+	echo $this->firstItemNumber . ' - ' . $this->lastItemNumber  . ' of '  .  number_format($this->totalItemCount); ?>
+</div>
+<div id="paginator" class="clearfix rounded">
+<?php if($this->current == $this->first){
+		$preHidden = 'style="visibility:hidden"';
+	}?>
+    <span class="paginator-prev rounded" <?php echo $preHidden; ?>><ul><?php
+		$params['page'] = isset($this->first) ? $this->first : 1 ;
+		if($params['page'] == 1) unset($params['page']);
+		$href           = $this->url($params, $routeName, true);
+		$disable        = ($this->current == $this->first) ? ' disabled' : '';
+        echo "<li class='first{$disable} rounded ui-state-default'> <a href='$href'>&lt;&lt; first</a></li>";
+
+       if (isset($this->previous) and $this->previous != 1){
+			$params['page'] = isset($this->previous) ?  $this->previous : 1;
+			if($params['page'] == 1) unset($params['page']);
+			$href           = $this->url($params, $routeName);
+			$disable        = (isset($this->previous) and $this->previous != 1) ?  '' : ' disabled';
+	        echo "<li class='previous{$disable} rounded ui-state-default'> <a href='$href'>&lt; prev</a></li>";
+       }
+      ?>
+    </ul></span>
+
+    <span class="pages-inrange"><ul><?php
+    foreach ($this->pagesInRange as $page){
+        //	if($page != 1){
+    			$params['page'] = $page;
+    	//	}else{
+    	//		unset($params['page']);
+    	//	}
+			$href           = $this->url($params, $routeName);
+			$disable        = ($page == $this->current) ? ' ui-state-active' : ' ui-state-default';
+            echo "<li class='current{$disable} rounded'> <a href='$href'>$page</a> </li>";
+	} ?>
+    </ul></span>
+<?php if($this->current == $this->last){
+		$postHidden = 'style="visibility:hidden"';
+	}?>
+    <span class="paginator-next" <?php echo $postHidden; ?>><ul> <?php
+    	if(isset($this->next) and $this->next != $this->last){
+	    	$params['page']  = $this->next ? $this->next : $this->last;;
+			$href            = $this->url($params, $routeName, true) ;
+			$disable         = isset($this->next) ? ' disabled' : '';
+	        echo "<li class='next{$disable} rounded ui-state-default'> <a href='$href'>next &gt;</a> </li>"; 
+        }
+        $params['page']  = $this->last ;
+		$href            = $this->url($params, $routeName) ;
+		$disable         = ($this->current == $this->last) ? ' disabled' : '';
+        echo "<li class='last{$disable} rounded ui-state-default'> <a href='$href'>last &gt;&gt;</a> </li>"; ?>
+    </ul></span>
+
+</div>

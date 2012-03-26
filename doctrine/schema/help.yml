@@ -1,0 +1,210 @@
+HelpBoilerPlate:
+  tableName: help_boiler_plate
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+    description:
+      type: string(255)
+    content:
+      type: string(255)
+      notnull: true
+    is_active:
+      type: integer(1)
+      default: 1
+HelpCategory:
+  tableName: help_category
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+    description:
+      type: string(255)
+HelpTemplateBoilerPlate:
+  tableName: help_template_boiler_plate
+  actAs:
+    SoftDelete:
+  columns:
+    help_template_id:
+      type: integer(4)
+      notnull: true
+    help_boiler_plate_id:
+      type: integer(4)
+      notnull: true
+    position:
+      type: enum
+      length: 4
+      values: ['top', 'bottom']
+    sequence:
+      type: integer(4)
+  relations:
+    HelpTemplate:
+      foreignAlias: Plates
+    HelpBoilerPlate:
+      foreignAlias: Plates
+HelpDocument:
+  tableName: help_document
+  actAs:
+    Blameable:
+    Searchable:
+      fields: [content, title, description, keyword]
+    Sluggable:
+      fields: [title]
+    SoftDelete:	  
+  columns:
+    title:
+      type: string(145)
+    description:
+      type: string(255)
+    keyword:
+      type: string(255)
+    content:
+      type: string(255)      
+    answer:
+      type: string(255)
+    related_item:
+      type: string(255)
+    question:
+      type: string(255)
+    module:
+      type: integer(4)
+    help_type_id:
+      type: integer(4)
+      notnull: true
+    help_category_id:
+      type: integer(4)
+      notnull: true
+    role_id:
+      type: integer(4)
+      notnull: true
+    admin_group_id:
+      type: integer(4)
+      notnull: true	  
+  relations:
+    HelpCategory:
+      foreignAlias: Documents
+    HelpType:
+      foreignAlias: Documents
+    Role:
+      foreignType: one
+    AdminGroup:
+      foreignType: one
+HelpField:
+  tableName: help_field
+  columns:
+    title:
+      type: string(145)
+      notnull: true
+    label:
+      type: string(145)
+      notnull: true
+    description:
+      type: string(255)
+    is_mandatory:
+      type: integer(1)
+      default: 1
+    is_searchable:
+      type: integer(1)
+      default: 0
+HelpSection:
+  tableName: help_section
+  columns:
+    title:
+      type: string(45)
+    description:
+      type: string(255)
+    sequence:
+      type: integer(4)
+      default: 0
+      unique: true
+HelpTemplateLayout:
+  tableName: help_template_layout
+  actAs:
+    SoftDelete:
+  columns:
+    help_template_id:
+      type: integer(4)
+      notnull: true
+    help_section_id:
+      type: integer(4)
+      notnull: true
+    help_field_id:
+      type: integer(4)
+    section_seq:
+      type: integer(4)
+      default: 0
+    item_seq:
+      type: integer(4)
+      default: 0
+    content_type:
+      type: string(4)
+  relations:
+    HelpField:
+      foreignAlias: Layout
+    HelpTemplate:
+      foreignAlias: Layout
+    HelpSection:
+      foreignAlias: Layout
+HelpTemplate:
+  tableName: help_template
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+    description:
+      type: string(255)
+    note:
+      type: string(255)
+  relations:
+    HelpField:
+      foreignAlias: Templates
+      class: HelpField
+      refClass: HelpTemplateField
+    HelpBoilerPlate:
+      foreignAlias: Templates
+      class: HelpBoilerPlate
+      refClass: HelpTemplateBoilerPlate
+HelpTemplateField:
+  tableName: help_template_field
+  actAs:
+    SoftDelete:
+  columns:
+    help_template_id:
+      type: integer(4)
+      notnull: true
+    help_field_id:
+      type: integer(4)
+      notnull: true
+    is_readonly:
+      type: integer(1)
+      default: 0
+    sequence:
+      type: integer(4)
+      default: 0
+  relations:
+    HelpTemplate:
+      foreignAlias: TemplateFields
+    HelpField:
+      foreignAlias: TemplateFields
+HelpType:
+  tableName: help_type
+  columns:
+    title:
+      type: string(45)
+      notnull: true
+    description:
+      type: string(150)
+    prefix:
+      type: string(45)
+      notnull: true
+    level:
+      type: integer(4)
+      default: 1
+    help_template_id:
+      type: integer(4)
+      notnull: true
+    note:
+      type: string(255)
+  relations:
+    HelpTemplate:
+      foreignAlias: Documents

@@ -1,0 +1,70 @@
+<?php 
+	$logo 	 	 = '';
+	$strapLine   = '';
+	$strapLine   = '';
+	$catTags     = '';
+	$feedLink    = '';
+	$desc        = '';
+	$subList     = '';
+	$breadCrumb  = '';
+ 	$rssUrl      = '#'; 
+ 		
+    if($this->slugTitle or $this->feedType){  		
+    	$feedType  = $this->feedType ? $this->feedType : 'search' ;
+		$rssUrl    = $this->url(array('type' => $feedType, 'slug' => Doctrine_Inflector::urlize($this->slugTitle)),'affiliate-feed', false, true) ;
+		$rssTitle  = $this->layout()->pageData['title'] ; //Product Feeds - ' . ucwords($title);   
+		$this->headLink()->appendAlternate($rssUrl, 'application/rss+xml', $rssTitle);
+      
+		$feedLink  = sprintf("<a href='%s' target='_blank' title='Product feed for %s' class='product-feed-icon'><img src='%s'  height='16' /></a>",
+					$rssUrl, $this->slugTitle, $this->getImagePath()->icon('feed_32.png'))	;	
+    }
+    
+  	if(isset($this->brand)){
+    	$catTags = isset($this->brand['keywords']) ? $this->buildTagLinks($this->brand['keywords']) : '';
+   		$desc    = isset($this->brand['description']) ? Rhema_Util_String::correctEncoding($this->brand['description']) : '';   		  		
+   	}elseif(isset($this->retailer)){  
+   	   	$src    = $this->getRetailerLogo($this->retailer);
+   	   	if($src){
+   			$logo   = "<img src='{$src}' height='30' alt='{$this->retailer['title']}' title='{$this->retailer['title']}' align='right' border='1'/>";
+   	   	}
+   		 	
+   	   		
+   		if($this->retailer['strapline']){
+   			$strapLine = $this->retailer['strapline'] ;
+   		}
+   		
+   		$catTags = $this->retailer['keywords'] ? $this->buildTagLinks($this->retailer['keywords']) : '';
+   		$desc    = $this->retailer['description'] ? Rhema_Util_String::correctEncoding($this->retailer['description']) : '';   		
+   	}elseif(isset($this->manufacturer)){
+   		
+   	} elseif(isset($this->category)){  
+   		$catTags = isset($this->category['keywords']) ? $this->buildTagLinks($this->category['keywords']) : '';
+   		$desc    = isset($this->category['description']) ? Rhema_Util_String::correctEncoding($this->category['description']) : '';
+   		
+	    if(isset($this->subList) and count($this->subList)){
+	    	$src            = $this->getImagePath()->icon('blue_arrow.gif')  ;
+	    	$seperator  	= '<img src="' . $src. '" alt="seperator" style="margin:0 5px"/>';
+	    	$breadCrumb     = $this->navigation()    			  
+	    			  			->breadcrumbs($this->categoryMenu) 
+	    			  			->setUseTranslator(false)
+	    			  			->setSeparator($seperator);
+	   	}  		 		
+ 	}
+ 	
+ 	$date = new Zend_Date();
+ 	if($this->search){   
+ 		if($this->similar){   		 
+			printf("<h1>Your Search</h1>%s<p>Your search did not return any result please expand your search criteria. However we have suggested similar products, deals, discounts
+			sales and offers closely matching '<strong>%s</strong>' which you may like.</p>",$feedLink,  $this->slugTitle);		 
+	   	}else{
+			 printf("<h1>Product Search </h1><p>You searched for <strong>%s</strong> returned the following results:</p>", ucwords($this->slugTitle));	
+	   	}	
+ 	}elseif($this->sales) 	{
+ 			 printf("<h1 class='search-title'>Latest Sales and Promotions in %s</h1>%s", $date->get(Zend_Date::YEAR), $feedLink);
+ 			 print('<div style="clear:both; display:block">Get the best discounts, deals and promotional sales from your favourite brands and retailers</div>');
+    }else{
+    	$desc  = $desc ?  $this->limitTextDisplayed($desc) : ucfirst($this->slugTitle) . ' products, discounts, deals and sales';     
+		printf("<h1 class='search-title'>Latest %s Deals - %d</h1> %s <div style='clear:both; display:block'>%s</div> <h3>%s</h3><div style='clear:left'><p>%s%s</p>%s<p class='tag-list'>%s</p></div>",
+		ucwords($this->slugTitle), $date->get(Zend_Date::YEAR), $feedLink, $breadCrumb, $strapLine, $logo, $desc, $subList, $catTags);
+    }
+       		

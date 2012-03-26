@@ -1,0 +1,14 @@
+
+
+ <?php			
+     $urlParm	 = array('module'=>'ecom','controller'=>'index','action'=>'setting');  
+ ?>
+	<div id="tabs" class="full-width"> 
+		<ul>
+				<li><a href="#settings"><?php echo $this->caption; ?></a> 
+				</li>
+				<li><a href='#tab-2'>Help</a></li>
+				<div id="tab-2"></div>
+		</ul>
+		<div id="settings"><?php echo $this->gridData->deploy(); ?></div>
+	</div> 

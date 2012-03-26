@@ -1,0 +1,19 @@
+ <?php $minDepth = $this->minimumDepth ? $this->minimumDepth : 0 ; ?>			
+ 			
+ 	<section class="data-grid">
+ 		<?php echo $this->gridData; ?>
+ 	</section>
+ 
+	<aside id="menu_<?php echo $this->gridId; ?>" class="menu-tree" class="side-div ui-widget-content ui-corner-all"> 
+    <?php	$scope = $this->scope ;
+    		echo $this->navigation()
+    				  ->menu() 
+    				  ->setMinDepth($minDepth)
+    				  ->renderMenu($this->dto->getContainer()); 
+    		echo $this->jQuery()->setRenderMode(ZendX_jQuery::RENDER_JQUERY_ON_LOAD)
+    						    ->addOnLoad("jQuery(function () { rms.setupMenuTree('#menu_$this->gridId'); })");	
+    ?>			  	 
+  </aside> 		
+ 		 	
+
+ 	

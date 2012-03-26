@@ -1,0 +1,58 @@
+
+ 
+ <div id="edit-layout" class="ui-corner-all ui-widget-content" title="<?php echo $this->templateTitle; ?> - Template Layout"> 		
+ 		<form action="<?php echo $this->formAction; ?>" name="layout-form"  method="post" id="layout-form"> 
+ 			<input type="hidden" id="ctemp" value="<?php echo $this->templateId; ?>" disabled />
+			<table width="100%"  border="0" cellpadding="0" cellspacing="0" class="layout-table ui-jqgrid-btable ui-jqgrid">
+
+			  <tr valign="top" class="ui-widget-content ui-row-ltr">
+			    <td width="30%">
+					<label>Mandatory Fields</label>
+					<div id="fields-tree">
+						<ul id="mandatory-field" class="layout-tree">							
+							<?php
+								foreach($this->mandatoryFields as $index => $arr){
+									echo "<li id='li_mand-$arr[id]'><ins>&nbsp;</ins> $arr[label]
+									<ins class='remove' parent='mandatory-field' child='li-mand-$arr[id]'>&nbsp;</ins></li>";
+								}
+							?>
+						</ul>
+					 
+					
+				   		<label>Optional Fields</label>					 
+						   <ul id="optional-field" class="layout-tree">
+							<?php
+								foreach($this->fields as $index => $arr){
+									$optId = $arr['Field']['id'] ;
+									echo "<li id='li_opt-$optId'><ins>&nbsp;</ins> " . $arr['Field']['label'] . "
+									<ins class='remove' parent='optional-field' child='li-opt-$optId'>&nbsp;</ins></li>";
+								}
+							?>
+						</ul>
+					 
+					
+						<label>Boiler Plates</label>						
+						 <ul id="boiler-plate" class="layout-tree">
+							<?php
+								foreach($this->boilerPlates as $index => $arr){
+									$boilerId = $arr['BoilerPlate']['id'] ;
+									echo "<li id='li_plate-$boilerId'><ins>&nbsp;</ins> " .  $arr['BoilerPlate']['title'] . "
+									<ins class='remove' parent='boiler-plate' child='li-opt-$boilerId'>&nbsp;</ins></li>";
+								}
+							?>
+						</ul>
+					</div>				
+				</td>
+			    <td colspan="2" valign="top">
+                   <?php 	foreach($this->sectionData as $sxnId => $sxnData){ ?>
+                                <div class="right-sort ui-corner-all ui-widget-content" id="div-section-<?php echo $sxnId;?>">
+                                    <label><?php echo $this->sections[$sxnId]['title']; ?></label> 
+                                          <?php echo $sxnData; ?>
+                                </div>                    
+                    <?php    } ?> 
+				</td>
+			 </tr>
+		  </table>
+   </form>
+ </div> 
+ 

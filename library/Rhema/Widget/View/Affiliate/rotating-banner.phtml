@@ -1,0 +1,37 @@
+<?php 
+if(count($this->banners)){
+	$first = current($this->banners);	 
+	//pd($first);
+	?>
+	<style>
+	<!--
+	#advert span.bg-image{
+		width: <?php echo $first['width']; ?>px;
+		height: <?php echo $first['height']; ?>px;
+		display: block;
+	}
+	-->
+	</style>
+	 <div id="advert" class="sidebar rounded">
+	 <?php 
+	 	foreach((array) $this->banners as $item){
+	 		$link = $this->affiliateLink()->addClickRef(false, $item['url'], 'rot-banner'); 
+	 		printf("<div class='item rounded' style='background: url(\"%s\") no-repeat 0 0'><a href='#' %s='%s' class='outlink'><span class='bg-image'>
+	 			</span></a></div>", $item['image_file'], $this->linkAttribute, $link);
+	 	} 
+	 ?>
+		 
+	   <div class="item rounded">
+	   	 <?php echo $this->render('Google/adsense-sidebar.phtml'); ?> 
+	   </div>
+	</div> 
+	 
+	<?php $this->collateScripts("
+		slideSwitch('div.item', '#advert');
+		setInterval(function(){
+			slideSwitch('div.item', '#advert');
+		}, 6000 );" );
+
+}
+?>
+

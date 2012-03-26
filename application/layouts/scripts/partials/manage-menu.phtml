@@ -1,0 +1,34 @@
+  <?php $minDepth = $this->minimumDepth ? $this->minimumDepth : 0 ; ?>	
+  		<div class="full-width"> 
+			<input type="hidden" id="root_type" value="<?php echo $this->table ; ?>" />
+			<input type="hidden" id="root_id" value="<?php echo $this->root_id ; ?>" />
+			<input type="hidden" id="menu-url" value="<?php echo $this->menuUrl; ?>" />
+			 <div id="menu-tabs"> 
+				<ul>
+				<?php 
+					$param = array('table'=> $this->currentTable, 'minDepth' => $minDepth); 
+					 	
+					foreach($this->dto->getRoots() as $index => $rootData){ ?>
+						<li><a href="<?php $param['root_id'] =  $rootData['id'];
+										echo $this->url($param, 'cms-menu-index');  
+								?>"><?php echo $rootData['title']; ?></a>
+						</li> 
+					<?php } ?> 				
+			
+					<li><a href="<?php 
+						$param = array(Admin_Model_AdminMenu::TYPE_OPHANS => true, 
+										'table'=> $this->currentTable); 
+						echo $this->url($param, 'grid-index');?>">Orphan Menus</a>
+					</li>	
+					<li><a href="<?php echo 
+						$this->url(array('table'=> $this->currentTable, 'minDepth' => $minDepth), 'organise-menu');?>">Organise Menus</a>
+					</li>	
+					<li><a href="<?php 
+						$param = array(Admin_Model_AdminMenu::TYPE_ROOTS_ONLY => true, 'table'=>$this->currentTable); 
+						echo $this->url($param, 'grid-index');?>">Roots</a>
+					</li>					
+											
+				</ul> 
+ 
+			  </div>
+	   </div>

@@ -1,0 +1,78 @@
+<form method="post" id="form_<?php echo $this->tableId; ?>" action="<?php echo $this->url($this->editurl,ADMIN_ROUTE); ?>">
+	<table id="<?php echo $this->tableId; ?>" class="acl-table">
+	   <thead>
+			<tr>			 
+				<th width="5%">#</th>
+				<th width="5%">#</th>
+				<th>Resources</th>
+				<?php 
+					$width = floor(65/count($this->roles));
+					foreach($this->roles as $items){
+						echo "<th width='$width%'>$items[title]</th>";
+					}
+				?>
+			</tr>
+		</thead>
+		<tbody>
+		<?php
+			$count = 0;
+			foreach($this->menus as $list){
+				$count++;
+				$help = $list['description'] ? "<a href='#' class='atip' title='$list[title]|$list[description]'>
+					<img src='/../backend/images/icons/help.png' width='16' border='0' /></a>" : '&nbsp;'; 
+				echo "<tr><td>$count</td><td align='center'>$help</td><td>$list[title]</td>"; 
+				foreach($this->roles as $items){
+					echo "<td style='text-align:center'><input type='checkbox' name='rule[$list[id]][$items[id]]' value='1' /></td>";
+				}
+				echo '</tr>';
+			}
+		?>
+		</tbody>
+	</table>
+
+	<div id="pager_<?php echo $this->tableId; ?>" class="scroll"></div> 
+	
+	<div><input type="submit" value="Update" name="updateAcl" /></div>
+	
+</form>
+ <?php 
+	
+		$this->inlineScript()->setScript("jQuery('a.atip').cluetip({splitTitle: '|',  cluetipClass: 'rhema'}); 
+		jQuery(function () { 
+		/*	jQuery('#$this->tableId').jqGrid({
+				rownumbers		: true,
+				toolbar			: [true,'bottom'],
+				datatype		: 'local',	
+				toolbar			: [true, 'bottom'],
+				caption			: 'Access Control Rules',
+				pager			: '#pager_$this->tableId',
+				height			: 'auto',
+				width			: 870,
+				forceFit		: false,
+				altRows			: true,
+				hidegrid        : false,
+				rowNum			: 10,
+				sortname		: 'Resources',
+				rowList			: [5, 10, 20, 50]
+			});
+			*/
+			tableToGrid('#$this->tableId',{
+				rownumbers		: true,
+				toolbar			: [true,'bottom'],
+				datatype		: 'local',	
+				toolbar			: [true, 'bottom'],
+				caption			: 'Access Control Rules',
+				pager			: '#pager_$this->tableId',
+				height			: 'auto',
+				width			: 870,
+				forceFit		: false,
+				altRows			: true,
+				hidegrid        : false,
+				rowNum			: 10,
+				sortname		: 'Resources',
+				rowList			: [5, 10, 20, 50]
+			}); rms.updateGridStyle('$this->tableId','$width');  
+		});");	
+																		
+		echo $this->inlineScript(); 
+	?>

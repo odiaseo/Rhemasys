@@ -1,0 +1,20 @@
+ <?php 
+    $css  =  $this->slideShow($this)->getCss(); 
+ 	echo $this->headStyle()->setStyle($css); 
+  ?>
+<div id="<?php echo $this->divId; ?>" class='slideshow' style="display:none">
+	<?php
+	$count = 0;
+	$html  = ''; 
+	foreach ($this->images as $name => $dto) { 
+    	$class = ($count > 0) ? '' : 'active';
+    	$src   = $dto->getSrc();  
+    	$href  = $dto->getHref();  
+    	$html .= $this->slideShow()->getCaptions($dto);
+    	$html .= "<img src='$src' border='0' alt='$href' class='$class' width='{$this->width}' height='{$this->height}' />"; 
+    	$count++;
+	}
+ 	echo $html;
+ 	?>
+</div>
+<?php  $this->collateScripts($this->slideShow($this)->getScript()); ?>

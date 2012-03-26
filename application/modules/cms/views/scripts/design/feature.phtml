@@ -1,0 +1,16 @@
+	<?php $param = array('module' => 'admin', 'controller' => 'grid', 'action' => 'index' ); ?> 
+	<div id="featured-item" class="full-width"> 
+		 	<div id="page-tabs"> 
+				<ul>
+						 
+						<li><a href="<?php $param['table'] =  MODEL_PREFIX . 'Featured'; 
+											echo $this->url($param, ADMIN_ROUTE); 
+								     ?>">Featured Items</a>
+						</li> 
+						<li><a href="<?php echo $this->url(array('id' => 1), HELP_ROUTE); ?>">Help</a></li> 
+				</ul>
+				<div id="tabs-1">
+		 			<?php echo $this->gridData; ?>
+		 		</div> 
+		 	</div>
+	</div>

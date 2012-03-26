@@ -1,0 +1,19 @@
+	<div class="category-search">
+	<?php
+	 
+		if($this->category){
+			foreach($this->category as $cat){ 
+				$parms[CATEGORY_MAP] 			= $cat['EcomCategory'][CATEGORY_MAP];
+				$route 							= $cat->getNode()->isLeaf() ? CATEGORY_ROUTE : BRANCH_ROUTE ; 
+				$replace['attr']['/PRD_URL/'] 	= $this->url($parms, $route);  ?>
+				
+				<div class="search-result"> 
+					<?php echo $this->Cart($cat, 'EcomCategory')->buildDisplay($this->displayTemplate, $replace); ?>
+				</div>
+	<?php	} 
+		}else{ echo'no category found' ; }?>
+	</div>
+	
+	<div class="pager">
+		<?php $this->nav->display(); ?>
+	</div>

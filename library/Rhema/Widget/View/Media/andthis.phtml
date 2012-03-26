@@ -1,0 +1,22 @@
+<?php
+    if(isset($this->addThisUrl) and $this->addThisUrl){
+        $url = $this->addThisUrl;
+    }else{
+        $host = Zend_Controller_Front::getInstance()->getRequest()->getHttpHost();
+        $url  = urldecode('http://' . $host);
+    }
+    
+	$style = isset($this->addThisStyle) ? $this->addThisStyle : 'addthis_toolbox addthis_default_style addthis_32x32_style';
+?>
+<div class="andthis-div">
+
+    <div class="<?php echo $style; ?>" addthis:url="<?php echo $url; ?>">
+        <a class="addthis_button_digg"></a>
+        <a class="addthis_button_twitter"></a>
+        <a class="addthis_button_facebook" addthis:url="<?php echo Rhema_SiteConfig::getConfig('settings.socialmedia.facebook.href'); ?>"></a>
+        <a class="addthis_button_myspace"></a>
+        <a class="addthis_button_email"></a>
+        <a class="addthis_button_compact"></a>
+    </div>
+
+</div>
